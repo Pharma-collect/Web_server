@@ -14,7 +14,7 @@ function normalizePort(val) {
     return false;
 };
 
-function errorHandler(error) {
+function onErrorHandler(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -46,9 +46,7 @@ app.set('port', port);
 const server = http.createServer(app);
 
 models.sequelize.sync().then(function() {
-    server.listen(port, function() {
-        console.log('Express server listening on port ' + server.address().port);
-    });
-    server.on('error', errorHandler);
+    server.listen(port);
+    server.on('error', onErrorHandler);
     server.on('listening', onListening);
 });
