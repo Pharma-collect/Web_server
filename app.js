@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 //routes declaration
 const user_client_routes = require("./routes/user_client");
+const pharmacy_routes = require("./routes/pharmacy");
 
 const app = express(); //create express application
 
@@ -18,5 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes utilisation
 app.use('/api/user_client', user_client_routes);
+app.use('/api/pharmacy', pharmacy_routes);
 
 module.exports = app;

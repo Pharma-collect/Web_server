@@ -8,15 +8,20 @@ router.get('/', function(req, res, next) {
         result: result,
     })).catch(error => res.json({
             success: false,
-            data: [],
+            result: [],
             error: error
-        }));
+    }));
 });
 
 router.post('/', (req, res, next) => {
-    console.log(req.body);
+    const {
+        name
+    } = req.body;
+
+    console.log(name);
+
     res.status(201).json({
-        message: 'Objet créé !'
+        message: 'test post'
     });
 });
 

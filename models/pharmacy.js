@@ -9,6 +9,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    name: {
+      type: DataTypes.STRING(80),
+      allowNull: true
+    },
+    has_shop: {
+      type: DataTypes.TINYINT,
+      allowNull: true
+    },
     road_nb: {
       type: DataTypes.INTEGER,
       allowNull: true
