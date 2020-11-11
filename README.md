@@ -18,4 +18,4 @@ Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
 
 ## Jenkins
 
-Test Pipeline Jenkins
+Test Pipeline Jenkins for build/push/deploy
