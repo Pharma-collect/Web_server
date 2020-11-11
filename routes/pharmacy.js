@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const db = require('../models');
 
-router.get('/findPharmacyByName', function(req, res, next) {
+router.get('/getPharmacyByName', function(req, res, next) {
     const {
         name
     } = req.body;

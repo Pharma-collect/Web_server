@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const db = require('../models');
 
-router.get('/', function(req, res, next) {
+router.get('/getAllUserClient', function(req, res, next) {
     db.user_client.findAll().then(result => res.json({
         success: true,
         result: result,
