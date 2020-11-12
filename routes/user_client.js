@@ -13,7 +13,7 @@ router.get('/getAllUserClient', function(req, res, next) {
     }));
 });
 
-router.post('/', (req, res, next) => {
+router.post('/createUserClient', (req, res, next) => {
     const {
         name
     } = req.body;
