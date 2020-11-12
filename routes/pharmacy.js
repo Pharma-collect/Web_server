@@ -2,33 +2,40 @@ const express = require('express')
 const router = express.Router();
 const db = require('../models');
 
-router.get('/getPharmacyByName', function(req, res, next) {
+router.get('/getPharmacyById', function(req, res, next) {
     const {
-        name
+        pharmacy_id
     } = req.body;
 
-    console.log(name);
+    console.log(pharmacy_id);
 
-    db.pharmacy.findAll({
-        where: {
-            name: name,
-        }
-    }).then(function(result){
-        if (result.length === 0){
-            res.json({
-                success: true,
-                error: "Cette pharmacie n'existe pas",
-            })
-        } else {
-            res.json({
-                success: true,
-                result: result,
-            })
-        }
-    }).catch(error => res.json({
-        success: false,
-        error: error
-    }));
+    if (!pharmacy_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un nom"
+        })
+    } else {
+        db.pharmacy.findAll({
+            where: {
+                id: pharmacy_id,
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette pharmacie n'existe pas",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
 });
 
 module.exports = router;
