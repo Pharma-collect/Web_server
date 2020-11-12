@@ -1,6 +1,7 @@
-const http = require('http');
+const https = require('https');
 const app = require('./app');
 const models = require('./models');
+const fs = require('fs');
 
 function normalizePort(val) {
     const port = parseInt(val, 10);
@@ -43,7 +44,10 @@ function onListening() {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-const server = http.createServer(app);
+const server = https.createServer({
+	key: fs.readFileSync('/etc/ssl/selfsigned.key'),
+  	cert: fs.readFileSync('/etc/ssl/selfsigned.crt')
+}, app);
 
 models.sequelize.sync().then(function() {
     server.listen(port);
