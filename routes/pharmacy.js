@@ -7,12 +7,10 @@ router.get('/getPharmacyById', function(req, res, next) {
         pharmacy_id
     } = req.body;
 
-    console.log(pharmacy_id);
-
     if (!pharmacy_id){
         res.json({
             success: false,
-            error: "Merci de préciser un nom"
+            error: "Merci de préciser un id"
         })
     } else {
         db.pharmacy.findAll({
