@@ -92,7 +92,7 @@ router.post('/createUserClient', (req, res, next) => {
         lastname
     } = req.body;
 
-    if(!name || !lastname || !password || !phone || !mail){
+    if(!name || !lastname || !birth || !password || !phone || !mail){
         res.json({
             success: false,
             error: "Informations manquantes"

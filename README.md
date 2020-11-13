@@ -61,8 +61,8 @@ Parameters :
 * password *
 * phone *
 * mail *
+* birth * (for the moment pass a string for example : JJ/MM/AAAA)
 * username (if it is not filled in then it will be generated automatically if the combination is available, otherwise it will have to be filled in)
-* birth
 * image_url
 
 ### deleteUserClientById
