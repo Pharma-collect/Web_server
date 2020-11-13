@@ -8,7 +8,6 @@ router.get('/getAllUserClient', function(req, res, next) {
         result: result,
     })).catch(error => res.json({
             success: false,
-            result: [],
             error: error
     }));
 });
@@ -47,6 +46,40 @@ router.get('/getUserClientById', function(req, res, next) {
     }
 });
 
+router.get('/getUserClientByUsername', function(req, res, next) {
+    const {
+        username
+    } = req.body;
+
+    if (!username){
+        res.json({
+            success: false,
+            error: "Merci de préciser un username"
+        })
+    } else {
+        db.user_client.findAll({
+            where: {
+                username: username,
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette personne n'existe pas",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+});
+
 router.post('/createUserClient', (req, res, next) => {
     const {
         username,
@@ -59,7 +92,7 @@ router.post('/createUserClient', (req, res, next) => {
         lastname
     } = req.body;
 
-    if(!name || !lastname || !birth || !password || !phone || !mail){
+    if(!name || !lastname || !password || !phone || !mail){
         res.json({
             success: false,
             error: "Informations manquantes"
