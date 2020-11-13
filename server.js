@@ -3,6 +3,9 @@ const app = require('./app');
 const models = require('./models');
 const fs = require('fs');
 
+// temporary to allow access to the requests because we have a self-signed certificate --> searching in progress..
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 function normalizePort(val) {
     const port = parseInt(val, 10);
 
