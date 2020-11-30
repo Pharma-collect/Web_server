@@ -39,21 +39,21 @@ Here is the list of available web-services as well as the parameters necessary f
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/user_client/fonction_name__
 
-### getAllUserClient
+### [GET] getAllUserClient
 Allows you to retrieve all the customers present in the database.
 No parameters required.
 
-### getUserClientById
+### [GET] getUserClientById
 Allows you to retrieve a customer based on his ID.
 Parameter :
 * user_id *
 
-### getUserClientByUsername
+### [GET] getUserClientByUsername
 Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### createUserClient
+### [POST] createUserClient
 Allows you to create a customer.
 Parameters :
 * name *
@@ -65,7 +65,7 @@ Parameters :
 * username (if it is not filled in then it will be generated automatically if the combination is available, otherwise it will have to be filled in)
 * image_url
 
-### deleteUserClientById
+### [POST] deleteUserClientById
 Delete a customer according to his ID.
 Parameter :
 * user_id *
@@ -74,7 +74,7 @@ Parameter :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/pharmacy/fonction_name__
 
-### getPharmacyById
+### [GET] getPharmacyById
 Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *

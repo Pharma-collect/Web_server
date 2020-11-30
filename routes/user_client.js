@@ -111,54 +111,36 @@ router.post('/createUserClient', (req, res, next) => {
         let new_username = newUsername(name, lastname, username);
 
         db.user_client.findAll({
-            where: {
-                mail: mail,
-            }
         }).then(function(result){
-            if (result.length === 0){
-                db.user_client.findAll({
-                    where: {
-                        username: new_username,
-                    }
+            if(result.find(user => user.mail === mail)){
+                res.json({
+                    success: true,
+                    error: "Adresse mail déjà utilisée",
+                })
+            } else if (result.find(user => user.username === new_username)){
+                res.json({
+                    success: true,
+                    error: "Username indisponible, veuillez en renseigner un nouveau",
+                })
+            } else {
+                db.user_client.create({
+                    username: new_username,
+                    password: password,
+                    image_url: image_url,
+                    mail: mail,
+                    phone: phone,
+                    birth: new Date(birth),
+                    name: name,
+                    lastname: lastname
                 }).then(function(result){
-                    if (result.length === 0){
-                        db.user_client.create({
-                            username: new_username,
-                            password: password,
-                            image_url: image_url,
-                            mail: mail,
-                            phone: phone,
-                            birth: new Date(birth),
-                            name: name,
-                            lastname: lastname
-                        }).then(function(result){
-                            res.json({
-                                success: true,
-                                result: result,
-                            })
-                        }).catch(error => res.json({
-                            success: false,
-                            error: error
-                        }));
-                    } else {
-                        if(result.find(user => user.username === new_username).username === new_username) {
-                            res.json({
-                                success: true,
-                                error: "Username déjà utilisé",
-                            })
-                        }
-                    }
+                    res.json({
+                        success: true,
+                        result: result,
+                    })
                 }).catch(error => res.json({
                     success: false,
                     error: error
                 }));
-            } else {
-                if(result.find(user => user.mail === mail).mail === mail) {
-                    res.json({
-                        success: true,
-                        error: "Adresse mail déjà utilisée",
-                    })
-                }
             }
         }).catch(error => res.json({
             success: false,
@@ -215,7 +197,7 @@ function newUsername(name, lastname, username){
     if (!username){
         new_username = name.concat('.', lastname.replace(/\s/g,"-")).toLowerCase();
     } else {
-        new_username = username;
+        new_username = username.replace(/\s/g,"-").toLowerCase();
     }
 
     return new_username;
