@@ -1,28 +1,16 @@
 const express = require('express')
 const router = express.Router();
-const db = require('../models');
+const userClientController = require('../controllers/user_client');
 
-router.get('/getAllUserClient', function(req, res, next) {
-    db.user_client.findAll().then(result => res.json({
-        success: true,
-        result: result,
-    })).catch(error => res.json({
-            success: false,
-            result: [],
-            error: error
-    }));
-});
+router.get('/getAllUserClient', userClientController.getAllUserClient);
 
-router.post('/createUserClient', (req, res, next) => {
-    const {
-        name
-    } = req.body;
+router.get('/getUserClientById', userClientController.getUserClientById);
 
-    console.log(name);
+router.get('/getUserClientByUsername', userClientController.getUserClientByUsername);
 
-    res.status(201).json({
-        message: 'test post'
-    });
-});
+router.post('/createUserClient', userClientController.createUserClient);
+
+router.post('/deleteUserClientById', userClientController.deleteUserClientById);
 
 module.exports = router;
+
