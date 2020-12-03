@@ -225,24 +225,7 @@ router.get('/getContainerPharmacyById', function(req, res, next) {
 
 router.get('/getAllContainers', function(req, res, next) {
   
-    db.container.findAll({
-            
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Il n'existe pas de containers",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+    allContainers(req, res);
 });
 
 router.post('/addXContainerToPharmacy', (req, res, next) => {
@@ -262,49 +245,20 @@ router.post('/addXContainerToPharmacy', (req, res, next) => {
                 id_pharmacy: id_pharmacy,
             }
         }).then(function(result){
-            if (result.length === 0){
-               for(var i = 1; i<= parseInt(nb_of_containers); i++)
-               {
-                    db.container.create({
-                        status : 0,
-                        container_number : i, 
-                        id_pharmacy :id_pharmacy
-                    }).then(function(result){
-                        res.json({
-                            success: true,
-                            result: result,
-                        })
-                    }).catch(error => res.json({
-                        success: false,
-                        error: error
-                    }));
-               }
+            for(var i = (result.length +1); i<= parseInt(result.length + parseInt(nb_of_containers)); i++)
+            {
+                createContainer(req, res, i, id_pharmacy);
+                              
             }
-            else{
-                for(var i = (result.length +1); i<= parseInt(result.length + parseInt(nb_of_containers)); i++)
-               {
-                    db.container.create({
-                        status : 0,
-                        container_number : i, 
-                        id_pharmacy :id_pharmacy
-                    }).then(function(result){
-                        res.json({
-                            success: true,
-                            result: result,
-                        })
-                    }).catch(error => res.json({
-                        success: false,
-                        error: error
-                    }));
-               }
-
-            } 
         }).catch(error => res.json({
             success: false,
             error: error
         }));
     }
 });
+
+
+
 
 router.post('/updateContainerStatusById', function(req, res, next) {
     const {
@@ -411,6 +365,36 @@ router.post('/deleteAllContainersFromPharma', function(req, res, next) {
         }));
     }
 }); 
+
+
+function createContainer(req, res, nb, pharma_id){
+    db.container.create({
+        status : 0,
+        container_number : nb, 
+        id_pharmacy : pharma_id
+    }).then(result => res.json({
+        success: true, 
+        result : result, 
+    })).catch(error => res.json({
+        success : false, 
+        error : error
+
+    }));
+}
+
+function allContainers(req, res){
+    db.container.findAll().then(result => res.json({
+        success: true, 
+        result : result, 
+    })).catch(error => res.json({
+        success : false, 
+        error : error
+
+    }));
+
+}
+
+
 
 
 module.exports = router;

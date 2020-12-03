@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const user_client_routes = require("./routes/user_client");
 const pharmacy_routes = require("./routes/pharmacy");
 const container_routes = require("./routes/container");
+const order_routes = require("./routes/order");
+
 
 
 const app = express(); //create express application
@@ -23,5 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/user_client', user_client_routes);
 app.use('/api/pharmacy', pharmacy_routes);
 app.use('/api/container', container_routes);
+app.use('/api/order', order_routes);
 
 module.exports = app;
