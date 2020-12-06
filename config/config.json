@@ -12,7 +12,7 @@
     "username": "dev-pharmacollect",
     "password": "BEisen2020",
     "database": "pharma_clients",
-    "host": "localhost",
+    "host": "db",
     "dialect": "mysql",
     "operatorsAliases": "0",
     "port":  "3306"
