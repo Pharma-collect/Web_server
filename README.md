@@ -181,6 +181,26 @@ Allows you to retrieve all the orders with the required status
 Parameter :
 * order_status *
 
+### [GET] getOrderPreparatorById
+Allows you to retrieve the id of the preparator of an order thanks to the id of the order
+Parameter :
+* order_id *
+
+### [GET] getOrderContainerById
+Allows you to retrieve the id of the container where the order is placed thanks to the id of the order
+Parameter :
+* order_id *
+
+### [GET] getOrderQrCodeById
+Allows you to retrieve the id of the qrcode associated to an order thanks to the id of the order
+Parameter :
+* order_id *
+
+### [GET] getOrderPharmacyById
+Allows you to retrieve the id of the pharmacy associated to an order thanks to the id of the order
+Parameter :
+* order_id *
+
 ### [GET] getAllOrders
 Allows you to retrieve all the orders
 Parameter :

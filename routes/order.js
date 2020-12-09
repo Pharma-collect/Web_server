@@ -17,5 +17,13 @@ router.get('/getOrderByStatus', containerController.getOrderByStatus);
 
 router.get('/getAllOrders', containerController.getAllOrders);
 
+router.get('/getOrderPreparatorById', containerController.getOrderPreparatorById);
+
+router.get('/getOrderContainerById', containerController.getOrderContainerById);
+
+router.get('/getOrderQrCodeById', containerController.getOrderQrCodeById);
+
+router.get('/getOrderPharmacyById', containerController.getOrderPharmacyById);
+
 
 module.exports = router;

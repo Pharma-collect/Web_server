@@ -184,6 +184,155 @@ exports.getOrderDetailById = function(req, res, next) {
 }
 
 
+exports.getOrderPreparatorById = function(req, res, next) {
+    const {
+        order_id
+    } = req.body;
+
+    console.log(order_id);
+
+    if (!order_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de commande"
+        })
+    } else {
+        db.order.findAll({
+            where: {
+                id: order_id,
+                
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    id_preparator: result.find(order => order.id === parseInt(order_id)).id_preparator,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
+
+
+
+exports.getOrderContainerById = function(req, res, next) {
+    const {
+        order_id
+    } = req.body;
+
+    console.log(order_id);
+
+    if (!order_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de commande"
+        })
+    } else {
+        db.order.findAll({
+            where: {
+                id: order_id,
+                
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    id_container: result.find(order => order.id === parseInt(order_id)).id_container,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
+
+
+exports.getOrderQrCodeById = function(req, res, next) {
+    const {
+        order_id
+    } = req.body;
+
+    if (!order_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de commande"
+        })
+    } else {
+        db.order.findAll({
+            where: {
+                id: order_id,
+                
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    id_qrcode: result.find(order => order.id === parseInt(order_id)).id_qrcode,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
+
+
+exports.getOrderPharmacyById = function(req, res, next) {
+    const {
+        order_id
+    } = req.body;
+
+    if (!order_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de commande"
+        })
+    } else {
+        db.order.findAll({
+            where: {
+                id: order_id,
+                
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    id_pharmacy: result.find(order => order.id === parseInt(order_id)).id_pharmacy,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
+
+
 exports.getOrderByStatus = function(req, res, next) {
     const {
         order_status
@@ -221,6 +370,11 @@ exports.getOrderByStatus = function(req, res, next) {
     }
 }
 
+
+
+
+
+
 exports.getAllOrders = function (res, req, next){
     allOrders(res, req);
 }
@@ -236,4 +390,3 @@ function allOrders(req, res){
     }));
 
 }
-
