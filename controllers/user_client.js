@@ -1,4 +1,5 @@
 const db = require('../models');
+const utils = require('./utils');
 
 exports.getAllUserClient = function(req, res, next) {
     db.user_client.findAll().then(result => res.json({
@@ -122,18 +123,18 @@ exports.createUserClient = function (req, res, next) {
             success: false,
             error: "Informations manquantes"
         })
-    } else if(!validateEmail(mail)){
+    } else if(!utils.validateEmail(mail)){
         res.json({
             success: false,
             error: "Mail invalide"
         })
-    } else if(!validatePhoneNumber(phone)){
+    } else if(!utils.validatePhoneNumber(phone)){
         res.json({
             success: false,
             error: "Numéro de téléphone invalide"
         })
     } else {
-        let new_username = newUsername(name, lastname, username);
+        let new_username = utils.newUsername(name, lastname, username);
 
         db.user_client.findAll({
         }).then(function(result){
@@ -145,7 +146,7 @@ exports.createUserClient = function (req, res, next) {
             } else if (result.find(user => user.username === new_username)){
                 res.json({
                     success: true,
-                    error: "Username indisponible, veuillez en renseigner un nouveau",
+                    error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
                 db.user_client.create({
@@ -172,28 +173,4 @@ exports.createUserClient = function (req, res, next) {
             error: error
         }));
     }
-}
-
-
-//voir si on ne met pas les fonctions autre part
-
-function validateEmail(mail) {
-    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(mail).toLowerCase());
-}
-
-function validatePhoneNumber(phone_number) {
-    let regex = /^(0|(00|\+)33)[67][0-9]{8}$/;
-    return regex.test(phone_number);
-}
-
-function newUsername(name, lastname, username){
-    let new_username;
-    if (!username){
-        new_username = name.concat('.', lastname.replace(/\s/g,"-")).toLowerCase();
-    } else {
-        new_username = username.replace(/\s/g,"-").toLowerCase();
-    }
-
-    return new_username;
 }

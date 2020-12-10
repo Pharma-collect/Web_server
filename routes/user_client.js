@@ -8,7 +8,7 @@ router.get('/getUserClientById', userClientController.getUserClientById);
 
 router.get('/getUserClientByUsername', userClientController.getUserClientByUsername);
 
-router.post('/createUserClient', userClientController.createUserClient);
+router.post('/registerClient', userClientController.createUserClient);
 
 router.post('/deleteUserClientById', userClientController.deleteUserClientById);
 

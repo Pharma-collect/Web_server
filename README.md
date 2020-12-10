@@ -37,6 +37,8 @@ Here is the list of available web-services as well as the parameters necessary f
 
 > WARNING (3): Mandatory parameters will be noted with " * "
 
+> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/user_client/fonction_name__
@@ -55,7 +57,7 @@ Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] createUserClient
+### [POST] register_client
 Allows you to create a customer.
 Parameters :
 * name *
