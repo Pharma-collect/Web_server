@@ -25,6 +25,8 @@ nodemon server
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
 
+You also need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+
 # Web Services
 
 Here is the list of available web-services as well as the parameters necessary for their proper functioning :

@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    status: {
+    is_admin: {
       type: DataTypes.TINYINT,
       allowNull: true
     },
