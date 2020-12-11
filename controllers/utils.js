@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 
 exports.validateEmail = function(mail) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -18,4 +19,12 @@ exports.newUsername = function(name, lastname, username) {
     }
 
     return new_username;
+}
+
+exports.createToken = function (user) {
+    return jwt.sign(
+        { id: user.id, username : user.username },
+        'emma_le_tchonk',
+        { expiresIn: '24h' }
+    )
 }

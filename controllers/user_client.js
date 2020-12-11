@@ -1,7 +1,6 @@
 const db = require('../models');
 const utils = require('./utils');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 exports.getAllUserClient = function(req, res, next) {
     db.user_client.findAll({
@@ -315,7 +314,7 @@ exports.loginClient = function (req, res, next) {
                                 phone: user.phone,
                                 birth: user.birth,
                                 image_url: user.image_url,
-                                token: "token",
+                                token: utils.createToken(user)
                             }
                             res.json({
                                 success: true,

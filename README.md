@@ -63,7 +63,12 @@ Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] register_client
+### [POST] deleteUserClientById
+Delete a customer according to his ID.
+Parameter :
+* user_id *
+
+### [POST] registerClient
 Allows you to create a customer.
 Parameters :
 * name *
@@ -75,10 +80,11 @@ Parameters :
 * username (if it is not filled in then it will be generated automatically if the combination is available, otherwise it will have to be filled in)
 * image_url
 
-### [POST] deleteUserClientById
-Delete a customer according to his ID.
-Parameter :
-* user_id *
+### [POST] loginClient
+Allows you to login.
+Parameters :
+* username *
+* password *
 
 ## Pharmacy
 > WARNING : Calls corresponding to this part will be made in the form of :
