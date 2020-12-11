@@ -53,7 +53,7 @@ exports.createOrderDetail = function(req, res, next) {
         })
     } else {
         products.forEach(product => {
-            db.order.create({
+            db.order_detail.create({
                 id_product : product.id_product,
                 id_order : order_id, 
                 quantity : product.quantity
