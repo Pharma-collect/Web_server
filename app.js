@@ -9,7 +9,6 @@ const order_routes = require("./routes/order");
 const product_routes = require("./routes/product");
 
 
-
 const app = express(); //create express application
 
 //principal middleware element
