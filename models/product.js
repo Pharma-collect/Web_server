@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    image_url: {
+    title: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
@@ -21,10 +21,22 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    image_url: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     capacity: {
       type: DataTypes.FLOAT,
       allowNull: true
-    }
+    },
+    id_pharmacy: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'pharmacy',
+        key: 'id'
+      }
+    },
   }, {
     sequelize,
     tableName: 'product',
@@ -36,6 +48,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "product_pharmacy_id",
+        using: "BTREE",
+        fields: [
+          { name: "id_pharmacy" },
         ]
       },
     ]
