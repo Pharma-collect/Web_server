@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 //routes declaration
 const user_client_routes = require("./routes/user_client");
+const user_pro_routes = require("./routes/user_pro");
 const pharmacy_routes = require("./routes/pharmacy");
 const container_routes = require("./routes/container");
 const order_routes = require("./routes/order");
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes utilisation
 app.use('/api/user_client', user_client_routes);
+app.use('/api/user_pro', user_pro_routes);
 app.use('/api/pharmacy', pharmacy_routes);
 app.use('/api/container', container_routes);
 app.use('/api/order', order_routes);

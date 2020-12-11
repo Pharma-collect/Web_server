@@ -20,6 +20,13 @@ then
 ```
 nodemon server
 ```
+
+### If you want to deploy the server in production mode :
+
+```
+NODE_ENV=production node server
+```
+
 ## Postman
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
@@ -36,9 +43,7 @@ Here is the list of available web-services as well as the parameters necessary f
 
 > WARNING (3): Mandatory parameters will be noted with " * "
 
-
-
-
+> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
 
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -58,7 +63,12 @@ Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] createUserClient
+### [POST] deleteUserClientById
+Delete a customer according to his ID.
+Parameter :
+* user_id *
+
+### [POST] registerClient
 Allows you to create a customer.
 Parameters :
 * name *
@@ -70,12 +80,47 @@ Parameters :
 * username (if it is not filled in then it will be generated automatically if the combination is available, otherwise it will have to be filled in)
 * image_url
 
-### [POST] deleteUserClientById
-Delete a customer according to his ID.
+### [POST] loginClient
+Allows you to login.
+Parameters :
+* username *
+* password *
+
+## User_pro
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/user_pro/fonction_name__
+
+### [GET] getAllUserPro
+Allows you to retrieve all the professionals  present in the database.
+No parameters required.
+
+### [GET] getUserProByPharmacy
+Allows you to retrieve a pro based on his pharmacy.
 Parameter :
-* user_id *
+* pharmacy_id *
 
+### [GET] getUserProByUsername
+Allows you to retrieve a pro based on his username.
+Parameter :
+* username *
 
+### [POST] deleteUserProByUsername
+Delete a pro according to his username.
+Parameter :
+* username *
+
+### [POST] createUserPro
+Allows you to create a pro.
+Parameters :
+* username *
+* password *
+* pharmacy_id *
+
+### [POST] loginPro
+Allows you to login as a pro.
+Parameters :
+* username *
+* password *
 
 ## Pharmacy
 > WARNING : Calls corresponding to this part will be made in the form of :

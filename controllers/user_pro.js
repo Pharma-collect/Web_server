@@ -2,9 +2,9 @@ const db = require('../models');
 const utils = require('./utils');
 const bcrypt = require('bcrypt');
 
-exports.getAllUserClient = function(req, res, next) {
-    db.user_client.findAll({
-        attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+exports.getAllUserPro = function(req, res, next) {
+    db.user_pro.findAll({
+        attributes: ['id','username', 'pharmacy_id', 'is_admin'],
     }).then(result => res.json({
         success: true,
         result: result,
@@ -14,22 +14,22 @@ exports.getAllUserClient = function(req, res, next) {
     }));
 }
 
-exports.getUserClientById = function(req, res, next) {
+exports.getUserProByPharmacy = function(req, res, next) {
     const {
-        user_id
+        pharmacy_id
     } = req.body;
 
-    if (!user_id){
+    if (!pharmacy_id){
         res.json({
             success: false,
-            error: "Merci de préciser un id"
+            error: "Merci de préciser un id de pharmacy"
         })
     } else {
-        db.user_client.findAll({
+        db.user_pro.findAll({
             where: {
-                id: user_id,
+                pharmacy_id: pharmacy_id,
             },
-            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
             if (result.length === 0){
                 res.json({
@@ -49,7 +49,7 @@ exports.getUserClientById = function(req, res, next) {
     }
 }
 
-exports.getUserClientByUsername = function(req, res, next) {
+exports.getUserProByUsername = function(req, res, next) {
     const {
         username
     } = req.body;
@@ -60,11 +60,11 @@ exports.getUserClientByUsername = function(req, res, next) {
             error: "Merci de préciser un username"
         })
     } else {
-        db.user_client.findAll({
+        db.user_pro.findAll({
             where: {
                 username: username,
             },
-            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
             if (result.length === 0){
                 res.json({
@@ -84,20 +84,20 @@ exports.getUserClientByUsername = function(req, res, next) {
     }
 }
 
-exports.deleteUserClientById = function(req, res, next) {
+exports.deleteUserProByUsername = function(req, res, next) {
     const {
-        user_id
+        username
     } = req.body;
 
-    if (!user_id){
+    if (!username){
         res.json({
             success: false,
-            error: "Merci de préciser un id"
+            error: "Merci de préciser un identifiant"
         })
     } else {
-        db.user_client.destroy({
+        db.user_pro.destroy({
             where: {
-                id: user_id,
+                username: username,
             }
         }).then(function(result){
             res.json({
@@ -111,67 +111,39 @@ exports.deleteUserClientById = function(req, res, next) {
     }
 }
 
-exports.registerClient = function (req, res, next) {
+exports.createUserPro = function (req, res, next) {
     const {
         username,
         password,
-        image_url,
-        mail,
-        phone,
-        birth,
-        name,
-        lastname
+        pharmacy_id
     } = req.body;
 
-    if(!name || !lastname || !birth || !password || !phone || !mail){
+    if( !username || !password){
         res.json({
             success: false,
             error: "Informations manquantes"
         })
-    } else if(!utils.validateEmail(mail)){
-        res.json({
-            success: false,
-            error: "Mail invalide"
-        })
-    } else if(!utils.validatePhoneNumber(phone)){
-        res.json({
-            success: false,
-            error: "Numéro de téléphone invalide"
-        })
     } else {
-        let new_username = utils.newUsername(name, lastname, username);
 
-        db.user_client.findAll({
+        db.user_pro.findAll({
         }).then(function(result){
-            if(result.find(user => user.mail === mail)){
-                res.json({
-                    success: true,
-                    error: "Adresse mail déjà utilisée",
-                })
-            } else if (result.find(user => user.username === new_username)){
+            if (result.find(user => user.username === username)){
                 res.json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
-                db.user_client.create({
-                    username: new_username,
+                db.user_pro.create({
+                    username: username,
                     password: password,
-                    image_url: image_url,
-                    mail: mail,
-                    phone: phone,
-                    birth: new Date(birth),
-                    name: name,
-                    lastname: lastname
+                    pharmacy_id: pharmacy_id,
+                    is_admin: 0,
                 }).then(function(result){
                     let result_without_password = {
                         id: result.id,
                         username: result.username,
-                        mail: result.mail,
-                        phone: result.phone,
-                        birth: result.birth,
-                        name: result.name,
-                        lastname: result.lastname,
+                        pharmacy_id: result.pharmacy_id,
+                        is_admin: 0
                     };
 
                     res.json({
@@ -190,44 +162,23 @@ exports.registerClient = function (req, res, next) {
     }
 }
 
-exports.registerClientPostman = function (req, res, next) {
+exports.createUserProPostman = function (req, res, next) {
     const {
         username,
         password,
-        image_url,
-        mail,
-        phone,
-        birth,
-        name,
-        lastname
+        pharmacy_id
     } = req.body;
 
-    if(!name || !lastname || !birth || !password || !phone || !mail){
+    if( !username || !password || !pharmacy_id){
         res.json({
             success: false,
             error: "Informations manquantes"
         })
-    } else if(!utils.validateEmail(mail)){
-        res.json({
-            success: false,
-            error: "Mail invalide"
-        })
-    } else if(!utils.validatePhoneNumber(phone)){
-        res.json({
-            success: false,
-            error: "Numéro de téléphone invalide"
-        })
     } else {
-        let new_username = utils.newUsername(name, lastname, username);
 
-        db.user_client.findAll({
+        db.user_pro.findAll({
         }).then(function(result){
-            if(result.find(user => user.mail === mail)){
-                res.json({
-                    success: true,
-                    error: "Adresse mail déjà utilisée",
-                })
-            } else if (result.find(user => user.username === new_username)){
+            if (result.find(user => user.username === username)){
                 res.json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
@@ -235,24 +186,17 @@ exports.registerClientPostman = function (req, res, next) {
             } else {
                 bcrypt.hash(password, 10)
                     .then(hash => {
-                        db.user_client.create({
-                            username: new_username,
+                        db.user_pro.create({
+                            username: username,
                             password: hash,
-                            image_url: image_url,
-                            mail: mail,
-                            phone: phone,
-                            birth: new Date(birth),
-                            name: name,
-                            lastname: lastname
+                            pharmacy_id: pharmacy_id,
+                            is_admin: 0,
                         }).then(function(result){
                             let result_without_password = {
                                 id: result.id,
                                 username: result.username,
-                                mail: result.mail,
-                                phone: result.phone,
-                                birth: result.birth,
-                                name: result.name,
-                                lastname: result.lastname,
+                                pharmacy_id: pharmacy_id,
+                                is_admin: 0
                             };
 
                             res.json({
@@ -276,7 +220,7 @@ exports.registerClientPostman = function (req, res, next) {
     }
 }
 
-exports.loginClient = function (req, res, next) {
+exports.loginPro = function (req, res, next) {
     const {
         username,
         password,
@@ -289,7 +233,7 @@ exports.loginClient = function (req, res, next) {
         })
     }
 
-    db.user_client.findOne({where: { username: username,}})
+    db.user_pro.findOne({where: { username: username,}})
         .then(user => {
             if(!user){
                 res.json({
@@ -308,12 +252,7 @@ exports.loginClient = function (req, res, next) {
                             let valid_user = {
                                 id: user.id,
                                 username: user.username,
-                                name: user.name,
-                                lastname: user.lastname,
-                                mail: user.mail,
-                                phone: user.phone,
-                                birth: user.birth,
-                                image_url: user.image_url,
+                                pharmacy_id: user.pharmacy_id,
                                 token: utils.createToken(user)
                             }
                             res.json({
@@ -323,8 +262,8 @@ exports.loginClient = function (req, res, next) {
                         }
                     })
                     .catch(error => res.json({
-                        success: false,
-                        error: error
+                            success: false,
+                            error: error
                         })
                     );
             }
