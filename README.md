@@ -96,12 +96,22 @@ Allows you to retrieve all the product based on a pharmacy ID.
 Parameter :
 * pharmacy_id *
 
+### [POST] createProduct
+Allows you to create a product.
+Parameters :
+* title *
+* price *
+* pharmacy_id *
+* description
+* capacity
+* image_url
+
 ## Container
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/container/fonction_name__
 
 ### [GET] getContainerById
-Allows you to retrieve a container based on his ID
+Allows you to retrieve a container based on his ID.
 Parameter :
 * container_id *
 
