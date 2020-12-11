@@ -24,7 +24,7 @@ exports.getProductsByPharmacy = function(req, res, next) {
         result: result,
     })).catch(error => res.json({
         success: false,
-        error: error
+        error: pharmacy_id,
     }));
 }
 
