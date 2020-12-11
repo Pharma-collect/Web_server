@@ -221,7 +221,6 @@ Parameter :
 ### [POST] createOrder
 Allows you to create a new order
 Parameter :
-* detail *
 * id_client *
 * id_pharmacy *
 * total_price *
