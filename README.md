@@ -20,7 +20,7 @@ then
 ```
 nodemon server
 ```
-# -------------------------------------------------------------------------------------------------
+# _______________________
 ## Postman
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
@@ -38,7 +38,7 @@ Here is the list of available web-services as well as the parameters necessary f
 > WARNING (3): Mandatory parameters will be noted with " * "
 
 
-# -------------------------------------------------------------------------------------------------
+
 
 
 ## User_client
@@ -76,7 +76,6 @@ Delete a customer according to his ID.
 Parameter :
 * user_id *
 
-# -------------------------------------------------------------------------------------------------
 
 
 ## Pharmacy
@@ -87,6 +86,9 @@ Parameter :
 Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *
+
+
+
 
 ## Product
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -110,7 +112,7 @@ Parameters :
 * description
 * capacity
 * image_url
-# -------------------------------------------------------------------------------------------------
+
 
 
 ## Container
@@ -174,7 +176,7 @@ Allows you to delete all the containers of a pharmacy based on the phamracy ID
 Parameter :
 * pharmacy_id *
 
-# -------------------------------------------------------------------------------------------------
+
 
 ## Order
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -282,7 +284,6 @@ Parameter :
 * order_id *
 * qrcode_id *
 
-# -------------------------------------------------------------------------------------------------
 
 
 ## Order_detail

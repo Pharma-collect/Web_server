@@ -4,7 +4,7 @@ const productController = require('../controllers/product');
 
 router.get('/getAllProducts', productController.getAllProducts);
 
-router.get('/getProductsByPharmacy', productController.getProductsByPharmacy);
+router.post('/getProductsByPharmacy', productController.getProductsByPharmacy);
 
 router.post('/createProduct', productController.createProduct);
 
