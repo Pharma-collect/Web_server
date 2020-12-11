@@ -11,7 +11,6 @@ const order_detail_routes = require("./routes/order_detail");
 
 
 
-
 const app = express(); //create express application
 
 //principal middleware element
