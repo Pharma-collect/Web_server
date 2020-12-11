@@ -19,10 +19,20 @@ exports.getProductsByPharmacy = function(req, res, next) {
         where: {
             id_pharmacy: pharmacy_id,
         }
-    }).then(result => res.json({
-        success: true,
-        result: result,
-    })).catch(error => res.json({
+    }).then(result => {
+        if(result.length > 0){
+            res.json({
+                success: true,
+                result: result,
+            })
+        } else {
+            res.json({
+                success: true,
+                error: "Aucun produit dans cette pharmacie",
+                result: result,
+            })
+        }
+    }).catch(error => res.status(500).json({
         success: false,
         error: pharmacy_id,
     }));
