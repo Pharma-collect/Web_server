@@ -86,6 +86,42 @@ Parameters :
 * username *
 * password *
 
+## User_pro
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/user_pro/fonction_name__
+
+### [GET] getAllUserPro
+Allows you to retrieve all the professionals  present in the database.
+No parameters required.
+
+### [GET] getUserProByPharmacy
+Allows you to retrieve a pro based on his pharmacy.
+Parameter :
+* pharmacy_id *
+
+### [GET] getUserProByUsername
+Allows you to retrieve a pro based on his username.
+Parameter :
+* username *
+
+### [POST] deleteUserProByUsername
+Delete a pro according to his username.
+Parameter :
+* username *
+
+### [POST] createUserPro
+Allows you to create a pro.
+Parameters :
+* username *
+* password *
+* pharmacy_id *
+
+### [POST] loginPro
+Allows you to login as a pro.
+Parameters :
+* username *
+* password *
+
 ## Pharmacy
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/pharmacy/fonction_name__
