@@ -83,6 +83,18 @@ Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *
 
+## Product
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/product/fonction_name__
+
+### [GET] getAllProducts
+Allows you to retrieve all the products present in the database.
+No parameters required.
+
+### [GET] getProductsByPharmacy
+Allows you to retrieve all the product based on a pharmacy ID.
+Parameter :
+* pharmacy_id *
 
 
 ## Container
