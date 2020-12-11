@@ -20,6 +20,13 @@ then
 ```
 nodemon server
 ```
+
+### If you want to deploy the server in production mode :
+
+```
+NODE_ENV=production node server
+```
+
 ## Postman
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
@@ -36,9 +43,7 @@ Here is the list of available web-services as well as the parameters necessary f
 
 > WARNING (3): Mandatory parameters will be noted with " * "
 
-
-
-
+> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
 
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -58,7 +63,12 @@ Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] createUserClient
+### [POST] deleteUserClientById
+Delete a customer according to his ID.
+Parameter :
+* user_id *
+
+### [POST] registerClient
 Allows you to create a customer.
 Parameters :
 * name *
@@ -70,12 +80,11 @@ Parameters :
 * username (if it is not filled in then it will be generated automatically if the combination is available, otherwise it will have to be filled in)
 * image_url
 
-### [POST] deleteUserClientById
-Delete a customer according to his ID.
-Parameter :
-* user_id *
-
-
+### [POST] loginClient
+Allows you to login.
+Parameters :
+* username *
+* password *
 
 ## Pharmacy
 > WARNING : Calls corresponding to this part will be made in the form of :
