@@ -332,6 +332,40 @@ exports.getOrderPharmacyById = function(req, res, next) {
     }
 }
 
+exports.getOrderTotalPriceById = function(req, res, next) {
+    const {
+        order_id
+    } = req.body;
+
+    if (!order_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de commande"
+        })
+    } else {
+        db.order.findAll({
+            where: {
+                id: order_id,
+                
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    total_price: result.find(order => order.id === parseInt(order_id)).total_price,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
 
 exports.getOrderByStatus = function(req, res, next) {
     const {
@@ -371,13 +405,262 @@ exports.getOrderByStatus = function(req, res, next) {
 }
 
 
+exports.getOrderByPreparator = function(req, res, next) {
+    const {
+        id_preparator
+    } = req.body;
 
+    console.log(id_preparator);
 
-
+    if (!id_preparator){
+        res.json({
+            success: false,
+            error: "Merci de préciser un preparateur"
+        })
+    } else {
+        db.order.findAll({
+            where: {
+                id_preparator: id_preparator,
+                
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Aucune commande avec ce preparateur n'existe",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
 
 exports.getAllOrders = function (res, req, next){
     allOrders(res, req);
 }
+
+exports.createOrder = (req, res, next) => {
+    const {
+        detail,
+        id_client,
+        id_pharmacy,
+        total_price 
+    } = req.body;
+
+    if(!detail || !id_client || !id_pharmacy || !total_price){
+        res.json({
+            success: false,
+            error: "Informations manquantes"
+        })
+    } else {
+        db.order.create({
+            status : 0,
+            detail : detail, 
+            id_client : id_client, 
+            id_preparator : null, 
+            id_container : null, 
+            id_qrcode : null, 
+            id_pharmacy : id_pharmacy, 
+            total_price : total_price
+        }).then(function(result){
+            res.json({
+                success: true,
+                result: result,
+            })
+        }).catch(error => res.json({
+            success: false,
+            error: "informations erronées"
+        }));
+    }
+}
+
+
+exports.deleteOrderById = function(req, res, next) {
+    const {
+        order_id
+    } = req.body;
+
+    if (!order_id){
+        res.json({
+            success: false,
+            error: "Veuillez indiquer un id de commande"
+        })
+    } else {
+        db.order.destroy({
+            where: {
+                id: order_id,
+
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
+
+
+
+exports.updateOrderStatusById = function(req, res, next) {
+    const {
+        order_id,
+        status
+    } = req.body;
+
+    if (!order_id || !status){
+        res.json({
+            success: false,
+            error: "Informations manquantes"
+        })
+    } else {
+        db.order.update({status : status},{
+            where: {
+                id: order_id,
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: false,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: "informations erronées"
+        }));
+    }
+}
+
+exports.updateOrderPreparatorById = function(req, res, next) {
+    const {
+        order_id,
+        preparator_id
+    } = req.body;
+
+    if (!order_id || !preparator_id){
+        res.json({
+            success: false,
+            error: "Informations manquantes"
+        })
+    } else {
+        db.order.update({id_preparator : preparator_id},{
+            where: {
+                id: order_id,
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: false,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: "informations erronées"
+        }));
+    }
+}
+
+exports.updateOrderContainerById = function(req, res, next) {
+    const {
+        order_id,
+        container_id
+    } = req.body;
+
+    if (!order_id || !container_id){
+        res.json({
+            success: false,
+            error: "Informations manquantes"
+        })
+    } else {
+        db.order.update({id_container : container_id},{
+            where: {
+                id: order_id,
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: false,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: "informations erronées"
+        }));
+    }
+}
+
+exports.updateOrderQrCodeById = function(req, res, next) {
+    const {
+        order_id,
+        qrcode_id
+    } = req.body;
+
+    if (!order_id || !qrcode_id){
+        res.json({
+            success: false,
+            error: "Informations manquantes"
+        })
+    } else {
+        db.order.update({id_qrcode : qrcode_id},{
+            where: {
+                id: order_id,
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: false,
+                    error: "Cette commande n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: "informations erronées"
+        }));
+    }
+}
+
+
+
 
 function allOrders(req, res){
     db.order.findAll().then(result => res.json({

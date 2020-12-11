@@ -181,6 +181,11 @@ Allows you to retrieve all the orders with the required status
 Parameter :
 * order_status *
 
+### [GET] getOrderByPreparator
+Allows you to retrieve all the orders prepared by a given preparator
+Parameter :
+* id_preparator *
+
 ### [GET] getOrderPreparatorById
 Allows you to retrieve the id of the preparator of an order thanks to the id of the order
 Parameter :
@@ -201,7 +206,51 @@ Allows you to retrieve the id of the pharmacy associated to an order thanks to t
 Parameter :
 * order_id *
 
+### [GET] getOrderTotalPriceById
+Allows you to retrieve the total price of an order thanks to the id of the order
+Parameter :
+* order_id *
+
 ### [GET] getAllOrders
 Allows you to retrieve all the orders
 Parameter :
     none
+
+### [POST] createOrder
+Allows you to create a new order
+Parameter :
+* detail *
+* id_client *
+* id_pharmacy *
+* total_price *
+
+### [POST] deleteOrderById
+Allows you to delete an order based on his ID
+Parameter :
+* order_id *
+
+### [POST] updateOrderStatusById
+Allows you to update the status of an order based on his ID
+Parameter :
+* order_id *
+* status *
+
+### [POST] updateOrderPreparatorById
+Allows you to update the preparator of an order based on his ID
+Parameter :
+* order_id *
+* preparator_id *
+
+### [POST] updateOrderContainerById
+Allows you to update the container of an order based on his ID
+Parameter :
+* order_id *
+* container_id *
+
+### [POST] updateOrderQrCodeById
+Allows you to update the QRCode of an order based on his ID
+Parameter :
+* order_id *
+* qrcode_id *
+
+
