@@ -34,7 +34,7 @@ exports.getProductsByPharmacy = function(req, res, next) {
         }
     }).catch(error => res.status(500).json({
         success: false,
-        error: pharmacy_id,
+        error: error,
     }));
 }
 
@@ -73,3 +73,52 @@ exports.createProduct = function (req, res, next) {
     }
 }
 
+exports.updateProduct = function (req, res) {
+    const {
+        product_id,
+        title,
+        price,
+        image_url,
+        description,
+        capacity,
+    } = req.body;
+
+    if(!product_id){
+        res.json({
+            success: false,
+            error: "Informations manquantes"
+        })
+    } else {
+        db.product.findOne({
+            where: {
+                id: product_id,
+            }
+        }).then(user => {
+            if(user){
+                user.update({
+                    title: (title ? title : user.title),
+                    price: (price ? price : user.price),
+                    image_url: (image_url ? image_url : user.image_url),
+                    description: (description ? description : user.description),
+                    capacity: (capacity ? capacity : user.capacity),
+                }).then(user_update =>res.json({
+                    success: true,
+                    result: user_update,
+                })).catch(error => res.status(500).json({
+                    success: false,
+                    error: error,
+                }))
+
+            } else {
+                res.json({
+                    success: true,
+                    error: "Produit introuvable",
+                    result: user,
+                })
+            }
+        }).catch(error => res.status(500).json({
+            success: false,
+            error: error,
+        }));
+    }
+}
