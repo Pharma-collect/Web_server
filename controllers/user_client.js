@@ -1,8 +1,11 @@
 const db = require('../models');
 const utils = require('./utils');
+const bcrypt = require('bcrypt');
 
 exports.getAllUserClient = function(req, res, next) {
-    db.user_client.findAll().then(result => res.json({
+    db.user_client.findAll({
+        attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+    }).then(result => res.json({
         success: true,
         result: result,
     })).catch(error => res.json({
@@ -25,7 +28,8 @@ exports.getUserClientById = function(req, res, next) {
         db.user_client.findAll({
             where: {
                 id: user_id,
-            }
+            },
+            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
         }).then(function(result){
             if (result.length === 0){
                 res.json({
@@ -59,7 +63,8 @@ exports.getUserClientByUsername = function(req, res, next) {
         db.user_client.findAll({
             where: {
                 username: username,
-            }
+            },
+            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
         }).then(function(result){
             if (result.length === 0){
                 res.json({
@@ -106,7 +111,7 @@ exports.deleteUserClientById = function(req, res, next) {
     }
 }
 
-exports.createUserClient = function (req, res, next) {
+exports.registerClient = function (req, res, next) {
     const {
         username,
         password,
@@ -159,9 +164,19 @@ exports.createUserClient = function (req, res, next) {
                     name: name,
                     lastname: lastname
                 }).then(function(result){
+                    let result_without_password = {
+                        id: result.id,
+                        username: result.username,
+                        mail: result.mail,
+                        phone: result.phone,
+                        birth: result.birth,
+                        name: result.name,
+                        lastname: result.lastname,
+                    };
+
                     res.json({
                         success: true,
-                        result: result,
+                        result: result_without_password,
                     })
                 }).catch(error => res.json({
                     success: false,
@@ -173,4 +188,53 @@ exports.createUserClient = function (req, res, next) {
             error: error
         }));
     }
+}
+
+exports.loginClient = function (req, res, next) {
+    const {
+        username,
+        password,
+    } = req.body;
+
+    if(!username || !password){
+        res.json({
+            success: false,
+            error: "Veuillez remplir tout les champs",
+        })
+    }
+
+    db.user_client.findOne({where: { username: username,}})
+        .then(user => {
+            if(!user){
+                res.json({
+                    success: false,
+                    error: "Identifiant incorrect",
+                })
+            } else {
+                bcrypt.compare(password, user.password)
+                    .then(isValid => {
+                        if (!isValid) {
+                            res.json({
+                                success: false,
+                                error: "Mot de Passe incorrect",
+                            })
+                        } else {
+                            res.json({
+                                success: true,
+                                result: user,
+                            })
+                        }
+                    })
+                    .catch(error => res.json({
+                        success: false,
+                        error: error
+                        })
+                    );
+            }
+        })
+        .catch(error => res.json({
+                success: false,
+                error: error
+            })
+        );
 }

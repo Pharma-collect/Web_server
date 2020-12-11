@@ -21,6 +21,12 @@ then
 nodemon server
 ```
 
+### If you want to deploy the server in production mode :
+
+```
+NODE_ENV=production node server
+```
+
 ## Postman
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings

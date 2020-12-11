@@ -8,9 +8,11 @@ router.get('/getUserClientById', userClientController.getUserClientById);
 
 router.get('/getUserClientByUsername', userClientController.getUserClientByUsername);
 
-router.post('/registerClient', userClientController.createUserClient);
-
 router.post('/deleteUserClientById', userClientController.deleteUserClientById);
+
+router.post('/registerClient', userClientController.registerClient);
+
+router.post('/loginClient', userClientController.loginClient);
 
 module.exports = router;
 
