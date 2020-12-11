@@ -208,33 +208,16 @@ exports.getContainerPharmacyById = function(req, res, next) {
 }
 
 exports.getAllContainers = function(req, res, next) {
-
-    db.container.findAll({
-    }).then(function(result){
-        if (result.length === 0){
-            res.json({
-                success: true,
-                error: "Il n'existe pas de containers",
-            })
-        } else {
-            res.json({
-                success: true,
-                result: result,
-            })
-        }
-    }).catch(error => res.json({
-        success: false,
-        error: error
-    }));
+    allContainers(req, res);
 }
 
 exports.addXContainerToPharmacy = (req, res, next) => {
     const {
         nb_of_containers,
-        id_pharmacy,
+        pharmacy_id,
     } = req.body;
 
-    if(!id_pharmacy || !nb_of_containers){
+    if(!pharmacy_id || !nb_of_containers){
         res.json({
             success: false,
             error: "Informations manquantes"
@@ -242,46 +225,15 @@ exports.addXContainerToPharmacy = (req, res, next) => {
     } else {
         db.container.findAll({
             where: {
-                id_pharmacy: id_pharmacy,
+                id_pharmacy: pharmacy_id,
             }
         }).then(function(result){
-            if (result.length === 0){
-                for(var i = 1; i<= parseInt(nb_of_containers); i++)
-                {
-                    db.container.create({
-                        status : 0,
-                        container_number : i,
-                        id_pharmacy :id_pharmacy
-                    }).then(function(result){
-                        res.json({
-                            success: true,
-                            result: result,
-                        })
-                    }).catch(error => res.json({
-                        success: false,
-                        error: error
-                    }));
-                }
-            }
-            else{
+            
                 for(var i = (result.length +1); i<= parseInt(result.length + parseInt(nb_of_containers)); i++)
                 {
-                    db.container.create({
-                        status : 0,
-                        container_number : i,
-                        id_pharmacy :id_pharmacy
-                    }).then(function(result){
-                        res.json({
-                            success: true,
-                            result: result,
-                        })
-                    }).catch(error => res.json({
-                        success: false,
-                        error: error
-                    }));
+                    createContainer(req, res, i, pharmacy_id);
                 }
 
-            }
         }).catch(error => res.json({
             success: false,
             error: error
@@ -393,4 +345,40 @@ exports.deleteAllContainersFromPharma = function(req, res, next) {
             error: error
         }));
     }
+}
+
+function createContainer(req, res, number, pharmacy_id){
+    db.container.create({
+        status : 0,
+        container_number : number,
+        id_pharmacy :pharmacy_id
+    }).then(function(result){
+        res.json({
+            success: true,
+            result: result,
+        })
+    }).catch(error => res.json({
+        success: false,
+        error: error
+    }));
+}
+
+function allContainers(req, res){
+    db.container.findAll({
+    }).then(function(result){
+        if (result.length === 0){
+            res.json({
+                success: true,
+                error: "Il n'existe pas de containers",
+            })
+        } else {
+            res.json({
+                success: true,
+                result: result,
+            })
+        }
+    }).catch(error => res.json({
+        success: false,
+        error: error
+    }));
 }
