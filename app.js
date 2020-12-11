@@ -7,6 +7,8 @@ const pharmacy_routes = require("./routes/pharmacy");
 const container_routes = require("./routes/container");
 const order_routes = require("./routes/order");
 const product_routes = require("./routes/product");
+const order_detail_routes = require("./routes/order_detail");
+
 
 
 const app = express(); //create express application
@@ -27,5 +29,7 @@ app.use('/api/pharmacy', pharmacy_routes);
 app.use('/api/container', container_routes);
 app.use('/api/order', order_routes);
 app.use('/api/product', product_routes);
+app.use('/api/order_detail', order_detail_routes);
+
 
 module.exports = app;

@@ -448,13 +448,12 @@ exports.getAllOrders = function (res, req, next){
 
 exports.createOrder = (req, res, next) => {
     const {
-        detail,
         id_client,
         id_pharmacy,
         total_price 
     } = req.body;
 
-    if(!detail || !id_client || !id_pharmacy || !total_price){
+    if(!id_client || !id_pharmacy || !total_price){
         res.json({
             success: false,
             error: "Informations manquantes"
@@ -462,7 +461,7 @@ exports.createOrder = (req, res, next) => {
     } else {
         db.order.create({
             status : 0,
-            detail : detail, 
+            detail : null, 
             id_client : id_client, 
             id_preparator : null, 
             id_container : null, 
