@@ -20,7 +20,6 @@ then
 ```
 nodemon server
 ```
-# _______________________
 ## Postman
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
@@ -87,8 +86,81 @@ Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *
 
+### [GET] getPharmacyByName
+Allows you to retrieve a pharmacy based on his name.
+Parameter :
+* name *
 
+### [GET] getPharmacyByCity
+Allows you to retrieve all the pharmacies in a given city.
+Parameter :
+* city *
 
+### [GET] getPharmacyByPostCode
+Allows you to retrieve all the pharmacies in a given post code.
+Parameter :
+* post_code *
+
+### [GET] getPharmacyByBoss
+Allows you to retrieve all the pharmacies owned by a given boss
+Parameter :
+* boss *
+
+### [GET] getPharmacyWithShop
+Allows you to retrieve all the pharmacies with a shop
+Parameter :
+    none
+
+### [GET] getPharmacyWithoutShop
+Allows you to retrieve all the pharmacies without a shop
+Parameter :
+    none
+
+### [POST] createPharmacy
+Allows you to create a pharmacy.
+Parameter :
+* name *
+* has_shop *
+* road_nb *
+* road *
+* phone *
+* post_code *
+* city * 
+* boss *
+
+### [POST] updatePharmacyNameById
+Allows you to update the name of a pharmacy.
+Parameter :
+* pharmacy_id *
+* name *
+
+### [POST] updatePharmacyPhoneById
+Allows you to update the phone number of a pharmacy.
+Parameter :
+* pharmacy_id *
+* phone *
+
+### [POST] updatePharmacyShopById
+Allows you to update if a pharmacy has a shop or not.
+Parameter :
+* pharmacy_id *
+* has_shop *
+
+### [POST] updatePharmacyBossById
+Allows you to update the name of the boss of a pharmacy.
+Parameter :
+* pharmacy_id *
+* boss *
+
+### [POST] deletePharmacyById
+Allows you to delete a pharmacy based on his ID.
+Parameter :
+* pharmacy_id *
+
+### [POST] deletePharmacyByBoss
+Allows you to delete a pharmacy based on his boss.
+Parameter :
+* boss *
 
 ## Product
 > WARNING : Calls corresponding to this part will be made in the form of :
