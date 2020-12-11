@@ -4,12 +4,12 @@ const db = require('../models');
 
 exports.getOrderDetailById = function(req, res, next) {
     const {
-        order_id
+        order_detail_id
     } = req.body;
 
-    console.log(order_id);
+    console.log(order_detail_id);
 
-    if (!order_id){
+    if (!order_detail_id){
         res.json({
             success: false,
             error: "Merci de préciser un id"
@@ -17,7 +17,7 @@ exports.getOrderDetailById = function(req, res, next) {
     } else {
         db.order_detail.findAll({
             where: {
-                id: order_id,
+                id: order_detail_id,
             }
         }).then(function(result){
             if (result.length === 0){
@@ -67,5 +67,41 @@ exports.createOrderDetail = function(req, res, next) {
                 error: "Informations erronées"
             }));
         })
+    }
+}
+
+
+exports.deleteOrderDetailById = function(req, res, next) {
+    const {
+        order_detail_id
+    } = req.body;
+
+    if (!order_detail_id){
+        res.json({
+            success: false,
+            error: "Veuillez indiquer un id de commande"
+        })
+    } else {
+        db.order_detail.destroy({
+            where: {
+                id: order_detail_id,
+
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Ce detail n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
     }
 }

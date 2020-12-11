@@ -292,13 +292,18 @@ Parameter :
 ### [GET] getOrderDetailById
 Allows you to retrieve an order detail based on his ID
 Parameter :
-* order_id *
+* order_detail_id *
 
 ### [POST] createOrderDetail
 Allows you to create an order detail based on a JSON formatted array of products and the id of the order
 Parameter :
 * products *
 * order_id *
+
+### [POST] deleteOrderDetailById
+Allows you to delete an order detail based on his id 
+Parameter :
+* order_detail_id *
 
 
 
