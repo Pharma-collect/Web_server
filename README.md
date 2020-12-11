@@ -20,7 +20,7 @@ then
 ```
 nodemon server
 ```
-
+# -------------------------------------------------------------------------------------------------
 ## Postman
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
@@ -36,6 +36,10 @@ Here is the list of available web-services as well as the parameters necessary f
 > WARNING (2): You must respect the syntax of the parameters to be sent to the server
 
 > WARNING (3): Mandatory parameters will be noted with " * "
+
+
+# -------------------------------------------------------------------------------------------------
+
 
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -72,6 +76,7 @@ Delete a customer according to his ID.
 Parameter :
 * user_id *
 
+# -------------------------------------------------------------------------------------------------
 
 
 ## Pharmacy
@@ -105,6 +110,8 @@ Parameters :
 * description
 * capacity
 * image_url
+# -------------------------------------------------------------------------------------------------
+
 
 ## Container
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -167,8 +174,7 @@ Allows you to delete all the containers of a pharmacy based on the phamracy ID
 Parameter :
 * pharmacy_id *
 
-
-
+# -------------------------------------------------------------------------------------------------
 
 ## Order
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -275,5 +281,24 @@ Allows you to update the QRCode of an order based on his ID
 Parameter :
 * order_id *
 * qrcode_id *
+
+# -------------------------------------------------------------------------------------------------
+
+
+## Order_detail
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/order_detail/fonction_name__
+
+### [GET] getOrderDetailById
+Allows you to retrieve an order detail based on his ID
+Parameter :
+* order_id *
+
+### [POST] createOrderDetail
+Allows you to create an order detail based on a JSON formatted array of products and the id of the order
+Parameter :
+* products *
+* order_id *
+
 
 

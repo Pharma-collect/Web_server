@@ -57,15 +57,15 @@ exports.createOrderDetail = function(req, res, next) {
                 id_product : product.id_product,
                 id_order : order_id, 
                 quantity : product.quantity
-            });
-        }).then(function(result){
-            res.json({
-                success: true,
-                result: result,
-            })
-        }).catch(error => res.json({
-            success: false,
-            error: "Informations erronées"
-        }));
+            }).then(function(result){
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            }).catch(error => res.json({
+                success: false,
+                error: "Informations erronées"
+            }));
+        })
     }
 }
