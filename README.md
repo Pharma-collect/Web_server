@@ -230,6 +230,17 @@ Parameters :
 * capacity
 * image_url
 
+### [POST] - updateProduct
+Allows you to update a product.
+Parameters :
+* product_id *
+* title 
+* price 
+* pharmacy_id 
+* description
+* capacity
+* image_url
+
 
 
 ## Container
