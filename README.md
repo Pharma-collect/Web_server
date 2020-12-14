@@ -173,29 +173,18 @@ Parameter :
 * city * 
 * boss *
 
-### [POST] - updatePharmacyNameById
-Allows you to update the name of a pharmacy.
+### [POST] - updatePharmacy
+Allows you to update a pharmacy.
+You only have to send the data you want to change.
 Parameter :
 * pharmacy_id *
-* name *
-
-### [POST] - updatePharmacyPhoneById
-Allows you to update the phone number of a pharmacy.
-Parameter :
-* pharmacy_id *
-* phone *
-
-### [POST] - updatePharmacyShopById
-Allows you to update if a pharmacy has a shop or not.
-Parameter :
-* pharmacy_id *
-* has_shop *
-
-### [POST] - updatePharmacyBossById
-Allows you to update the name of the boss of a pharmacy.
-Parameter :
-* pharmacy_id *
-* boss *
+* name
+* has_shop
+* road_nb
+* road
+* phone
+* post_code
+* city
 
 ### [POST] - deletePharmacyById
 Allows you to delete a pharmacy based on his ID.
@@ -231,7 +220,8 @@ Parameters :
 * image_url
 
 ### [POST] - updateProduct
-Allows you to update a product.
+Allows you to update a product. 
+You only have to send the data you want to change.
 Parameters :
 * product_id *
 * title 
@@ -300,7 +290,7 @@ Parameter :
 * container_id *
 
 ### [POST] - deleteAllContainersFromPharma
-Allows you to delete all the containers of a pharmacy based on the phamracy ID
+Allows you to delete all the containers of a pharmacy based on the pharmacy's ID
 Parameter :
 * pharmacy_id *
 

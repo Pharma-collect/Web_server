@@ -10,10 +10,7 @@ router.get('/getPharmacyByBoss', pharmacyController.getPharmacyByBoss);
 router.get('/getPharmacyWithShop', pharmacyController.getPharmacyWithShop);
 router.get('/getPharmacyWithoutShop', pharmacyController.getPharmacyWithoutShop);
 router.post('/createPharmacy', pharmacyController.createPharmacy);
-router.post('/updatePharmacyNameById', pharmacyController.updatePharmacyNameById);
-router.post('/updatePharmacyShopById', pharmacyController.updatePharmacyShopById);
-router.post('/updatePharmacyBossById', pharmacyController.updatePharmacyBossById);
-router.post('/updatePharmacyPhoneById', pharmacyController.updatePharmacyPhoneById);
+router.post('/updatePharmacy', pharmacyController.updatePharmacy);
 router.post('/deletePharmacyById', pharmacyController.deletePharmacyById);
 router.post('/deletePharmacyByBoss', pharmacyController.deletePharmacyByBoss);
 

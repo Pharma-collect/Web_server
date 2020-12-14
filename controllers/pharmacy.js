@@ -262,142 +262,59 @@ exports.createPharmacy = function(req, res, next) {
     }
 }
 
-exports.updatePharmacyNameById = function(req, res, next) {
+exports.updatePharmacy = function(req, res, next) {
     const {
         pharmacy_id,
-        name
-    } = req.body;
-
-    if (!pharmacy_id || !name){
-        res.json({
-            success: false,
-            error: "Informations manquantes"
-        })
-    } else {
-        db.pharmacy.update({name : name},{
-            where: {
-                id: pharmacy_id,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: false,
-                    error: "Cette pharmacie n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result : result
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: "informations erronées"
-        }));
-    }
-}
-
-exports.updatePharmacyShopById = function(req, res, next) {
-    const {
-        pharmacy_id,
-        has_shop
-    } = req.body;
-
-    if (!pharmacy_id || !has_shop){
-        res.json({
-            success: false,
-            error: "Informations manquantes"
-        })
-    } else {
-        db.pharmacy.update({has_shop : has_shop},{
-            where: {
-                id: pharmacy_id,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: false,
-                    error: "Cette pharmacie n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result : result
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: "informations erronées"
-        }));
-    }
-}
-
-exports.updatePharmacyBossById = function(req, res, next) {
-    const {
-        pharmacy_id,
+        name,
+        has_shop,
+        road_nb,
+        road,
+        phone,
+        post_code,
+        city,
         boss
     } = req.body;
 
-    if (!pharmacy_id || !boss){
+    if (!pharmacy_id){
         res.json({
             success: false,
-            error: "Informations manquantes"
+            error: "Veuillez préciser une pharmacie"
         })
     } else {
-        db.pharmacy.update({boss : boss},{
+        db.pharmacy.findOne({
             where: {
-                id: pharmacy_id,
+                id: pharmacy_id
             }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
+        }).then(pharmacy => {
+            if(pharmacy){
+                pharmacy.update({
+                    name: (name ? name : pharmacy.name),
+                    has_shop: (has_shop ? has_shop : pharmacy.has_shop),
+                    road_nb: (road_nb ? road_nb : pharmacy.road_nb),
+                    road: (road ? road : pharmacy.road),
+                    phone: (phone ? phone : pharmacy.phone),
+                    post_code: (post_code ? post_code : pharmacy.post_code),
+                    city: (city ? city : pharmacy.city),
+                    boss: (boss ? boss : pharmacy.boss),
+                }).then(pharmacy_update =>res.json({
+                    success: true,
+                    result: pharmacy_update,
+                })).catch(error => res.json({
                     success: false,
-                    error: "Cette pharmacie n'existe pas.",
-                })
+                    error: "informations erronées",
+                    info: error
+                }));
             } else {
                 res.json({
                     success: true,
-                    result : result
+                    error: "Pharmacie introuvable",
+                    result: pharmacy,
                 })
             }
         }).catch(error => res.json({
             success: false,
-            error: "informations erronées"
-        }));
-    }
-}
-
-exports.updatePharmacyPhoneById = function(req, res, next) {
-    const {
-        pharmacy_id,
-        phone
-    } = req.body;
-
-    if (!pharmacy_id || !phone){
-        res.json({
-            success: false,
-            error: "Informations manquantes"
-        })
-    } else {
-        db.pharmacy.update({phone : phone},{
-            where: {
-                id: pharmacy_id,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: false,
-                    error: "Cette pharmacie n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result : result
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: "informations erronées"
+            error: "informations erronées",
+            info: error
         }));
     }
 }
