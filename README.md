@@ -185,6 +185,7 @@ Parameter :
 * phone
 * post_code
 * city
+* boss
 
 ### [POST] - deletePharmacyById
 Allows you to delete a pharmacy based on his ID.
