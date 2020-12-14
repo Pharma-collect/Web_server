@@ -31,7 +31,7 @@ NODE_ENV=production node server
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
 
-You also need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+You also need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 # Web Services
 
