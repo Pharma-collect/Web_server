@@ -54,6 +54,13 @@ Allows you to retrieve all the customers present in the database.
 No parameters required.
 
 ### [GET] - getUserClientById
+> WARNING (1): Calls corresponding to this part will be made in the form of :
+>   __.../api/user_client/fonction_name__
+
+> WARNING (2) : Calls corresponding to this function are secured. 
+> To access a user's information you must be that user and you will have to send your identification toker in the __Header__ :
+> __Key__ : "Authorization" and __Value__ : "<your_token>"
+
 Allows you to retrieve a customer based on his ID.
 Parameter :
 * user_id *

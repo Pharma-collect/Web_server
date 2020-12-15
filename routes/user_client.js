@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router();
+const auth = require('../middleware/auth');
 const userClientController = require('../controllers/user_client');
 
 router.get('/getAllUserClient', userClientController.getAllUserClient);
 
-router.get('/getUserClientById', userClientController.getUserClientById);
+router.get('/getUserClientById', auth,userClientController.getUserClientById);
 
 router.get('/getUserClientByUsername', userClientController.getUserClientByUsername);
 
