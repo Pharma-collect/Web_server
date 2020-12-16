@@ -9,17 +9,11 @@ router.get('/getContainerByPharmacy', containerController.getContainerByPharmacy
 
 router.get('/getEmptyContainerByPharmacy', containerController.getEmptyContainerByPharmacy);
 
-router.get('/getContainerStatusById', containerController.getContainerStatusById);
-
-router.get('/getContainerNumberById', containerController.getContainerNumberById);
-
-router.get('/getContainerPharmacyById', containerController.getContainerPharmacyById);
-
 router.get('/getAllContainers', containerController.getAllContainers);
 
 router.post('/addXContainerToPharmacy', containerController.addXContainerToPharmacy);
 
-router.post('/updateContainerStatusById', containerController.updateContainerStatusById);
+router.post('/updateContainer', containerController.updateContainer);
 
 router.post('/deleteContainerById', containerController.deleteContainerById);
 

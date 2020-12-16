@@ -103,110 +103,6 @@ exports.getEmptyContainerByPharmacy = function(req, res, next) {
     }
 }
 
-exports.getContainerStatusById = function(req, res, next) {
-    const {
-        container_id
-    } = req.body;
-
-    if (!container_id){
-        res.json({
-            success: false,
-            error: "Merci de préciser un id de container"
-        })
-    } else {
-        db.container.findAll({
-            where: {
-                id: container_id,
-
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Ce container n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    status: result.find(container => container.id === parseInt(container_id)).status,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
-    }
-}
-
-exports.getContainerNumberById = function(req, res, next) {
-    const {
-        container_id,
-    } = req.body;
-
-    if (!container_id){
-        res.json({
-            success: false,
-            error: "Merci de préciser un id de container"
-        })
-    } else {
-        db.container.findAll({
-            where: {
-                id: container_id,
-
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Ce container n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    container_number: result.find(container => container.id === parseInt(container_id)).container_number,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
-    }
-}
-
-exports.getContainerPharmacyById = function(req, res, next) {
-    const {
-        container_id,
-    } = req.body;
-
-    if (!container_id){
-        res.json({
-            success: false,
-            error: "Merci de préciser un id de container"
-        })
-    } else {
-        db.container.findAll({
-            where: {
-                id: container_id,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Ce container n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    id_pharmacy : result.find(container => container.id === parseInt(container_id)).id_pharmacy,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
-    }
-}
-
 exports.getAllContainers = function(req, res, next) {
     allContainers(req, res);
 }
@@ -241,7 +137,7 @@ exports.addXContainerToPharmacy = (req, res, next) => {
     }
 }
 
-exports.updateContainerStatusById = function(req, res, next) {
+exports.updateContainer = function(req, res, next) {
     const {
         container_id,
         status
