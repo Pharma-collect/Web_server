@@ -42,6 +42,9 @@ exports.createOrderDetail = function(req, res, next) {
         order_id
     } = req.body;
 
+    let orders_details = [];
+    let i =1;
+
     if (!order_id || !products){
         res.json({
             success: false,
@@ -54,10 +57,14 @@ exports.createOrderDetail = function(req, res, next) {
                 id_order : order_id, 
                 quantity : product.quantity
             }).then(function(result){
-                res.json({
-                    success: true,
-                    result: result,
-                })
+                orders_details.push(result)
+                if(i === products.length){
+                    res.json({
+                        success: true,
+                        result: orders_details,
+                    })
+                }
+                i++;
             }).catch(error => res.json({
                 success: false,
                 error: "Informations erronées",

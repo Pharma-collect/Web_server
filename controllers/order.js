@@ -1,4 +1,5 @@
 const db = require('../models');
+const QRCode= require('qrcode');
 
 exports.getOrderById = function(req, res, next) {
     const {
@@ -203,6 +204,8 @@ exports.createOrder = (req, res, next) => {
         products,
     } = req.body;
 
+    let i=1;
+
     if(!id_client || !id_pharmacy || !total_price || !products ){
         res.json({
             success: false,
@@ -217,7 +220,6 @@ exports.createOrder = (req, res, next) => {
                 id_pharmacy : id_pharmacy,
                 total_price : total_price
             }).then(new_order => {
-                let i=1; //à changer plus tard pour meilleure gestion des promises
                 products.forEach(product => {
                     db.order_detail.create({
                         id_product : product.id_product,
@@ -340,4 +342,28 @@ exports.updateOrder = function(req, res, next) {
             error: error,
         }));
     }
+}
+
+exports.qrCode = function (req, res, next) {
+    const {
+        order_id,
+        id_client,
+        id_pharmacy,
+    } = req.body;
+
+    let data = "{order_id:"+order_id+",id_client:"+id_client+",id_pharmacy:"+id_pharmacy+"}";
+
+    QRCode.toDataURL(data)
+        .then(url => {
+            let base64 = url.split(",")[1];
+
+            res.json({
+                success: true,
+                url: base64,
+            })
+        })
+        .catch(error => res.status(500).json({
+            success: false,
+            error: error,
+        }));
 }
