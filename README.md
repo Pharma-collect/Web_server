@@ -326,10 +326,25 @@ Parameter :
 ### [POST] - createOrder
 Allows you to create a new order
 Parameter :
-* detail *
 * id_client *
 * id_pharmacy *
-* total_price *
+* total_price (€) *
+* products * (JSON formatted array of products)
+* detail
+
+> JSON Code example :
+```
+{
+    id_client: <your id>,
+    id_pharmacy: <your pharmacy>,
+    total_price: 200,
+    "products" : [
+                    {"id_product" : 3, "quantity" : 1 },
+                    {"id_product" : 2, "quantity" : 1 }    
+    ],
+    detail: "call me"
+}
+```
 
 ### [POST] -  deleteOrderById
 Allows you to delete an order based on his ID
@@ -348,7 +363,6 @@ Parameter :
 * id_qrcode
 * id_pharmacy
 * total_price
-
 
 
 ## Order_detail

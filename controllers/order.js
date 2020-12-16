@@ -184,41 +184,70 @@ exports.getOrderByPreparator = function(req, res, next) {
     }
 }
 
-exports.getAllOrders = function (res, req, next){
-    allOrders(res, req);
+exports.getAllOrders = function (req, res, next){
+    db.order.findAll().then(result => res.json({
+        success: true,
+        result : result,
+    })).catch(error => res.json({
+        success : false,
+        error : error
+    }));
 }
 
 exports.createOrder = (req, res, next) => {
     const {
         id_client,
         id_pharmacy,
-        total_price 
+        total_price,
+        detail,
+        products,
     } = req.body;
 
-    if(!id_client || !id_pharmacy || !total_price){
+    if(!id_client || !id_pharmacy || !total_price || !products ){
         res.json({
             success: false,
             error: "Informations manquantes"
         })
     } else {
-        db.order.create({
-            status : 0,
-            detail : null, 
-            id_client : id_client, 
-            id_preparator : null, 
-            id_container : null, 
-            id_qrcode : null, 
-            id_pharmacy : id_pharmacy, 
-            total_price : total_price
-        }).then(function(result){
+        if(products.length > 0){
+            db.order.create({
+                status : 0,
+                detail : detail,
+                id_client : id_client,
+                id_pharmacy : id_pharmacy,
+                total_price : total_price
+            }).then(new_order => {
+                let i=1; //à changer plus tard pour meilleure gestion des promises
+                products.forEach(product => {
+                    db.order_detail.create({
+                        id_product : product.id_product,
+                        id_order : new_order.id,
+                        quantity : product.quantity
+                    }).then(() => {
+                        if(i === products.length){
+                            res.json({
+                                success: true,
+                                result: new_order,
+                            })
+                        }
+                        i++;
+                    }).catch(error => res.json({
+                        success: false,
+                        error: "Informations erronées",
+                        info: error
+                    }));
+                })
+            }).catch(error => res.json({
+                success: false,
+                error: "Informations erronées",
+                info: error
+            }));
+        } else{
             res.json({
-                success: true,
-                result: result,
+                success: false,
+                error: "Aucun produit dans votre commande"
             })
-        }).catch(error => res.json({
-            success: false,
-            error: "informations erronées"
-        }));
+        }
     }
 }
 
@@ -311,16 +340,4 @@ exports.updateOrder = function(req, res, next) {
             error: error,
         }));
     }
-}
-
-function allOrders(req, res){
-    db.order.findAll().then(result => res.json({
-        success: true, 
-        result : result, 
-    })).catch(error => res.json({
-        success : false, 
-        error : error
-
-    }));
-
 }

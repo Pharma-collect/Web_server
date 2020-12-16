@@ -7,8 +7,6 @@ exports.getOrderDetailById = function(req, res, next) {
         order_detail_id
     } = req.body;
 
-    console.log(order_detail_id);
-
     if (!order_detail_id){
         res.json({
             success: false,
@@ -44,8 +42,6 @@ exports.createOrderDetail = function(req, res, next) {
         order_id
     } = req.body;
 
-    console.log(order_id);
-
     if (!order_id || !products){
         res.json({
             success: false,
@@ -64,7 +60,8 @@ exports.createOrderDetail = function(req, res, next) {
                 })
             }).catch(error => res.json({
                 success: false,
-                error: "Informations erronées"
+                error: "Informations erronées",
+                info: error
             }));
         })
     }
