@@ -203,13 +203,27 @@ exports.createOrder = (req, res, next) => {
         products,
     } = req.body;
 
+    let regex = /{"id_product":\d*,"quantity":\d*}/gm;
+    let products_array = [];
+
+    if(typeof products === "string"){
+        products.match(regex).forEach(product =>{
+            products_array.push(JSON.parse(product));
+        })
+    } else{
+        products.forEach(product => {
+            products_array.push(product);
+        })
+    }
+
+
     if(!id_client || !id_pharmacy || !total_price || !products ){
         res.json({
             success: false,
             error: "Informations manquantes"
         })
     } else {
-        if(products.length > 0){
+        if(products_array.length > 0){
             db.order.create({
                 status : 0,
                 detail : detail,
@@ -218,13 +232,13 @@ exports.createOrder = (req, res, next) => {
                 total_price : total_price
             }).then(new_order => {
                 let i=1; //à changer plus tard pour meilleure gestion des promises
-                products.forEach(product => {
+                products_array.forEach(product => {
                     db.order_detail.create({
                         id_product : product.id_product,
                         id_order : new_order.id,
                         quantity : product.quantity
                     }).then(() => {
-                        if(i === products.length){
+                        if(i === products_array.length){
                             res.json({
                                 success: true,
                                 result: new_order,
