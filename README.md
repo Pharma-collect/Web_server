@@ -366,6 +366,17 @@ Parameter :
 * products *
 * order_id *
 
+> JSON Code example :
+```
+{
+    "products" : [
+                    {"id_product" : 3, "quantity" : 1 },
+                    { "id_product" : 2, "quantity" : 1 }    
+    ],
+    "order_id" : 5
+}
+```
+
 ### [POST] - deleteOrderDetailById
 Allows you to delete an order detail based on his id 
 Parameter :
