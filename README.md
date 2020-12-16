@@ -426,7 +426,8 @@ Allows you to create an order detail based on a JSON formatted array of products
 Parameter :
 * products *
 * order_id *
-Code :
+
+> JSON Code example :
 ```
 {
     "products" : [
