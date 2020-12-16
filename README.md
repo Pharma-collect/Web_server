@@ -427,7 +427,7 @@ Parameter :
 * products *
 * order_id *
 Code :
-'''
+```
 {
     "products" : [
                     {"id_product" : 3, "quantity" : 1 },
@@ -435,7 +435,7 @@ Code :
     ],
     "order_id" : 5
 }
-'''
+```
 
 ### [POST] - deleteOrderDetailById
 Allows you to delete an order detail based on his id 
