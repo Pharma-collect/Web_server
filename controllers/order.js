@@ -349,7 +349,7 @@ exports.qrCode = function (req, res, next) {
         order_id,
     } = req.body;
 
-    let data = "{order_id:"+order_id+",id_client:"+id_client+",id_pharmacy:"+id_pharmacy+"}";
+    let data = "{order_id:"+order_id+"}";
 
     QRCode.toDataURL(data)
         .then(base64 => {
