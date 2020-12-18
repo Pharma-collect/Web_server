@@ -21,7 +21,5 @@ router.post('/deleteOrderById', containerController.deleteOrderById);
 
 router.post('/updateOrder', containerController.updateOrder);
 
-router.post('/qrcode', containerController.qrCode);
-
 
 module.exports = router;

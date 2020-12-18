@@ -1,6 +1,14 @@
 const db = require('../models');
 
+exports.createOrderDetail = async function(products, order_id){
+    let tab=[];
 
+    for (const product of products) {
+        tab.push(await db.order_detail.create({id_product : product.id_product, id_order : order_id, quantity : product.quantity}))
+    }
+
+    return tab
+}
 
 exports.getOrderDetailById = function(req, res, next) {
     const {
@@ -35,45 +43,6 @@ exports.getOrderDetailById = function(req, res, next) {
         }));
     }
 }
-
-exports.createOrderDetail = function(req, res, next) {
-    const {
-        products,
-        order_id
-    } = req.body;
-
-    let orders_details = [];
-    let i =1;
-
-    if (!order_id || !products){
-        res.json({
-            success: false,
-            error: "Données manquantes"
-        })
-    } else {
-        products.forEach(product => {
-            db.order_detail.create({
-                id_product : product.id_product,
-                id_order : order_id, 
-                quantity : product.quantity
-            }).then(function(result){
-                orders_details.push(result)
-                if(i === products.length){
-                    res.json({
-                        success: true,
-                        result: orders_details,
-                    })
-                }
-                i++;
-            }).catch(error => res.json({
-                success: false,
-                error: "Informations erronées",
-                info: error
-            }));
-        })
-    }
-}
-
 
 exports.deleteOrderDetailById = function(req, res, next) {
     const {
