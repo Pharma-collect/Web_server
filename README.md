@@ -43,7 +43,7 @@ Here is the list of available web-services as well as the parameters necessary f
 
 > WARNING (3): Mandatory parameters will be noted with " * "
 
-> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -70,7 +70,7 @@ Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] - deleteUserClientById
+### [POST] - deleteUserClient
 Delete a customer according to his ID.
 Parameter :
 * user_id *
@@ -80,7 +80,7 @@ Allows you to create a customer.
 Parameters :
 * name *
 * lastname *
-* password *
+* password * (needs to be encrypted with bcrypt & salt of 10)
 * phone *
 * mail *
 * birth * (for the moment pass a string for example : JJ/MM/AAAA)
@@ -106,21 +106,21 @@ Allows you to retrieve a pro based on his pharmacy.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getUserProByUsername
-Allows you to retrieve a pro based on his username.
+### [GET] - getUserProById
+Allows you to retrieve a pro based on his id.
 Parameter :
-* username *
+* user_id *
 
-### [POST] - deleteUserProByUsername
-Delete a pro according to his username.
+### [POST] - deleteUserPro
+Delete a pro according to his Id.
 Parameter :
-* username *
+* user_id *
 
-### [POST] - createUserPro
+### [POST] - registerPro
 Allows you to create a pro.
 Parameters :
 * username *
-* password *
+* password * (needs to be encrypted with bcrypt & salt of 10)
 * pharmacy_id *
 
 ### [POST] - loginPro

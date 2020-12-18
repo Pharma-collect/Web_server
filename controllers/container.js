@@ -187,7 +187,6 @@ exports.deleteContainerById = function(req, res, next) {
         db.container.destroy({
             where: {
                 id: container_id,
-
             }
         }).then(function(result){
             if (result.length === 0){
@@ -222,7 +221,6 @@ exports.deleteAllContainersFromPharma = function(req, res, next) {
         db.container.destroy({
             where: {
                 id_pharmacy: pharmacy_id,
-
             }
         }).then(function(result){
             if (result.length === 0){
@@ -264,7 +262,7 @@ function allContainers(req, res){
     }).then(function(result){
         if (result.length === 0){
             res.json({
-                success: true,
+                success: false,
                 error: "Il n'existe pas de containers",
             })
         } else {

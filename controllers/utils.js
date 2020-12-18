@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.validateEmail = function(mail) {
@@ -27,4 +28,16 @@ exports.createToken = function (user) {
         'emma_le_tchonk',
         { expiresIn: '24h' }
     )
+}
+
+exports.bcryptPassword = async function(password) {
+    let password_crypt;
+
+    try{
+        password_crypt = bcrypt.hash(password, 10);
+    } catch (e) {
+        console.log(e)
+    }
+
+    return password_crypt;
 }

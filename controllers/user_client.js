@@ -14,6 +14,30 @@ exports.getAllUserClient = function(req, res, next) {
     }));
 }
 
+function getUserClientByX(key, value,text_error){
+    db.user_client.findAll({
+        where: {
+            key: value,
+        },
+        attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+    }).then(function(result){
+        if (!result){
+            res.json({
+                success: false,
+                error: text_error,
+            })
+        } else {
+            res.json({
+                success: true,
+                result: result,
+            })
+        }
+    }).catch(error => res.json({
+        success: false,
+        error: error
+    }));
+}
+
 exports.getUserClientById = function(req, res, next) {
     const {
         user_id
@@ -25,27 +49,7 @@ exports.getUserClientById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        db.user_client.findAll({
-            where: {
-                id: user_id,
-            },
-            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette personne n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getUserClientByX("id", user_id, "Cette personne n'existe pas")
     }
 }
 
@@ -60,31 +64,11 @@ exports.getUserClientByUsername = function(req, res, next) {
             error: "Merci de préciser un username"
         })
     } else {
-        db.user_client.findAll({
-            where: {
-                username: username,
-            },
-            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette personne n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getUserClientByX("username", username, "Cette personne n'existe pas")
     }
 }
 
-exports.deleteUserClientById = function(req, res, next) {
+exports.deleteUserClient = function(req, res, next) {
     const {
         user_id
     } = req.body;
@@ -111,16 +95,45 @@ exports.deleteUserClientById = function(req, res, next) {
     }
 }
 
+async function createUserClient(name, lastname, username, password, mail, phone, birth, image_url){
+    let result;
+
+    try {
+        result = await db.user_client.create({
+            username: username,
+            password: password,
+            image_url: image_url,
+            mail: mail,
+            phone: phone,
+            birth: new Date(birth),
+            name: name,
+            lastname: lastname
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return {
+        id: result.id,
+        username: result.username,
+        mail: result.mail,
+        phone: result.phone,
+        birth: result.birth,
+        name: result.name,
+        lastname: result.lastname,
+    }
+}
+
 exports.registerClient = function (req, res, next) {
     const {
+        name,
+        lastname,
         username,
         password,
-        image_url,
         mail,
         phone,
         birth,
-        name,
-        lastname
+        image_url,
     } = req.body;
 
     if(!name || !lastname || !birth || !password || !phone || !mail){
@@ -141,51 +154,29 @@ exports.registerClient = function (req, res, next) {
     } else {
         let new_username = utils.newUsername(name, lastname, username);
 
-        db.user_client.findAll({
-        }).then(function(result){
-            if(result.find(user => user.mail === mail)){
-                res.json({
-                    success: true,
-                    error: "Adresse mail déjà utilisée",
-                })
-            } else if (result.find(user => user.username === new_username)){
-                res.json({
-                    success: true,
-                    error: "Identifiant indisponible, veuillez en renseigner un nouveau",
-                })
-            } else {
-                db.user_client.create({
-                    username: new_username,
-                    password: password,
-                    image_url: image_url,
-                    mail: mail,
-                    phone: phone,
-                    birth: new Date(birth),
-                    name: name,
-                    lastname: lastname
-                }).then(function(result){
-                    let result_without_password = {
-                        id: result.id,
-                        username: result.username,
-                        mail: result.mail,
-                        phone: result.phone,
-                        birth: result.birth,
-                        name: result.name,
-                        lastname: result.lastname,
-                    };
+        db.user_client.findAll({})
+            .then(async (result) => {
+                if(result.find(user => user.mail === mail)){
+                    res.json({
+                        success: false,
+                        error: "Adresse mail déjà utilisée",
+                    })
+                } else if (result.find(user => user.username === new_username)){
+                    res.json({
+                        success: false,
+                        error: "Identifiant indisponible, veuillez en renseigner un nouveau",
+                    })
+                } else {
+                    let new_client = await createUserClient(name, lastname, new_username, password, mail, phone, birth, image_url);
 
                     res.json({
                         success: true,
-                        result: result_without_password,
+                        result: new_client,
                     })
-                }).catch(error => res.json({
-                    success: false,
-                    error: error
-                }));
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
+                }})
+            .catch(error => res.json({
+                success: false,
+                error: error
         }));
     }
 }
@@ -220,59 +211,36 @@ exports.registerClientPostman = function (req, res, next) {
     } else {
         let new_username = utils.newUsername(name, lastname, username);
 
-        db.user_client.findAll({
-        }).then(function(result){
-            if(result.find(user => user.mail === mail)){
-                res.json({
-                    success: true,
-                    error: "Adresse mail déjà utilisée",
-                })
-            } else if (result.find(user => user.username === new_username)){
-                res.json({
-                    success: true,
-                    error: "Identifiant indisponible, veuillez en renseigner un nouveau",
-                })
-            } else {
-                bcrypt.hash(password, 10)
-                    .then(hash => {
-                        db.user_client.create({
-                            username: new_username,
-                            password: hash,
-                            image_url: image_url,
-                            mail: mail,
-                            phone: phone,
-                            birth: new Date(birth),
-                            name: name,
-                            lastname: lastname
-                        }).then(function(result){
-                            let result_without_password = {
-                                id: result.id,
-                                username: result.username,
-                                mail: result.mail,
-                                phone: result.phone,
-                                birth: result.birth,
-                                name: result.name,
-                                lastname: result.lastname,
-                            };
+        db.user_client.findAll({})
+            .then(async (result) =>{
+                if(result.find(user => user.mail === mail)){
+                    return {success: false, type: "mail"}
+                } else if (result.find(user => user.username === new_username)){
+                    return {success: false, type: "username"}
+                } else {
+                    let hash = await utils.bcryptPassword(password);
 
-                            res.json({
-                                success: true,
-                                result: result_without_password,
-                            })
-                        }).catch(error => res.json({
-                            success: false,
-                            error: error
-                        }));
+                    return {success: true, hash: hash}
+                }
+            }).then(async (data) => {
+                if(!data.success){
+                    if(data.type === "mail"){
+                        res.json({success: false, error: "Adresse mail déjà utilisée"})
+                    } else {
+                        res.json({success: false, error: "Identifiant indisponible, veuillez en renseigner un nouveau"})
+                    }
+                } else {
+                    let new_client = await createUserClient(name, lastname, new_username, data.hash, mail, phone, birth, image_url);
+
+                    res.json({
+                        success: true,
+                        result: new_client,
                     })
-                    .catch(error => res.json({
-                        success: false,
-                        error: error
-                    }))
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+                }
+            }).catch(error => res.json({
+                success: false,
+                error: error
+            }))
     }
 }
 
