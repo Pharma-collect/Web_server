@@ -347,20 +347,22 @@ exports.updateOrder = function(req, res, next) {
 exports.qrCode = function (req, res, next) {
     const {
         order_id,
-        id_client,
-        id_pharmacy,
     } = req.body;
 
     let data = "{order_id:"+order_id+",id_client:"+id_client+",id_pharmacy:"+id_pharmacy+"}";
 
     QRCode.toDataURL(data)
-        .then(url => {
-            let base64 = url.split(",")[1];
-
-            res.json({
+        .then(base64 => {
+            db.order.create({
+                id_order : order_id,
+                data : base64,
+            }).then(new_qrcode => res.json({
                 success: true,
-                url: base64,
-            })
+                result: new_qrcode,
+            })).catch(error => res.status(500).json({
+                success: false,
+                error: error,
+            }))
         })
         .catch(error => res.status(500).json({
             success: false,
