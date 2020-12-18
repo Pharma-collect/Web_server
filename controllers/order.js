@@ -1,11 +1,11 @@
 const db = require('../models');
+const Qrcode = require('./qrcode');
+const OrderDetail = require('./order_detail');
 
 exports.getOrderById = function(req, res, next) {
     const {
         order_id
     } = req.body;
-
-    console.log(order_id);
 
     if (!order_id){
         res.json({
@@ -78,8 +78,6 @@ exports.getOrderByClient = function(req, res, next) {
         client_id
     } = req.body;
 
-    console.log(client_id);
-
     if (!client_id){
         res.json({
             success: false,
@@ -113,8 +111,6 @@ exports.getOrderByStatus = function(req, res, next) {
     const {
         order_status
     } = req.body;
-
-    console.log(order_status);
 
     if (!order_status){
         res.json({
@@ -151,8 +147,6 @@ exports.getOrderByPreparator = function(req, res, next) {
     const {
         id_preparator
     } = req.body;
-
-    console.log(id_preparator);
 
     if (!id_preparator){
         res.json({
@@ -194,7 +188,7 @@ exports.getAllOrders = function (req, res, next){
     }));
 }
 
-exports.createOrder = (req, res, next) => {
+exports.createOrder = async (req, res, next) => {
     const {
         id_client,
         id_pharmacy,
@@ -216,7 +210,6 @@ exports.createOrder = (req, res, next) => {
         })
     }
 
-
     if(!id_client || !id_pharmacy || !total_price || !products ){
         res.json({
             success: false,
@@ -231,25 +224,30 @@ exports.createOrder = (req, res, next) => {
                 id_pharmacy : id_pharmacy,
                 total_price : total_price
             }).then(new_order => {
-                let i=1; //à changer plus tard pour meilleure gestion des promises
-                products_array.forEach(product => {
-                    db.order_detail.create({
-                        id_product : product.id_product,
-                        id_order : new_order.id,
-                        quantity : product.quantity
-                    }).then(() => {
-                        if(i === products_array.length){
-                            res.json({
-                                success: true,
-                                result: new_order,
-                            })
-                        }
-                        i++;
-                    }).catch(error => res.json({
-                        success: false,
-                        error: "Informations erronées",
-                        info: error
-                    }));
+                return new_order;
+            }).then(async (new_order) =>{
+                let data = "{order_id:"+new_order.id+"}";
+                let base = await Qrcode.createBase64(data);
+
+                return {
+                    order: new_order,
+                    order_id: new_order.id,
+                    base64: base
+                }
+            }).then(async (all_data) =>{
+                let qrCode = await Qrcode.createQrCode(all_data.order_id, all_data.base64);
+
+                return {
+                    order: all_data.order,
+                    order_id: qrCode.id_order
+                }
+            }).then(async (all_data) => {
+                let products_final = await OrderDetail.createOrderDetail(products_array, all_data.order_id)
+
+                res.json({
+                    success: true,
+                    result: all_data.order,
+                    products: products_final
                 })
             }).catch(error => res.json({
                 success: false,
@@ -265,7 +263,6 @@ exports.createOrder = (req, res, next) => {
     }
 }
 
-
 exports.deleteOrderById = function(req, res, next) {
     const {
         order_id
@@ -280,7 +277,6 @@ exports.deleteOrderById = function(req, res, next) {
         db.order.destroy({
             where: {
                 id: order_id,
-
             }
         }).then(function(result){
             if (result.length === 0){
