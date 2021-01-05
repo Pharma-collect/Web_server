@@ -512,6 +512,8 @@ paths:
       responses:
         "200":
           description: "Success"
+          schema:
+            $ref: "#/definitions/Success"
         "401":
           description: "Unauthorized"
           schema:
@@ -535,6 +537,8 @@ paths:
       responses:
         "200":
           description: "Success"
+          schema:
+            $ref: "#/definitions/Success"
         "401":
           description: "Unauthorized"
           schema:
@@ -910,3 +914,7 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1
+  
+  
+  
+    
