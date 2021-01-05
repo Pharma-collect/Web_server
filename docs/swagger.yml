@@ -22,6 +22,8 @@ tags:
 schemes:
 - "https"
 paths:
+
+#Client Routes
   /getAllUserClient:
     get:
       tags:
@@ -48,7 +50,7 @@ paths:
         description: "Id to search"
         required: true
         schema:
-          $ref: "#/definitions/getUserById"
+          $ref: "#/definitions/UserId"
       responses:
         "200":
           description: "Success"
@@ -72,7 +74,7 @@ paths:
         description: "Username to search"
         required: true
         schema:
-          $ref: "#/definitions/getUserByName"
+          $ref: "#/definitions/UserName"
       responses:
         "200":
           description: "Success"
@@ -95,7 +97,7 @@ paths:
         description: "Id to search"
         required: true
         schema:
-          $ref: "#/definitions/getUserById"
+          $ref: "#/definitions/UserId"
       responses:
         "200":
           description: "Success"
@@ -158,7 +160,8 @@ paths:
         "404":
           description: "404 Page not found"
           
-       
+          
+  #Professionnal Routes
   /getAllUserPro:
     get:
       tags:
@@ -185,7 +188,7 @@ paths:
         description: "Pharmacy id to search"
         required: true
         schema:
-          $ref: "#/definitions/getUserProByPharmacy"
+          $ref: "#/definitions/PharmaId"
       responses:
         "200":
           description: "Success"
@@ -208,7 +211,7 @@ paths:
         description: "Id to search"
         required: true
         schema:
-          $ref: "#/definitions/getUserById"
+          $ref: "#/definitions/UserId"
       responses:
         "200":
           description: "Success"
@@ -232,7 +235,7 @@ paths:
         description: "Id to search"
         required: true
         schema:
-          $ref: "#/definitions/getUserById"
+          $ref: "#/definitions/UserId"
       responses:
         "200":
           description: "Success"
@@ -257,12 +260,12 @@ paths:
         description: "Parameters of the request"
         required: true
         schema:
-          $ref: "#/definitions/ProCreation"
+          $ref: "#/definitions/UserProCreation"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/ProCreationSuccess"
+            $ref: "#/definitions/UserProCreationSuccess"
         "401":
           description: "Unauthorized"
           schema:
@@ -287,7 +290,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/LoginPro"
+            $ref: "#/definitions/LoginProSuccess"
         "201":
           description: "When empty field \n Often 200 error"
           schema:
@@ -299,6 +302,246 @@ paths:
         "404":
           description: "404 Page not found"
           
+  #Pharmacy Routes
+  /getPharmacyById:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies based on its ID"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found"
+  
+  /getPharmacyByName:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies based on its name"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Name of the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaName"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found"
+          
+  /getPharmacyByCity:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies based on its city location"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "City where is located the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaCity"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found"
+          
+  /getPharmacyByPostCode:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies based on its postcode location"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Postcode where is located the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaPostCode"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found"
+          
+  /getPharmacyByBoss:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies based on its postcode location"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Find a pharmacy with its boss name"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaBoss"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found"
+    
+  /getPharmacyWithShop:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies which have a shop"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PharmaShop"
+        "404":
+          description: "404 Page not found / Error on fields"
+  
+  /getPharmacyWithoutShop:
+    get:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Get pharmacies which do not have a shop"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PharmaShop"
+        "404":
+          description: "404 Page not found / Error on fields"
+  
+  /createPharmacy:
+    post:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Create a new pharmacy\nonly available for the boss account"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Parameters of the request"
+        required: true
+        schema:
+          $ref: "#/definitions/Pharma"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PharmaShop"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+  
+  /updatePharmacy:
+    post:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Update a pharmacy by giving the new characteristics\nIs only available for the boss account"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Parameters of the request"
+        required: true
+        schema:
+          $ref: "#/definitions/Pharmacy"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PharmaShop"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+          
+  /deletePharmacyById:
+    post:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Delete a pharmacy using its id\nIs only available for the boss account"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy to delete"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+  
+  /deletePharmacyByBoss:
+    post:
+      tags:
+      - "pharmacy"
+      summary: ""
+      description: "Delete a pharmacy using the name of the boss \nIs only available for the boss account"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Boss name of the pharmacy to delete"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaBoss"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+  
   
 definitions:
   getAllUser:
@@ -327,25 +570,71 @@ definitions:
         items:
           $ref: "#/definitions/UserPro"
   
-  getUserById:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        example: 13
+      username:
+        type: "string"
+        example: "lilian.giraudo"
+      name:
+        type: "string"
+        example: "lilian"
+      lastname:
+        type: "string"
+        example: "giraudo"
+      mail:
+        type: "string"
+        example: "lilian.giraudo@swagger.fr"
+      phone:
+        type: "string"
+        example: "0601020304"
+      birth:
+        type: "string"
+        example: "12-12-1994"
+      image_url:
+        type: "string"
+        example: "null"
+  
+  UserId:
     type: "object"
     properties:
       user_id:
         type: "string"
   
-  getUserByName:
+  UserName:
     type: "object"
     properties:
       username:
         type: "string"
-  
-  getUserProByPharmacy:
+
+  UserCreation:
     type: "object"
     properties:
-      pharmacy_id:
-        type: "integer"
-        enum: 
-        - 1
+      username:
+        type: "string"
+        example: "lilian.giraudo"
+      name:
+        type: "string"
+        example: "lilian"
+      lastname:
+        type: "string"
+        example: "giraudo"
+      mail:
+        type: "string"
+        example: "lilian.giraudo@swagger.fr"
+      phone:
+        type: "string"
+        example: "0601020304"
+      birth:
+        type: "string"
+        example: "12-12-1994"
+      password:
+        type: "string"
+        example: "xxxxxxxxxx"
         
   UserPro:
     type: "object"
@@ -353,273 +642,271 @@ definitions:
       id:
         type: "integer"
         format: "int64"
-        enum:
-        - 3
+        example: 3
       username:
         type: "string"
-        enum:
-        - "melvin.marra"
+        example: "melvin.marra"
       pharmacy_id:
         type: "integer"
         format: "int64"
-        enum: 
-        - 1
+        example: 1
       is_admin:
         type: "integer"
         format: "int64"
-        enum: 
-        - 0
-
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-        enum:
-        - 13
-      username:
-        type: "string"
-        enum:
-        - "lilian.giraudo"
-      name:
-        type: "string"
-        enum:
-        - "lilian"
-      lastname:
-        type: "string"
-        enum:
-        - "giraudo"
-      mail:
-        type: "string"
-        enum:
-        - "lilian.giraudo@swagger.fr"
-      phone:
-        type: "string"
-        enum:
-        - "0601020304"
-      birth:
-        type: "string"
-        enum:
-        - "12-12-1994"
-      image_url:
-        type: "string"
-        enum:
-        - "null"
+        example: 0
   
-  UserCreation:
-    type: "object"
-    properties:
-      username:
-        type: "string"
-        enum:
-        - "lilian.giraudo"
-      name:
-        type: "string"
-        enum:
-        - "lilian"
-      lastname:
-        type: "string"
-        enum:
-        - "giraudo"
-      mail:
-        type: "string"
-        enum:
-        - "lilian.giraudo@swagger.fr"
-      phone:
-        type: "string"
-        enum:
-        - "0601020304"
-      birth:
-        type: "string"
-        enum:
-        - "12-12-1994"
-      password:
-        type: "string"
-        enum:
-        - "xxxxxxxxxx"
-  
-  ProCreation:
+  UserProCreation:
     type: "object"
     properties: 
       username:
         type: "string"
-        enum: 
-        - "melvin.marra"
+        example: "melvin.marra"
       password:
         type: "string"
-        enum: 
-        - "xxxxxxxxxx"
+        example: "xxxxxxxxxx"
       pharmacy_id: 
         type: "integer"
-        enum: 
-        - 1
+        example: 1
   
-  ProCreationSuccess:
+  UserProCreationSuccess:
     type: "object"
     properties:
       succes:
         type: "boolean"
-        enum:
-        - true
+        example: true
       result:
         type: "object"
         properties:
           id:
             type: "integer"
             format: "int64"
-            enum:
-            - 7
+            example: 7
           username:
             type: "string"
-            enum: 
-            - "melvin.marra"
+            example: "melvin.marra"
           pharmacy_id:
             type: "integer"
-            enum:
-            - 1
+            example: 1
           is_admin:
             type: "integer"
-            enum:
-            - 0
+            example: 0
            
-  LoginPro:
-    type: "object"
-    properties:
-      succes:
-        type: "boolean"
-        enum:
-        - true
-      result:
-        type: "object"
-        properties:
-          id:
-            type: "integer"
-            format: "int64"
-            enum:
-            - 7
-          username:
-            type: "string"
-            enum: 
-            - "melvin.marra"
-          pharmacy_id:
-            type: "integer"
-            enum:
-            - 1
-          token:
-            type: "string"
-            enum:
-            - "eyFndeodojdTdfsFRSkfjspkfsjdbflsdnlsfnlsbfpsinflsfbs"
-  
   Login:
     type: "object"
     properties: 
       username:
         type: "string"
-        enum: 
-        - "lilian.giraudo"
+        example: "lilian.giraudo"
       password:
         type: "string"
-        enum: 
-        - "xxxxxxxxxx"
-  
-  LoginSuccess:
-    type: "object"
-    properties:
-      succes:
-        type: "boolean"
-        enum:
-        - true
-      result:
-        type: "object"
-        properties:
-          id:
-            type: "integer"
-            format: "int64"
-            enum:
-            - 13
-          username:
-            type: "string"
-            enum: 
-            - "lilian.giraudo"
-          name:
-            type: "string"
-            enum:
-            - "lilian"
-          lastname:
-            type: "string"
-            enum:
-            - "giraudo"
-          mail:
-            type: "string"
-            enum:
-            - "lilian.giraudo@swagger.fr"
-          phone:
-            type: "string"
-            enum:
-            - "0601020304"
-          birth:
-            type: "string"
-            enum:
-            - "12-12-1994"
-          image_url:
-            type: "string"
-            enum: 
-            - "null"
-          token: 
-            type: "string"
-            enum: 
-            - "eyFndeodojdTdfsFRSkfjspkfsjdbflsdnlsfnlsbfpsinflsfbs"
-          
+        example: "xxxxxxxxxx"
+        
   LoginEmpty:
     type: "object"
     properties:
       succes:
         type: "boolean"
-        enum:
-        - false
+        example: false
       error:
         type: "string"
-        enum: 
-        - "Veuillez remplir tous les champs"
+        example: "Veuillez remplir tous les champs"
   
   LoginIncorrect:
     type: "object"
     properties:
       succes:
         type: "boolean"
-        enum:
-        - false
+        example: false
       error:
         type: "string"
-        enum: 
-        - "Identifiant incorrect"
+        example: "Identifiant incorrect"
+        
+  LoginSuccess:
+    type: "object"
+    properties:
+      succes:
+        type: "boolean"
+        example: true
+      result:
+        type: "object"
+        properties:
+          id:
+            type: "integer"
+            format: "int64"
+            example: 13
+          username:
+            type: "string"
+            example: "lilian.giraudo"
+          name:
+            type: "string"
+            example: "lilian"
+          lastname:
+            type: "string"
+            example: "giraudo"
+          mail:
+            type: "string"
+            example: "lilian.giraudo@swagger.fr"
+          phone:
+            type: "string"
+            example: "0601020304"
+          birth:
+            type: "string"
+            example: "12-12-1994"
+          image_url:
+            type: "string"
+            example: "null"
+          token: 
+            type: "string"
+            example: "eyFndeodojdTdfsFRSkfjspkfsjdbflsdnlsfnlsbfpsinflsfbs"
+        
+  LoginProSuccess:
+    type: "object"
+    properties:
+      succes:
+        type: "boolean"
+        example: true
+      result:
+        type: "object"
+        properties:
+          id:
+            type: "integer"
+            format: "int64"
+            example: 7
+          username:
+            type: "string"
+            example: "melvin.marra"
+          pharmacy_id:
+            type: "integer"
+            example: 1
+          token:
+            type: "string"
+            example: "eyFndeodojdTdfsFRSkfjspkfsjdbflsdnlsfnlsbfpsinflsfbs"
 
+  Pharma: 
+    type: "object"
+    properties:
+      name: 
+        type: "string"
+        example: "myPharmacy"
+      has_shop:
+        type: "integer"
+        example: 1
+      road_nb: 
+        type: "integer"
+        example: 35
+      road: 
+        type: "string"
+        example: "Rue de l'étang"
+      phone: 
+        type: "string"
+        example: "0606060606"
+      post_code: 
+        type: "string"
+        example: "30100"
+      city: 
+        type: "string"
+        example: "Alès"
+      boss: 
+        type: "string"
+        example: "Lilian"
+  
+  Pharmacy: 
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        example: 1
+      name: 
+        type: "string"
+        example: "myPharmacy"
+      has_shop:
+        type: "integer"
+        example: 0
+      road_nb: 
+        type: "integer"
+        example: 35
+      road: 
+        type: "string"
+        example: "Rue de l'étang"
+      phone: 
+        type: "string"
+        example: "0606060606"
+      post_code: 
+        type: "string"
+        example: "30100"
+      city: 
+        type: "string"
+        example: "Alès"
+      boss: 
+        type: "string"
+        example: "Melvin"
+  
+  PharmaId:
+    type: "object"
+    properties:
+      pharmacy_id:
+        type: "integer"
+        example: 1
+  
+  PharmaName:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "myPharmacy"
+        
+  PharmaCity:
+    type: "object"
+    properties:
+      city:
+        type: "string"
+        example: "Alès"
+  
+  PharmaPostCode:
+    type: "object"
+    properties:
+      post_code:
+        type: "string"
+        example: "30100"
+
+  PharmaBoss:
+    type: "object"
+    properties:
+      boss:
+        type: "string"
+        example: "Lilian"
+  
+  PharmaShop:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Pharma"
+      
+        
   Unauthorized:
     type: "object"
     properties:
       succes:
         type: "boolean"
-        enum:
-        - false
+        example: false
       error:
         type: "string"
-        enum: 
-        - "Authentification échouée"
+        example: "Authentification échouée"
   
   Success:
     type: "object"
     properties:
       succes:
         type: "boolean"
-        enum:
-        - true
+        example: true
       result:
         type: "integer"
         format: "int64"
-        enum: 
-        - 1
-  
-  
-  
-    
+        example: 1
