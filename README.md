@@ -35,6 +35,7 @@ You also need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 # Web Services
 
+
 Here is the list of available web-services as well as the parameters necessary for their proper functioning :
 
 > WARNING (1): Query parameters must be sent in JSON format
@@ -373,5 +374,13 @@ Allows you to delete an order detail based on his id
 Parameter :
 * order_detail_id *
 
+## SWAGGER :warning:
 
+To get a better visualisation of the route :
+* Download swagger-viewer extension for chrome
+* Go to docs/swagger.yml
+* Put the extension on
 
+You should have something like this :
+
+![](./app/docs/pictures/preview.png) 
