@@ -69,10 +69,10 @@ exports.getUserProById = async function(req, res, next) {
         user_id
     } = req.body;
 
-    if (!username){
+    if (!user_id){
         res.json({
             success: false,
-            error: "Merci de préciser un username"
+            error: "Merci de préciser un identifiant"
         })
     } else {
         await getUserProByX("id", user_id)
