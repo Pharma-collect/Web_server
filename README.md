@@ -384,4 +384,4 @@ To get a better visualisation of the route :
 
 You should have something like this :
 
-![](./app/docs/pictures/preview.png) 
+![](./docs/pictures/preview.png) 
