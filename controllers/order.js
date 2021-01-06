@@ -2,30 +2,24 @@ const db = require('../models');
 const Qrcode = require('./qrcode');
 const OrderDetail = require('./order_detail');
 
-function getOrderByX(key, value,text_error){
-    db.order.findAll({
-        where: {
-            key: value,
-        }
-    }).then(result => {
-        if (!result){
-            res.json({
-                success: false,
-                error: text_error,
-            })
-        } else {
-            res.json({
-                success: true,
-                result: result,
-            })
-        }
-    }).catch(error => res.json({
-        success: false,
-        error: error
-    }));
+async function getOrderByX(my_key, value){
+    let order;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        order =  await db.order.findAll({
+            where: query
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return order;
 }
 
-exports.getOrderById = function(req, res, next) {
+exports.getOrderById = async function(req, res, next) {
     const {
         order_id
     } = req.body;
@@ -36,11 +30,28 @@ exports.getOrderById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        getOrderByX("id", order_id, "Cette commande n'existe pas")
+        await getOrderByX("id", order_id)
+            .then(function(order){
+                if (order.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette commande n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: order,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.getOrderByPharmacy = function(req, res, next) {
+exports.getOrderByPharmacy = async function(req, res, next) {
     const {
         pharmacy_id
     } = req.body;
@@ -51,12 +62,29 @@ exports.getOrderByPharmacy = function(req, res, next) {
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
-        getOrderByX("id_pharmacy", pharmacy_id, "Cette pharmacie n'existe pas ou n'a pas de commandes.")
+        await getOrderByX("id_pharmacy", pharmacy_id)
+            .then(function(order){
+                if (order.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette commande n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: order,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
 
-exports.getOrderByClient = function(req, res, next) {
+exports.getOrderByClient = async function(req, res, next) {
     const {
         client_id
     } = req.body;
@@ -67,11 +95,28 @@ exports.getOrderByClient = function(req, res, next) {
             error: "Merci de préciser un id de client"
         })
     } else {
-        getOrderByX("id_client", client_id, "Ce client n'existe pas ou n'a pas de commandes")
+        await getOrderByX("id_client", client_id)
+            .then(function(order){
+                if (order.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette commande n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: order,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.getOrderByStatus = function(req, res, next) {
+exports.getOrderByStatus = async function(req, res, next) {
     const {
         order_status
     } = req.body;
@@ -82,11 +127,28 @@ exports.getOrderByStatus = function(req, res, next) {
             error: "Merci de préciser un statut"
         })
     } else {
-        getOrderByX("status", order_status, "Aucune commande avec ce statut n'existe")
+        await getOrderByX("status", order_status)
+            .then(function(order){
+                if (order.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette commande n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: order,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.getOrderByPreparator = function(req, res, next) {
+exports.getOrderByPreparator = async function(req, res, next) {
     const {
         id_preparator
     } = req.body;
@@ -97,7 +159,24 @@ exports.getOrderByPreparator = function(req, res, next) {
             error: "Merci de préciser un preparateur"
         })
     } else {
-        getOrderByX("id_preparator", id_preparator, "Aucune commande avec ce preparateur n'existe")
+        await getOrderByX("id_preparator", id_preparator)
+            .then(function(order){
+                if (order.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette commande n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: order,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 

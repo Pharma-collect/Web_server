@@ -14,29 +14,25 @@ exports.getAllUserPro = function(req, res, next) {
     }));
 }
 
-function getUserProByX(key, value,text_error){
-    db.user_pro.findAll({
-        where: { key: value},
-        attributes: ['id','username', 'pharmacy_id', 'is_admin'],
-    }).then(function(result){
-        if (!result){
-            res.json({
-                success: false,
-                error: text_error,
-            })
-        } else {
-            res.json({
-                success: true,
-                result: result,
-            })
-        }
-    }).catch(error => res.json({
-        success: false,
-        error: error
-    }));
+async function getUserProByX(my_key, value){
+    let client;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        client =  await db.user_pro.findAll({
+            where: query,
+            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return client;
 }
 
-exports.getUserProByPharmacy = function(req, res, next) {
+exports.getUserProByPharmacy = async function(req, res, next) {
     const {
         pharmacy_id
     } = req.body;
@@ -47,11 +43,28 @@ exports.getUserProByPharmacy = function(req, res, next) {
             error: "Merci de préciser un id de pharmacy"
         })
     } else {
-        getUserProByX("pharmacy_id", pharmacy_id, "Cette personne n'existe pas")
+        await getUserProByX("pharmacy_id", pharmacy_id)
+            .then(function(client){
+                if (client.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette personne n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: client,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.getUserProById = function(req, res, next) {
+exports.getUserProById = async function(req, res, next) {
     const {
         user_id
     } = req.body;
@@ -62,7 +75,24 @@ exports.getUserProById = function(req, res, next) {
             error: "Merci de préciser un username"
         })
     } else {
-        getUserProByX("id", user_id, "Cette personne n'existe pas")
+        await getUserProByX("id", user_id)
+            .then(function(client){
+                if (client.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette personne n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: client,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 

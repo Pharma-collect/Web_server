@@ -14,31 +14,25 @@ exports.getAllUserClient = function(req, res, next) {
     }));
 }
 
-function getUserClientByX(key, value,text_error){
-    db.user_client.findAll({
-        where: {
-            key: value,
-        },
-        attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
-    }).then(function(result){
-        if (!result){
-            res.json({
-                success: false,
-                error: text_error,
-            })
-        } else {
-            res.json({
-                success: true,
-                result: result,
-            })
-        }
-    }).catch(error => res.json({
-        success: false,
-        error: error
-    }));
+async function getUserClientByX(my_key, value){
+    let client;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        client =  await db.user_client.findAll({
+            where: query,
+            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return client;
 }
 
-exports.getUserClientById = function(req, res, next) {
+exports.getUserClientById = async function(req, res, next) {
     const {
         user_id
     } = req.body;
@@ -49,11 +43,28 @@ exports.getUserClientById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        getUserClientByX("id", user_id, "Cette personne n'existe pas")
+        await getUserClientByX("id", user_id)
+            .then(function(client){
+                if (client.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette personne n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: client,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.getUserClientByUsername = function(req, res, next) {
+exports.getUserClientByUsername = async function (req, res, next) {
     const {
         username
     } = req.body;
@@ -64,7 +75,24 @@ exports.getUserClientByUsername = function(req, res, next) {
             error: "Merci de préciser un username"
         })
     } else {
-        getUserClientByX("username", username, "Cette personne n'existe pas")
+        await getUserClientByX("username", username)
+            .then(function(client){
+                if (client.length === 0) {
+                    res.json({
+                        success: false,
+                        error: "Cette personne n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: client,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
@@ -136,7 +164,7 @@ exports.registerClient = function (req, res, next) {
         image_url,
     } = req.body;
 
-    if(!name || !lastname || !birth || !password || !phone || !mail){
+    if(!name || !lastname || !password || !phone || !mail){ //rajouter birth
         res.json({
             success: false,
             error: "Informations manquantes"
