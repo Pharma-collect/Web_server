@@ -14,25 +14,7 @@ exports.getAllUserClient = function(req, res, next) {
     }));
 }
 
-async function getUserClientByX(my_key, value){
-    let client;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        client =  await db.user_client.findAll({
-            where: query,
-            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return client;
-}
-
-exports.getUserClientById = async function(req, res, next) {
+exports.getUserClientById = function(req, res, next) {
     const {
         user_id
     } = req.body;
@@ -43,11 +25,31 @@ exports.getUserClientById = async function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        getUserClientByX("id", user_id, "Cette personne n'existe pas")
+        db.user_client.findAll({
+            where: {
+                id: user_id,
+            },
+            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette personne n'existe pas",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
     }
 }
 
-exports.getUserClientByUsername = async function (req, res, next) {
+exports.getUserClientByUsername = function(req, res, next) {
     const {
         username
     } = req.body;
@@ -58,7 +60,27 @@ exports.getUserClientByUsername = async function (req, res, next) {
             error: "Merci de préciser un username"
         })
     } else {
-        getUserClientByX("username", username, "Cette personne n'existe pas")
+        db.user_client.findAll({
+            where: {
+                username: username,
+            },
+            attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Cette personne n'existe pas",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
     }
 }
 
@@ -101,7 +123,7 @@ exports.registerClient = function (req, res, next) {
         lastname
     } = req.body;
 
-    if(!name || !lastname || !password || !phone || !mail){ //rajouter birth
+    if(!name || !lastname || !birth || !password || !phone || !mail){
         res.json({
             success: false,
             error: "Informations manquantes"
