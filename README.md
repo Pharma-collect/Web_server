@@ -378,6 +378,7 @@ Parameter :
 
 To get a better visualisation of the route :
 * Download swagger-viewer extension for chrome
+    * [Download extension Link](https://chrome.google.com/webstore/detail/swagger-viewer/nfmkaonpdmaglhjjlggfhlndofdldfag?hl=en)
 * Go to docs/swagger.yml
 * Put the extension on
 

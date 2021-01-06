@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This file index all routes necessary for Pharma-collect app. Here is the list of available web-services as well as the parameters necessary for their proper functioning. \n Be careful : \n 1) Query parameters must be sent in JSON format \n 2) You must respect the syntax of the parameters to be sent to the server \n 3) Mandatory parameters will be noted with '*' \n 4) You need to add a header with Key : 'Host' and Value : 'node' \n 5) All routes follow the format : {{URL}}/api/category_name/route_name"
+  description: "This file index all routes necessary for Pharma-collect app. Here is the list of available web-services as well as the parameters necessary for their proper functioning. \n Be careful : \n 1) Query parameters must be sent in JSON format \n 2) You must respect the syntax of the parameters to be sent to the server \n 3) If some fields are not mandatory, it will be mentionned into the description of the route \n 4) You need to add a header with Key : 'Host' and Value : 'node' \n 5) All routes follow the format : {{URL}}/api/category_name/route_name\n 6) Errors unauthorized caused by incorrect or missing token, do not forget to put it in the header when its necessary\n 7) All prices are in €"
   version: "1.0.0"
   title: "Pharma-collect API Swagger file"
 tags:
@@ -37,6 +37,8 @@ paths:
             $ref: "#/definitions/getAllUser"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
   
   /getUserClientById:
     get:
@@ -54,13 +56,22 @@ paths:
       responses:
         "200":
           description: "Success"
-          
+        "201":
+          description: "Success true but unregistered user id"
+          schema: 
+            $ref: "#/definitions/UserUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
   
   /getUserClientByUsername:
     get:
@@ -78,12 +89,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered user name"
+          schema: 
+            $ref: "#/definitions/UserUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
   
   /deleteUserClient: 
     post:
@@ -102,20 +123,30 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/Success"
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description: "Success true but unregistered user id"
+          schema: 
+            $ref: "#/definitions/UserUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
   
   /registerClient: 
     post:
       tags: 
       - "user_client"
       summary: ""
-      description: "Create a new client \n Password must be hash in Bcrypt with a salt of 10"
+      description: "Create a new client \n \nPassword must be hash in Bcrypt with a salt of 10\nAll fields are mandatory except image_url and username. The username will be automatically generated on the format firstname.name if its empty"
       parameters:
       - in: "body"
         name: "body"
@@ -129,7 +160,9 @@ paths:
           schema:
             $ref: "#/definitions/getAllUser"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
   
   /loginClient: 
     post:
@@ -159,6 +192,8 @@ paths:
             $ref: "#/definitions/LoginIncorrect"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
           
           
   #Professionnal Routes
@@ -175,6 +210,8 @@ paths:
             $ref: "#/definitions/getAllUserPro"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
   
   /getUserProByPharmacy:
     get: 
@@ -192,12 +229,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered pharmacy id"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
           
   /getUserProById:
     get:
@@ -215,13 +262,22 @@ paths:
       responses:
         "200":
           description: "Success"
-          
+        "201":
+          description: "Success true but unregistered user pro id"
+          schema: 
+            $ref: "#/definitions/UserUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
 
   /deleteUserPro: 
     post:
@@ -240,13 +296,23 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/Success"
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description: "Success true but unregistered user pro id"
+          schema: 
+            $ref: "#/definitions/UserUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
           
   /registerPro:
     post:
@@ -271,7 +337,9 @@ paths:
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
-          description: "404 Page not found \n Can appear because of missing parameter or internal server"
+          description: "404 Page not found \n Can appear because of missing parameter"
+        "500":
+          description: "Internal server error"
     
   /loginPro: 
     post:
@@ -301,6 +369,8 @@ paths:
             $ref: "#/definitions/LoginIncorrect"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
           
   #Pharmacy Routes
   /getPharmacyById:
@@ -319,12 +389,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered pharmacy id"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
   
   /getPharmacyByName:
     get:
@@ -342,12 +422,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered pharmacy name"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
           
   /getPharmacyByCity:
     get:
@@ -365,12 +455,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered pharmacy city location"
+          schema: 
+            $ref: "#/definitions/PharmaUnregisteredCity"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
           
   /getPharmacyByPostCode:
     get:
@@ -388,12 +488,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered post code pharmacy"
+          schema: 
+            $ref: "#/definitions/PharmaUnregisteredPostCode"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
           
   /getPharmacyByBoss:
     get:
@@ -411,12 +521,22 @@ paths:
       responses:
         "200":
           description: "Success"
+        "201":
+          description: "Success true but unregistered boss name"
+          schema: 
+            $ref: "#/definitions/PharmaUnregisteredBoss"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found"
+        "500":
+          description: "Internal server error"
     
   /getPharmacyWithShop:
     get:
@@ -431,6 +551,8 @@ paths:
             $ref: "#/definitions/PharmaShop"
         "404":
           description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
   
   /getPharmacyWithoutShop:
     get:
@@ -445,6 +567,8 @@ paths:
             $ref: "#/definitions/PharmaShop"
         "404":
           description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
   
   /createPharmacy:
     post:
@@ -470,6 +594,8 @@ paths:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
   
   /updatePharmacy:
     post:
@@ -489,12 +615,22 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/PharmaShop"
+        "201":
+          description: "Success true but unregistered pharmacy id"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
           
   /deletePharmacyById:
     post:
@@ -513,13 +649,23 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/Success"
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description: "Success true but unregistered pharmacy id"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
   
   /deletePharmacyByBoss:
     post:
@@ -538,14 +684,754 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/Success"
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description: "Success true but unregistered pharmacy boss"
+          schema: 
+            $ref: "#/definitions/PharmaUnregisteredBoss"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
         "401":
           description: "Unauthorized"
           schema:
             $ref: "#/definitions/Unauthorized"
         "404":
           description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
   
+  #Product routes
+  /getAllProducts:
+    get:
+      tags:
+      - "product"
+      summary: ""
+      description: "Retrieve all products available into the database"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllProduct"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /getProductsByPharmacy:
+    post:
+      tags:
+      - "product"
+      summary: ""
+      description: "Retrieve all products of a particular pharmacy"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllProduct"
+        "201":
+          description: "Success true but unregistered pharmacy id"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /createProduct:
+    post:
+      tags:
+      - "product"
+      summary: ""
+      description: "Create a product for a particular pharmacy\n\nTitle, Price and Pharmacy_id parameters are mandatory whereas the others are optionnal"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Parameters to add to the request"
+        required: true
+        schema:
+          $ref: "#/definitions/Product"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductCreation"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /updateProduct:
+    post:
+      tags:
+      - "product"
+      summary: ""
+      description: "Allow to update a particular product\n\nOnly pharmacy_id parameter is mandatory. All others are optionnal, there are the new fields to update"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Parameters to add in order to update a product"
+        required: true
+        schema:
+          $ref: "#/definitions/ProductId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductCreation"
+        "201":
+          description: "Success true but unregistered pharmacy id"
+          schema: 
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description: "Error missing argument"
+          schema: 
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  #Container routes
+  /getAllContainers:
+    get:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to get all container registered into the database"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllContainer"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  /getContainerById:
+    get:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to get a container thanks to its id"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the box to search"
+        required: true
+        schema:
+          $ref: "#/definitions/ContainerId"
+      responses:
+        "200":
+          description: "Success, existing container"
+          schema:
+            $ref: "#/definitions/ContainerSuccess"
+        "201":
+          description : "200 Success true, unregistered container"
+          schema:
+            $ref: "#/definitions/ContainerUnregistered"
+        "202":
+          description : "200 Success false, no id entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+    
+  /getContainerByPharmacy:
+    get:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to search container for a pharmacy thanks to its id"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success, existing container"
+          schema:
+            $ref: "#/definitions/getAllContainer"
+        "201":
+          description : "200 Success true, unregistered pharmacy or container"
+          schema:
+            $ref: "#/definitions/PharmaUnregisteredContainer"
+        "202":
+          description : "200 Success false, no id entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+      
+  /getEmptyContainerByPharmacy:
+    get:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to get an empty container thanks to its id"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success, existing container"
+          schema:
+            $ref: "#/definitions/getAllContainer"
+        "201":
+          description : "200 Success true, unregistered pharmacy or container"
+          schema:
+            $ref: "#/definitions/PharmaUnregisteredContainer"
+        "202":
+          description : "200 Success false, no id entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /addXContainerToPharmacy:
+    post:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to add X containers to a pharmacy based on the pharmacy ID"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy and the number of container to add"
+        required: true
+        schema:
+          $ref: "#/definitions/ContainerAddX"
+      responses:
+        "200":
+          description: "Success"
+        "201":
+          description : "200 Success true, unregistered pharmacy "
+          schema:
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description : "200 Success false, no id entered or number invalid"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /updateContainer:
+    post:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to update the status of a container based on its ID Parameter"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Container id to search and its state modification"
+        required: true
+        schema:
+          $ref: "#/definitions/ContainerUpdate"
+      responses:
+        "200":
+          description: "Success, update successfully done"
+        "201":
+          description : "200 Success true, unregistered container"
+          schema:
+            $ref: "#/definitions/ContainerUnregistered"
+        "202":
+          description : "200 Success false, no id entered or number invalid"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /deleteContainerById:
+    post:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to delete a container thanks to its id"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Container id to delete"
+        required: true
+        schema:
+          $ref: "#/definitions/ContainerId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description : "200 Success true, unregistered container"
+          schema:
+            $ref: "#/definitions/ContainerUnregistered"
+        "202":
+          description : "200 Success false, no id entered or number invalid"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /deleteAllContainersFromPharma:
+    post:
+      tags:
+      - "container"
+      summary: ""
+      description: "Allow to delete all container of a pharmacy"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pharma id where to delete container"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description : "200 Success true, unregistered container"
+          schema:
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description : "200 Success false, no id entered or number invalid"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  #Order routes
+  /getAllOrders:
+     get:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to get all orders registered into the database"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllOrder"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  /getOrderById:
+    get:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to get an order thanks to its id"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the order to search"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/OrderSuccess"
+        "201":
+          description : "200 Success true, unregistered order id"
+          schema:
+            $ref: "#/definitions/OrderUnregistered"
+        "202":
+          description : "200 Success false, no id entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  /getOrderByPharmacy:
+    get:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to get all orders for a specific pharmacy"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the pharmacy to search"
+        required: true
+        schema:
+          $ref: "#/definitions/PharmaId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllOrder"
+        "201":
+          description : "200 Success true, unregistered pharmacy id"
+          schema:
+            $ref: "#/definitions/PharmaUnregistered"
+        "202":
+          description : "200 Success false, no id entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /getOrderByClient:
+    get:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to get all orders for a specific client"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the client to search"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderClient"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllOrder"
+        "201":
+          description : "200 Success true, unregistered client id"
+          schema:
+            $ref: "#/definitions/OrderUnregisteredClient"
+        "202":
+          description : "200 Success false, no id entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  /getOrderByStatus:
+    get:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to get all orders with a specific status"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Status of the order to search"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderStatus"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllOrder"
+        "201":
+          description : "200 Success true, unregistered order status"
+          schema:
+            $ref: "#/definitions/OrderUnregisteredStatus"
+        "202":
+          description : "200 Success false, no status entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /getOrderByPreparator:
+    get:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to get all orders from a specific preparator"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Id of the preparator in charge of the order"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderPreparator"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/getAllOrder"
+        "201":
+          description : "200 Success true, unregistered preparator id"
+          schema:
+            $ref: "#/definitions/OrderUnregisteredPreparator"
+        "202":
+          description : "200 Success false, no status entered"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /createOrder:
+    post:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to create an order\n\nOnly detail field is not mandatory"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Required parameters for order creation"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderCreation"
+      responses:
+        "200":
+          description: "Success"
+        "201":
+          description : "200 Success false, missing mandatory field"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  /updateOrder:
+    post:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to update an order\n\norder_id field mandatory"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Required parameters for order modification"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderUpdate"
+      responses:
+        "200":
+          description: "Success"
+        "201":
+          description : "200 Success false, missing mandatory field"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /deleteOrderById:
+    post:
+      tags:
+      - "order"
+      summary: ""
+      description: "Allow to delete an order thanks to its id"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Required id for order deletion"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderId"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description : "200 Success true, unregistered order id"
+          schema:
+            $ref: "#/definitions/OrderUnregistered"
+        "202":
+          description : "200 Success false, missing mandatory field"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+          
+  #Order details route
+  
+  /getOrderDetailById:
+    get:
+      tags:
+      - "order_detail"
+      summary: ""
+      description: "Allow to get details of an order"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Required id for the detail of the order"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderDetailId"
+      responses:
+        "200":
+          description: "Success"
+        "201":
+          description : "200 Success true, unregistered order id"
+          schema:
+            $ref: "#/definitions/OrderUnregistered"
+        "202":
+          description : "200 Success false, missing mandatory field"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
+  
+  /deleteOrderDetailById:
+    get:
+      tags:
+      - "order_detail"
+      summary: ""
+      description: "Allow to get details of an order"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Required id for the detail of the order"
+        required: true
+        schema:
+          $ref: "#/definitions/OrderDetailId"
+      responses:
+        "200":
+          description: "SuccessDelete"
+          schema:
+            $ref: "#/definitions/SuccessDelete"
+        "201":
+          description : "200 Success true, unregistered order id"
+          schema:
+            $ref: "#/definitions/OrderUnregistered"
+        "202":
+          description : "200 Success false, missing mandatory field"
+          schema:
+            $ref: "#/definitions/MissingArgument"
+        "401":
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Unauthorized"
+        "404":
+          description: "404 Page not found / Error on fields"
+        "500":
+          description: "Internal server error"
   
 definitions:
   getAllUser:
@@ -573,6 +1459,45 @@ definitions:
           wrapped: true
         items:
           $ref: "#/definitions/UserPro"
+  
+  getAllProduct:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/ProductId"
+  
+  getAllContainer:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Container"
+          
+  getAllOrder:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Order"
   
   User:
     type: "object"
@@ -694,6 +1619,15 @@ definitions:
           is_admin:
             type: "integer"
             example: 0
+            
+  UserUnregistered:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce user n'existe pas"
            
   Login:
     type: "object"
@@ -786,34 +1720,6 @@ definitions:
             type: "string"
             example: "eyFndeodojdTdfsFRSkfjspkfsjdbflsdnlsfnlsbfpsinflsfbs"
 
-  Pharma: 
-    type: "object"
-    properties:
-      name: 
-        type: "string"
-        example: "myPharmacy"
-      has_shop:
-        type: "integer"
-        example: 1
-      road_nb: 
-        type: "integer"
-        example: 35
-      road: 
-        type: "string"
-        example: "Rue de l'étang"
-      phone: 
-        type: "string"
-        example: "0606060606"
-      post_code: 
-        type: "string"
-        example: "30100"
-      city: 
-        type: "string"
-        example: "Alès"
-      boss: 
-        type: "string"
-        example: "Lilian"
-  
   Pharmacy: 
     type: "object"
     properties:
@@ -844,6 +1750,35 @@ definitions:
       boss: 
         type: "string"
         example: "Melvin"
+  
+  Pharma: 
+    type: "object"
+    properties:
+      name: 
+        type: "string"
+        example: "myPharmacy"
+      has_shop:
+        type: "integer"
+        example: 1
+      road_nb: 
+        type: "integer"
+        example: 35
+      road: 
+        type: "string"
+        example: "Rue de l'étang"
+      phone: 
+        type: "string"
+        example: "0606060606"
+      post_code: 
+        type: "string"
+        example: "30100"
+      city: 
+        type: "string"
+        example: "Alès"
+      boss: 
+        type: "string"
+        example: "Lilian"
+  
   
   PharmaId:
     type: "object"
@@ -892,7 +1827,332 @@ definitions:
           wrapped: true
         items:
           $ref: "#/definitions/Pharma"
+  
+  PharmaUnregistered:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Cette pharmacie n'existe pas"
+  
+  PharmaUnregisteredCity:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Cette ville n'existe pas"
+        
+  PharmaUnregisteredPostCode:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce code postal n'existe pas"
+        
+  PharmaUnregisteredBoss:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce patron n'existe pas"
+        
+  PharmaUnregisteredContainer:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Cette pharmacie n'existe pas ou n'a pas de container"
+  
+  ProductId: 
+    type: "object"
+    properties:
+      product_id:
+        type: "integer"
+        example: 13
+      title: 
+        type: "string"
+        example: "Eau de moi"
+      price:
+        type: "number"
+        example: 19.99
+      description:
+        type: "string"
+        example: "Odeur de chameau"
+      image_url:
+        type: "string"
+        example: "https://my/picture/url"
+      capacity:
+        type: "integer"
+        example: 
+      id_pharmacy: 
+        type: "integer"
+        example: 1
+        
+  Product:
+    type: "object"
+    properties:
+      title: 
+        type: "string"
+        example: "Eau de moi"
+      price:
+        type: "number"
+        example: 19.99
+      description:
+        type: "string"
+        example: "Odeur de chameau"
+      image_url:
+        type: "string"
+        example: "https://my/picture/url"
+      capacity:
+        type: "integer"
+        example: 
+      id_pharmacy: 
+        type: "integer"
+        example: 1
       
+  ProductCreation:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        $ref: "#/definitions/ProductId"
+
+  Container:
+    type: "object"
+    properties:
+      id: 
+        type: "integer"
+        example: 1
+      status:
+        type: "integer"
+        example: 0
+      container_number:
+        type: "integer"
+        example: 4
+      id_pharmacy: 
+        type: "integer"
+        example: 1
+      
+  ContainerId:
+    type: "object"
+    properties:
+      container_id:
+        type: "integer"
+        example: 1
+        
+  ContainerSuccess:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        $ref: "#/definitions/Container"
+  
+
+  ContainerUnregistered:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce container n'existe pas"
+        
+  ContainerAddX:
+    type: "object"
+    properties:
+      pharmacy_id:
+        type: "integer"
+        example: 3
+      nb_of_containers: 
+        type: "integer"
+        example: 6
+        
+  ContainerUpdate:
+    type: "object"
+    properties:
+      container_id:
+        type: "integer"
+        example: 3
+      status: 
+        type: "integer"
+        example: 1
+        
+  Order:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        example: 3
+      status: 
+        type: "integer"
+        example: 0
+      details:
+        type: "string"
+        example: "RAS"
+      id_client: 
+        type: "integer"
+        example: 47
+      id_preparator:
+        type: "integer"
+        example: 9
+      id_container: 
+        type: "integer"
+        example: 4
+      id_pharmacy:
+        type: "integer"
+        example: 1
+      total_price:
+        type: "number"
+        example: 52.68
+        
+  OrderUpdate:
+    type: "object"
+    properties:
+      order_id:
+        type: "integer"
+        example: 3
+      status: 
+        type: "integer"
+        example: 0
+      details:
+        type: "string"
+        example: "RAS"
+      id_client: 
+        type: "integer"
+        example: 47
+      id_preparator:
+        type: "integer"
+        example: 9
+      id_qrcode: 
+        type: "integer"
+        example: 4
+      id_pharmacy:
+        type: "integer"
+        example: 1
+      total_price:
+        type: "number"
+        example: 52.68
+  
+  OrderCreation: 
+    type: "object"
+    properties:
+      id_client: 
+        type: "integer"
+        example: 23
+      id_pharmacy:
+        type: "integer"
+        example: 1
+      total_price:
+        type: "number"
+        example: 34.90
+      detail: 
+        type: "string"
+        example: "RAS"
+      products:
+        type: "array"
+        items:
+          $ref: "#/definitions/OrderProduct"
+          
+  OrderProduct: 
+    type: "object"
+    properties: 
+      id_product: 
+        type: "integer"
+        example: 8
+      quantity:
+        type: "integer"
+        example: 1    
+  
+  OrderId:
+    type: "object"
+    properties: 
+      order_id: 
+        type: "integer"
+        example: 8
+  
+  OrderClient:
+    type: "object"
+    properties: 
+      client_id: 
+        type: "integer"
+        example: 67
+        
+  OrderStatus:
+    type: "object"
+    properties: 
+      order_status: 
+        type: "integer"
+        example: 0
+  
+  OrderPreparator:
+    type: "object"
+    properties: 
+      id_preparator: 
+        type: "integer"
+        example: 9
+  
+  OrderUnregistered:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Cette commande n'existe pas"
+  
+  OrderUnregisteredClient:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce client n'existe pas"
+  
+  OrderUnregisteredStatus:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce status n'existe pas"
+  
+  OrderUnregisteredPreparator:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      error: 
+        type: "string"
+        example: "Ce preparateur n'existe pas"
+        
+  OrderSuccess:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        $ref: "#/definitions/Order"
+        
+  OrderDetailId:
+    type: "object"
+    properties:
+      order_detail_id:
+        type: "integer"
+        example: 6
         
   Unauthorized:
     type: "object"
@@ -904,7 +2164,7 @@ definitions:
         type: "string"
         example: "Authentification échouée"
   
-  Success:
+  SuccessDelete:
     type: "object"
     properties:
       succes:
@@ -915,6 +2175,15 @@ definitions:
         format: "int64"
         example: 1
   
+  MissingArgument:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: false
+      error: 
+        type: "string"
+        example: "Remplissez tous les champs obligatoires"
   
   
     
