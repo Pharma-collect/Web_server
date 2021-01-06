@@ -1532,13 +1532,15 @@ definitions:
     type: "object"
     properties:
       user_id:
-        type: "string"
+        type: "integer"
+        example: 3
   
   UserName:
     type: "object"
     properties:
       username:
         type: "string"
+        example: "myUsername"
 
   UserCreation:
     type: "object"
