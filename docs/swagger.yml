@@ -385,7 +385,7 @@ paths:
         description: "Id of the pharmacy"
         required: true
         schema:
-          $ref: "#/definitions/PharmaId"
+          $ref: "#/definitions/getAllPharmacy"
       responses:
         "200":
           description: "Success"
