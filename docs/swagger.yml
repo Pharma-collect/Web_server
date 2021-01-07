@@ -1459,6 +1459,19 @@ definitions:
           wrapped: true
         items:
           $ref: "#/definitions/UserPro"
+          
+  getAllPharmacy:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      result:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Pharmacy"
   
   getAllProduct:
     type: "object"
