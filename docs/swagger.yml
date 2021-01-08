@@ -41,7 +41,7 @@ paths:
           description: "Internal server error"
   
   /getUserClientById:
-    get:
+    post:
       tags:
       - "user_client"
       summary: ""
@@ -76,7 +76,7 @@ paths:
           description: "Internal server error"
   
   /getUserClientByUsername:
-    get:
+    post:
       tags:
       - "user_client"
       summary: ""
@@ -216,7 +216,7 @@ paths:
           description: "Internal server error"
   
   /getUserProByPharmacy:
-    get: 
+    post: 
       tags:
       - "user_pro"
       summary: ""
@@ -249,7 +249,7 @@ paths:
           description: "Internal server error"
           
   /getUserProById:
-    get:
+    post:
       tags:
       - "user_pro"
       summary: ""
@@ -376,7 +376,7 @@ paths:
           
   #Pharmacy Routes
   /getPharmacyById:
-    get:
+    post:
       tags:
       - "pharmacy"
       summary: ""
@@ -409,7 +409,7 @@ paths:
           description: "Internal server error"
   
   /getPharmacyByName:
-    get:
+    post:
       tags:
       - "pharmacy"
       summary: ""
@@ -442,7 +442,7 @@ paths:
           description: "Internal server error"
           
   /getPharmacyByCity:
-    get:
+    post:
       tags:
       - "pharmacy"
       summary: ""
@@ -475,7 +475,7 @@ paths:
           description: "Internal server error"
           
   /getPharmacyByPostCode:
-    get:
+    post:
       tags:
       - "pharmacy"
       summary: ""
@@ -508,7 +508,7 @@ paths:
           description: "Internal server error"
           
   /getPharmacyByBoss:
-    get:
+    post:
       tags:
       - "pharmacy"
       summary: ""
@@ -836,7 +836,7 @@ paths:
           description: "Internal server error"
           
   /getContainerById:
-    get:
+    post:
       tags:
       - "container"
       summary: ""
@@ -871,7 +871,7 @@ paths:
           description: "Internal server error"
     
   /getContainerByPharmacy:
-    get:
+    post:
       tags:
       - "container"
       summary: ""
@@ -906,7 +906,7 @@ paths:
           description: "Internal server error"
       
   /getEmptyContainerByPharmacy:
-    get:
+    post:
       tags:
       - "container"
       summary: ""
@@ -1098,7 +1098,7 @@ paths:
           description: "Internal server error"
           
   /getOrderById:
-    get:
+    post:
       tags:
       - "order"
       summary: ""
@@ -1133,7 +1133,7 @@ paths:
           description: "Internal server error"
           
   /getOrderByPharmacy:
-    get:
+    post:
       tags:
       - "order"
       summary: ""
@@ -1168,7 +1168,7 @@ paths:
           description: "Internal server error"
   
   /getOrderByClient:
-    get:
+    post:
       tags:
       - "order"
       summary: ""
@@ -1203,7 +1203,7 @@ paths:
           description: "Internal server error"
           
   /getOrderByStatus:
-    get:
+    post:
       tags:
       - "order"
       summary: ""
@@ -1238,7 +1238,7 @@ paths:
           description: "Internal server error"
   
   /getOrderByPreparator:
-    get:
+    post:
       tags:
       - "order"
       summary: ""
@@ -1368,7 +1368,7 @@ paths:
   #Order details route
   
   /getOrderDetailById:
-    get:
+    post:
       tags:
       - "order_detail"
       summary: ""
@@ -1401,7 +1401,7 @@ paths:
           description: "Internal server error"
   
   /deleteOrderDetailById:
-    get:
+    post:
       tags:
       - "order_detail"
       summary: ""
