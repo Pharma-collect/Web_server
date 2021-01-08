@@ -3,7 +3,7 @@ const router = express.Router();
 const containerController = require("../controllers/order_detail");
 
 
-router.get('/getOrderDetailById', containerController.getOrderDetailById);
+router.post('/getOrderDetailById', containerController.getOrderDetailById);
 
 router.post('/deleteOrderDetailById', containerController.deleteOrderDetailById);
 

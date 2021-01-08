@@ -5,9 +5,9 @@ const userClientController = require('../controllers/user_client');
 
 router.get('/getAllUserClient', userClientController.getAllUserClient);
 
-router.get('/getUserClientById', auth,userClientController.getUserClientById);
+router.post('/getUserClientById', auth,userClientController.getUserClientById);
 
-router.get('/getUserClientByUsername', userClientController.getUserClientByUsername);
+router.post('/getUserClientByUsername', userClientController.getUserClientByUsername);
 
 router.post('/deleteUserClient', userClientController.deleteUserClient);
 

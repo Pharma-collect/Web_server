@@ -3,13 +3,13 @@ const router = express.Router();
 const containerController = require("../controllers/container");
 
 
-router.get('/getContainerById', containerController.getContainerById);
+router.post('/getContainerById', containerController.getContainerById);
 
-router.get('/getContainerByPharmacy', containerController.getContainerByPharmacy);
+router.post('/getContainerByPharmacy', containerController.getContainerByPharmacy);
 
-router.get('/getEmptyContainerByPharmacy', containerController.getEmptyContainerByPharmacy);
+router.post('/getEmptyContainerByPharmacy', containerController.getEmptyContainerByPharmacy);
 
-router.get('/getAllContainers', containerController.getAllContainers);
+router.post('/getAllContainers', containerController.getAllContainers);
 
 router.post('/addXContainerToPharmacy', containerController.addXContainerToPharmacy);
 

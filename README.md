@@ -53,7 +53,7 @@ Here is the list of available web-services as well as the parameters necessary f
 Allows you to retrieve all the customers present in the database.
 No parameters required.
 
-### [GET] - getUserClientById
+### [POST] - getUserClientById
 > WARNING (1): Calls corresponding to this part will be made in the form of :
 >   __.../api/user_client/fonction_name__
 
@@ -65,7 +65,7 @@ Allows you to retrieve a customer based on his ID.
 Parameter :
 * user_id *
 
-### [GET] - getUserClientByUsername
+### [POST] - getUserClientByUsername
 Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
@@ -101,12 +101,12 @@ Parameters :
 Allows you to retrieve all the professionals  present in the database.
 No parameters required.
 
-### [GET] - getUserProByPharmacy
+### [POST] - getUserProByPharmacy
 Allows you to retrieve a pro based on his pharmacy.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getUserProById
+### [POST] - getUserProById
 Allows you to retrieve a pro based on his id.
 Parameter :
 * user_id *
@@ -133,37 +133,37 @@ Parameters :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/pharmacy/fonction_name__
 
-### [GET] - getPharmacyById
+### [POST] - getPharmacyById
 Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getPharmacyByName
+### [POST] - getPharmacyByName
 Allows you to retrieve a pharmacy based on his name.
 Parameter :
 * name *
 
-### [GET] - getPharmacyByCity
+### [POST] - getPharmacyByCity
 Allows you to retrieve all the pharmacies in a given city.
 Parameter :
 * city *
 
-### [GET] - getPharmacyByPostCode
+### [POST] - getPharmacyByPostCode
 Allows you to retrieve all the pharmacies in a given post code.
 Parameter :
 * post_code *
 
-### [GET] - getPharmacyByBoss
+### [POST] - getPharmacyByBoss
 Allows you to retrieve all the pharmacies owned by a given boss
 Parameter :
 * boss *
 
-### [GET] - getPharmacyWithShop
+### [POST] - getPharmacyWithShop
 Allows you to retrieve all the pharmacies with a shop
 Parameter :
     none
 
-### [GET] - getPharmacyWithoutShop
+### [POST] - getPharmacyWithoutShop
 Allows you to retrieve all the pharmacies without a shop
 Parameter :
     none
@@ -245,22 +245,22 @@ Parameters :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/container/fonction_name__
 
-### [GET] - getContainerById
+### [POST] - getContainerById
 Allows you to retrieve a container based on his ID.
 Parameter :
 * container_id *
 
-### [GET] - getAllContainers
+### [POST] - getAllContainers
 Allows you to retrieve all the containers
 Parameter :
     none
 
-### [GET] - getContainerByPharmacy
+### [POST] - getContainerByPharmacy
 Allows you to retrieve the containers based on the pharmacy ID
 Parameter :
 * pharmacy_id *
 
-### [GET] - getEmptyContainerByPharmacy
+### [POST] - getEmptyContainerByPharmacy
 Allows you to retrieve empty containers based on the pharmacy ID
 Parameter :
 * pharmacy_id * 
@@ -293,27 +293,27 @@ Parameter :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/order/fonction_name__
 
-### [GET] - getOrderById
+### [POST] - getOrderById
 Allows you to retrieve an order based on his ID
 Parameter :
 * order_id *
 
-### [GET] - getOrderByPharmacy
+### [POST] - getOrderByPharmacy
 Allows you to retrieve all the orders addressed to a pharmacy, based on the pharmacy ID 
 Parameter :
 * pharmacy_id *
 
-### [GET] - getOrderByClient
+### [POST] - getOrderByClient
 Allows you to retrieve all the orders of a client, based on the client ID
 Parameter :
 * client_id *
 
-### [GET] - getOrderByStatus
+### [POST] - getOrderByStatus
 Allows you to retrieve all the orders with the required status
 Parameter :
 * order_status *
 
-### [GET] - getOrderByPreparator
+### [POST] - getOrderByPreparator
 Allows you to retrieve all the orders prepared by a given preparator
 Parameter :
 * id_preparator *
@@ -363,7 +363,7 @@ Parameter :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/order_detail/fonction_name__
 
-### [GET] - getOrderDetailById
+### [POST] - getOrderDetailById
 Allows you to retrieve an order detail based on his ID
 Parameter :
 * order_detail_id *

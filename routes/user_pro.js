@@ -4,9 +4,9 @@ const userProController = require('../controllers/user_pro');
 
 router.get('/getAllUserPro', userProController.getAllUserPro);
 
-router.get('/getUserProByPharmacy', userProController.getUserProByPharmacy);
+router.post('/getUserProByPharmacy', userProController.getUserProByPharmacy);
 
-router.get('/getUserProById', userProController.getUserProById);
+router.post('/getUserProById', userProController.getUserProById);
 
 router.post('/deleteUserPro', userProController.deleteUserPro);
 

@@ -3,15 +3,15 @@ const router = express.Router();
 const containerController = require("../controllers/order");
 
 
-router.get('/getOrderById', containerController.getOrderById);
+router.post('/getOrderById', containerController.getOrderById);
 
-router.get('/getOrderByPharmacy', containerController.getOrderByPharmacy);
+router.post('/getOrderByPharmacy', containerController.getOrderByPharmacy);
 
-router.get('/getOrderByClient', containerController.getOrderByClient);
+router.post('/getOrderByClient', containerController.getOrderByClient);
 
-router.get('/getOrderByStatus', containerController.getOrderByStatus);
+router.post('/getOrderByStatus', containerController.getOrderByStatus);
 
-router.get('/getOrderByPreparator', containerController.getOrderByPreparator);
+router.post('/getOrderByPreparator', containerController.getOrderByPreparator);
 
 router.get('/getAllOrders', containerController.getAllOrders);
 
