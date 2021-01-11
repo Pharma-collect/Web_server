@@ -3,17 +3,23 @@ const router = express.Router();
 const containerController = require("../controllers/container");
 
 
-router.post('/getContainerById', containerController.getContainerById);
+router.get('/getContainerById', containerController.getContainerById);
 
-router.post('/getContainerByPharmacy', containerController.getContainerByPharmacy);
+router.get('/getContainerByPharmacy', containerController.getContainerByPharmacy);
 
-router.post('/getEmptyContainerByPharmacy', containerController.getEmptyContainerByPharmacy);
+router.get('/getEmptyContainerByPharmacy', containerController.getEmptyContainerByPharmacy);
 
-router.post('/getAllContainers', containerController.getAllContainers);
+router.get('/getContainerStatusById', containerController.getContainerStatusById);
+
+router.get('/getContainerNumberById', containerController.getContainerNumberById);
+
+router.get('/getContainerPharmacyById', containerController.getContainerPharmacyById);
+
+router.get('/getAllContainers', containerController.getAllContainers);
 
 router.post('/addXContainerToPharmacy', containerController.addXContainerToPharmacy);
 
-router.post('/updateContainer', containerController.updateContainer);
+router.post('/updateContainerStatusById', containerController.updateContainerStatusById);
 
 router.post('/deleteContainerById', containerController.deleteContainerById);
 
