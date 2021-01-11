@@ -1,21 +1,5 @@
 const db = require('../models');
-
-async function getPharmacyByX(my_key, value){
-    let pharmacy;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pharmacy =  await db.pharmacy.findOne({
-            where: query,
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pharmacy;
-}
+const utils = require('./utils');
 
 exports.getPharmacyById = async function(req, res, next) {
     const {
@@ -28,7 +12,7 @@ exports.getPharmacyById = async function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        await getPharmacyByX("id", pharmacy_id)
+        await utils.getPharmacyByX("id", pharmacy_id)
             .then(function(pharmacy){
                 if (!pharmacy) {
                     res.json({
@@ -61,7 +45,7 @@ exports.getPharmacyByName = async function(req, res, next) {
             error: "Merci de préciser un nom"
         })
     } else {
-        await getPharmacyByX("name", name)
+        await utils.getPharmacyByX("name", name)
             .then(function(pharmacy){
                 if (!pharmacy) {
                     res.json({
@@ -93,7 +77,7 @@ exports.getPharmacyByCity = async function(req, res, next) {
             error: "Merci de préciser une ville"
         })
     } else {
-        await getPharmacyByX("city", city)
+        await utils.getPharmacyByX("city", city)
             .then(function(pharmacy){
                 if (!pharmacy) {
                     res.json({
@@ -125,7 +109,7 @@ exports.getPharmacyByPostCode = async function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        await getPharmacyByX("post_code", post_code)
+        await utils.getPharmacyByX("post_code", post_code)
             .then(function(pharmacy){
                 if (!pharmacy) {
                     res.json({
@@ -157,7 +141,7 @@ exports.getPharmacyByBoss = async function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        await getPharmacyByX("boss", boss)
+        await utils.getPharmacyByX("boss", boss)
             .then(function(pharmacy){
                 if (!pharmacy) {
                     res.json({
