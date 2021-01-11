@@ -255,6 +255,7 @@ exports.loginPro = function (req, res, next) {
                             let valid_user = {
                                 id: user.id,
                                 username: user.username,
+                                is_admin: user.is_admin,
                                 token: utils.createToken(user),
                                 pharmacy: pharma
                             }
