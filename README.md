@@ -423,5 +423,19 @@ Allows you to delete an order detail based on his id
 Parameter :
 * order_detail_id *
 
+## Upload/Download Images
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/fonction_name__
+
+### [POST] - uploadFile
+Allows you to upload files
+*need to be a **form-data format**
+Parameter :
+* file *
+
+### [GET] - getFile/"filename"
+Allows you to get a static file by his filename
+
+
 
 
