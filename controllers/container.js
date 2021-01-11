@@ -16,7 +16,7 @@ exports.getContainerById = function(req, res, next) {
                 id: container_id,
             }
         }).then(function(result){
-            if (result.length === 0){
+            if (!result){
                 res.json({
                     success: true,
                     error: "Ce container n'existe pas",
@@ -50,7 +50,7 @@ exports.getContainerByPharmacy = function(req, res, next) {
                 id_pharmacy: pharmacy_id,
             }
         }).then(function(result){
-            if (result.length === 0){
+            if (!result){
                 res.json({
                     success: true,
                     error: "Cette pharmacie n'existe pas ou n'a pas de containers.",

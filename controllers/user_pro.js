@@ -44,8 +44,8 @@ exports.getUserProByPharmacy = async function(req, res, next) {
         })
     } else {
         await getUserProByX("pharmacy_id", pharmacy_id)
-            .then(function(client){
-                if (client.length === 0) {
+            .then(function(pro){
+                if (!pro) {
                     res.json({
                         success: false,
                         error: "Cette personne n'existe pas",
@@ -53,7 +53,7 @@ exports.getUserProByPharmacy = async function(req, res, next) {
                 } else {
                     res.json({
                         success: true,
-                        result: client,
+                        result: pro,
                     })
                 }
             })
@@ -76,8 +76,8 @@ exports.getUserProById = async function(req, res, next) {
         })
     } else {
         await getUserProByX("id", user_id)
-            .then(function(client){
-                if (client.length === 0) {
+            .then(function(pro){
+                if (!pro) {
                     res.json({
                         success: false,
                         error: "Cette personne n'existe pas",
@@ -85,7 +85,7 @@ exports.getUserProById = async function(req, res, next) {
                 } else {
                     res.json({
                         success: true,
-                        result: client,
+                        result: pro,
                     })
                 }
             })

@@ -45,7 +45,7 @@ exports.getUserClientById = async function(req, res, next) {
     } else {
         await getUserClientByX("id", user_id)
             .then(function(client){
-                if (client.length === 0) {
+                if (!client) {
                     res.json({
                         success: false,
                         error: "Cette personne n'existe pas",
@@ -77,7 +77,7 @@ exports.getUserClientByUsername = async function (req, res, next) {
     } else {
         await getUserClientByX("username", username)
             .then(function(client){
-                if (client.length === 0) {
+                if (!client) {
                     res.json({
                         success: false,
                         error: "Cette personne n'existe pas",

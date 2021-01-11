@@ -32,7 +32,7 @@ exports.getOrderById = async function(req, res, next) {
     } else {
         await getOrderByX("id", order_id)
             .then(function(order){
-                if (order.length === 0) {
+                if (!order) {
                     res.json({
                         success: false,
                         error: "Cette commande n'existe pas",
@@ -64,7 +64,7 @@ exports.getOrderByPharmacy = async function(req, res, next) {
     } else {
         await getOrderByX("id_pharmacy", pharmacy_id)
             .then(function(order){
-                if (order.length === 0) {
+                if (!order) {
                     res.json({
                         success: false,
                         error: "Cette commande n'existe pas",
@@ -97,7 +97,7 @@ exports.getOrderByClient = async function(req, res, next) {
     } else {
         await getOrderByX("id_client", client_id)
             .then(function(order){
-                if (order.length === 0) {
+                if (!order) {
                     res.json({
                         success: false,
                         error: "Cette commande n'existe pas",
@@ -129,7 +129,7 @@ exports.getOrderByStatus = async function(req, res, next) {
     } else {
         await getOrderByX("status", order_status)
             .then(function(order){
-                if (order.length === 0) {
+                if (!order) {
                     res.json({
                         success: false,
                         error: "Cette commande n'existe pas",
@@ -161,7 +161,7 @@ exports.getOrderByPreparator = async function(req, res, next) {
     } else {
         await getOrderByX("id_preparator", id_preparator)
             .then(function(order){
-                if (order.length === 0) {
+                if (!order) {
                     res.json({
                         success: false,
                         error: "Cette commande n'existe pas",

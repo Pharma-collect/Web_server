@@ -30,7 +30,7 @@ exports.getPharmacyById = async function(req, res, next) {
     } else {
         await getPharmacyByX("id", pharmacy_id)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
                         success: false,
                         error: "Cette pharmacie n'existe pas",
@@ -63,7 +63,7 @@ exports.getPharmacyByName = async function(req, res, next) {
     } else {
         await getPharmacyByX("name", name)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
                         success: false,
                         error: "Cette pharmacie n'existe pas",
@@ -95,7 +95,7 @@ exports.getPharmacyByCity = async function(req, res, next) {
     } else {
         await getPharmacyByX("city", city)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
                         success: false,
                         error: "Aucune pharmacie n'existe dans cette ville",
@@ -127,7 +127,7 @@ exports.getPharmacyByPostCode = async function(req, res, next) {
     } else {
         await getPharmacyByX("post_code", post_code)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
                         success: false,
                         error: "Aucune pharmacie n'existe pour ce code postal",
@@ -159,7 +159,7 @@ exports.getPharmacyByBoss = async function(req, res, next) {
     } else {
         await getPharmacyByX("boss", boss)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
                         success: false,
                         error: "Aucune pharmacie n'existe pour ce patron",
