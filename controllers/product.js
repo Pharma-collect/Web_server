@@ -122,3 +122,39 @@ exports.updateProduct = function (req, res) {
         }));
     }
 }
+
+
+exports.deleteProductById = function(req, res, next) {
+    const {
+        product_id
+    } = req.body;
+
+    if (!product_id){
+        res.json({
+            success: false,
+            error: "Veuillez indiquer un id de produit"
+        })
+    } else {
+        db.product.destroy({
+            where: {
+                id: product_id,
+
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.json({
+                    success: true,
+                    error: "Ce produit n'existe pas.",
+                })
+            } else {
+                res.json({
+                    success: true,
+                    result : result
+                })
+            }
+        }).catch(error => res.json({
+            success: false,
+            error: error
+        }));
+    }
+}
