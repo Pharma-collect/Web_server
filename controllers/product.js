@@ -145,7 +145,6 @@ exports.deleteProductById = function(req, res, next) {
         db.product.destroy({
             where: {
                 id: product_id,
-
             }
         }).then(function(result){
             if (result.length === 0){

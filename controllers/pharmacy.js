@@ -211,13 +211,13 @@ exports.getPharmacyWithoutShop = function(req, res, next) {
 
 exports.createPharmacy = function(req, res, next) {
     const {
-        name, 
+        name,
         has_shop,
         road_nb,
         road,
-        phone, 
-        post_code, 
-        city, 
+        phone,
+        post_code,
+        city,
         boss
     } = req.body;
 
