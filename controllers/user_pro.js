@@ -14,7 +14,25 @@ exports.getAllUserPro = function(req, res, next) {
     }));
 }
 
-exports.getUserProByPharmacy = function(req, res, next) {
+async function getUserProByX(my_key, value){
+    let client;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        client =  await db.user_pro.findAll({
+            where: query,
+            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return client;
+}
+
+exports.getUserProByPharmacy = async function(req, res, next) {
     const {
         pharmacy_id
     } = req.body;
@@ -25,31 +43,11 @@ exports.getUserProByPharmacy = function(req, res, next) {
             error: "Merci de préciser un id de pharmacy"
         })
     } else {
-        db.user_pro.findAll({
-            where: {
-                pharmacy_id: pharmacy_id,
-            },
-            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette personne n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getUserProByX("pharmacy_id", pharmacy_id, "Cette personne n'existe pas")
     }
 }
 
-exports.getUserProByUsername = function(req, res, next) {
+exports.getUserProById = function(req, res, next) {
     const {
         username
     } = req.body;
@@ -60,27 +58,7 @@ exports.getUserProByUsername = function(req, res, next) {
             error: "Merci de préciser un username"
         })
     } else {
-        db.user_pro.findAll({
-            where: {
-                username: username,
-            },
-            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette personne n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getUserProByX("id", user_id, "Cette personne n'existe pas")
     }
 }
 

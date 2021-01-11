@@ -1,6 +1,23 @@
 const db = require('../models');
 
-exports.getPharmacyById = function(req, res, next) {
+async function getPharmacyByX(my_key, value){
+    let pharmacy;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        pharmacy =  await db.pharmacy.findAll({
+            where: query,
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return pharmacy;
+}
+
+exports.getPharmacyById = async function(req, res, next) {
     const {
         pharmacy_id
     } = req.body;
@@ -11,30 +28,11 @@ exports.getPharmacyById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        db.pharmacy.findAll({
-            where: {
-                id: pharmacy_id,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette pharmacie n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getPharmacyByX("id", pharmacy_id, "Cette pharmacie n'existe pas")
     }
 }
 
-exports.getPharmacyByName = function(req, res, next) {
+exports.getPharmacyByName = async function(req, res, next) {
     const {
         name
     } = req.body;
@@ -45,30 +43,11 @@ exports.getPharmacyByName = function(req, res, next) {
             error: "Merci de préciser un nom"
         })
     } else {
-        db.pharmacy.findAll({
-            where: {
-                name: name,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette pharmacie n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getPharmacyByX("name", name, "Cette pharmacie n'existe pas")
     }
 }
 
-exports.getPharmacyByCity = function(req, res, next) {
+exports.getPharmacyByCity = async function(req, res, next) {
     const {
         city
     } = req.body;
@@ -79,30 +58,11 @@ exports.getPharmacyByCity = function(req, res, next) {
             error: "Merci de préciser une ville"
         })
     } else {
-        db.pharmacy.findAll({
-            where: {
-                city: city,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Aucune pharmacie n'existe dans cette ville",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getPharmacyByX("city", city, "Aucune pharmacie n'existe dans cette ville")
     }
 }
 
-exports.getPharmacyByPostCode = function(req, res, next) {
+exports.getPharmacyByPostCode = async function(req, res, next) {
     const {
         post_code
     } = req.body;
@@ -113,30 +73,11 @@ exports.getPharmacyByPostCode = function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        db.pharmacy.findAll({
-            where: {
-                post_code: post_code,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Aucune pharmacie n'existe pour ce code postal",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getPharmacyByX("post_code", post_code, "Aucune pharmacie n'existe pour ce code postal")
     }
 }
 
-exports.getPharmacyByBoss = function(req, res, next) {
+exports.getPharmacyByBoss = async function(req, res, next) {
     const {
         boss
     } = req.body;
@@ -147,26 +88,7 @@ exports.getPharmacyByBoss = function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        db.pharmacy.findAll({
-            where: {
-                boss: boss,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Aucune pharmacie n'existe pour ce patron",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        getPharmacyByX("boss", boss, "Aucune pharmacie n'existe pour ce patron")
     }
 }
 
@@ -367,42 +289,30 @@ exports.updatePharmacyBossById = function(req, res, next) {
     }
 }
 
-exports.updatePharmacyPhoneById = function(req, res, next) {
-    const {
-        pharmacy_id,
-        phone
-    } = req.body;
-
-    if (!pharmacy_id || !phone){
-        res.json({
-            success: false,
-            error: "Informations manquantes"
-        })
-    } else {
-        db.pharmacy.update({phone : phone},{
-            where: {
-                id: pharmacy_id,
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: false,
-                    error: "Cette pharmacie n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result : result
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: "informations erronées"
-        }));
-    }
+function deletePharmacyByX(key, value){
+    db.pharmacy.destroy({
+        where: {
+            key: value,
+        }
+    }).then(function(result){
+        if (result.length === 0){
+            res.json({
+                success: true,
+                error: "Cette pharmacie n'existe pas.",
+            })
+        } else {
+            res.json({
+                success: true,
+                result : result
+            })
+        }
+    }).catch(error => res.json({
+        success: false,
+        error: error
+    }));
 }
 
-exports.deletePharmacyById = function(req, res, next) {
+exports.deletePharmacyById = async function(req, res, next) {
     const {
         pharmacy_id
     } = req.body;
@@ -413,31 +323,11 @@ exports.deletePharmacyById = function(req, res, next) {
             error: "Veuillez indiquer un id de pharmacie"
         })
     } else {
-        db.pharmacy.destroy({
-            where: {
-                id: pharmacy_id,
-
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette pharmacie n'existe pas.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result : result
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        deletePharmacyByX("id", pharmacy_id)
     }
 }
 
-exports.deletePharmacyByBoss = function(req, res, next) {
+exports.deletePharmacyByBoss = async function(req, res, next) {
     const {
         boss
     } = req.body;
@@ -448,27 +338,7 @@ exports.deletePharmacyByBoss = function(req, res, next) {
             error: "Veuillez indiquer un patron"
         })
     } else {
-        db.pharmacy.destroy({
-            where: {
-                boss: boss,
-
-            }
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Aucune pharmacie avec ce patron n'existe.",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result : result
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        deletePharmacyByX("boss", boss)
     }
 }
 

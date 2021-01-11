@@ -208,7 +208,23 @@ exports.getContainerPharmacyById = function(req, res, next) {
 }
 
 exports.getAllContainers = function(req, res, next) {
-    allContainers(req, res);
+    db.container.findAll({
+    }).then(function(result){
+        if (result.length === 0){
+            res.json({
+                success: false,
+                error: "Il n'existe pas de containers",
+            })
+        } else {
+            res.json({
+                success: true,
+                result: result,
+            })
+        }
+    }).catch(error => res.json({
+        success: false,
+        error: error
+    }));
 }
 
 exports.addXContainerToPharmacy = (req, res, next) => {
@@ -227,13 +243,14 @@ exports.addXContainerToPharmacy = (req, res, next) => {
             where: {
                 id_pharmacy: pharmacy_id,
             }
-        }).then(function(result){
-            
-                for(var i = (result.length +1); i<= parseInt(result.length + parseInt(nb_of_containers)); i++)
-                {
-                    createContainer(req, res, i, pharmacy_id);
-                }
-
+        }).then(async function(result){
+            await createContainer(pharmacy_id, result, nb_of_containers)
+                .then(function(containers_tab){
+                    res.json({
+                        success: true,
+                        result: containers_tab,
+                    })
+                })
         }).catch(error => res.json({
             success: false,
             error: error
@@ -241,7 +258,22 @@ exports.addXContainerToPharmacy = (req, res, next) => {
     }
 }
 
-exports.updateContainerStatusById = function(req, res, next) {
+async function createContainer(pharmacy_id, containers_already_here, number){
+    let tab=[];
+
+    for(let i = (containers_already_here.length +1); i<= parseInt(containers_already_here.length + parseInt(number)); i++)
+    {
+        tab.push(await db.container.create({
+            status : 0,
+            container_number : i,
+            id_pharmacy : pharmacy_id
+        }))
+    }
+
+    return tab
+}
+
+exports.updateContainer = function(req, res, next) {
     const {
         container_id,
         status
@@ -256,7 +288,6 @@ exports.updateContainerStatusById = function(req, res, next) {
         db.container.update({status : status},{
             where: {
                 id: container_id,
-
             }
         }).then(function(result){
             if (result.length === 0){
@@ -368,7 +399,7 @@ function allContainers(req, res){
     }).then(function(result){
         if (result.length === 0){
             res.json({
-                success: true,
+                success: false,
                 error: "Il n'existe pas de containers",
             })
         } else {
