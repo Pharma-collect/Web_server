@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     detail: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     id_client: {
@@ -41,6 +41,14 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    id_qrcode: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'qrcode',
+        key: 'id'
+      }
+    },
     id_pharmacy: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -64,6 +72,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "order_qr_id",
+        using: "BTREE",
+        fields: [
+          { name: "id_qrcode" },
         ]
       },
       {
