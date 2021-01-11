@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     image_url: {
       type: DataTypes.STRING(255),

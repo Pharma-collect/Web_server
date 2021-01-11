@@ -31,7 +31,7 @@ NODE_ENV=production node server
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
 
-You also need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+You also need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 # Web Services
 
@@ -43,7 +43,7 @@ Here is the list of available web-services as well as the parameters necessary f
 
 > WARNING (3): Mandatory parameters will be noted with " * "
 
-> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -53,17 +53,24 @@ Here is the list of available web-services as well as the parameters necessary f
 Allows you to retrieve all the customers present in the database.
 No parameters required.
 
-### [GET] - getUserClientById
+### [POST] - getUserClientById
+> WARNING (1): Calls corresponding to this part will be made in the form of :
+>   __.../api/user_client/fonction_name__
+
+> WARNING (2) : Calls corresponding to this function are secured. 
+> To access a user's information you must be that user and you will have to send your identification toker in the __Header__ :
+> __Key__ : "Authorization" and __Value__ : "<your_token>"
+
 Allows you to retrieve a customer based on his ID.
 Parameter :
 * user_id *
 
-### [GET] - getUserClientByUsername
+### [POST] - getUserClientByUsername
 Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] - deleteUserClientById
+### [POST] - deleteUserClient
 Delete a customer according to his ID.
 Parameter :
 * user_id *
@@ -73,7 +80,7 @@ Allows you to create a customer.
 Parameters :
 * name *
 * lastname *
-* password *
+* password * (needs to be encrypted with bcrypt & salt of 10)
 * phone *
 * mail *
 * birth * (for the moment pass a string for example : JJ/MM/AAAA)
@@ -94,26 +101,26 @@ Parameters :
 Allows you to retrieve all the professionals  present in the database.
 No parameters required.
 
-### [GET] - getUserProByPharmacy
+### [POST] - getUserProByPharmacy
 Allows you to retrieve a pro based on his pharmacy.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getUserProByUsername
-Allows you to retrieve a pro based on his username.
+### [POST] - getUserProById
+Allows you to retrieve a pro based on his id.
 Parameter :
-* username *
+* user_id *
 
-### [POST] - deleteUserProByUsername
-Delete a pro according to his username.
+### [POST] - deleteUserPro
+Delete a pro according to his Id.
 Parameter :
-* username *
+* user_id *
 
-### [POST] - createUserPro
+### [POST] - registerPro
 Allows you to create a pro.
 Parameters :
 * username *
-* password *
+* password * (needs to be encrypted with bcrypt & salt of 10)
 * pharmacy_id *
 
 ### [POST] - loginPro
@@ -126,37 +133,37 @@ Parameters :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/pharmacy/fonction_name__
 
-### [GET] - getPharmacyById
+### [POST] - getPharmacyById
 Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getPharmacyByName
+### [POST] - getPharmacyByName
 Allows you to retrieve a pharmacy based on his name.
 Parameter :
 * name *
 
-### [GET] - getPharmacyByCity
+### [POST] - getPharmacyByCity
 Allows you to retrieve all the pharmacies in a given city.
 Parameter :
 * city *
 
-### [GET] - getPharmacyByPostCode
+### [POST] - getPharmacyByPostCode
 Allows you to retrieve all the pharmacies in a given post code.
 Parameter :
 * post_code *
 
-### [GET] - getPharmacyByBoss
+### [POST] - getPharmacyByBoss
 Allows you to retrieve all the pharmacies owned by a given boss
 Parameter :
 * boss *
 
-### [GET] - getPharmacyWithShop
+### [POST] - getPharmacyWithShop
 Allows you to retrieve all the pharmacies with a shop
 Parameter :
     none
 
-### [GET] - getPharmacyWithoutShop
+### [POST] - getPharmacyWithoutShop
 Allows you to retrieve all the pharmacies without a shop
 Parameter :
     none
@@ -173,29 +180,19 @@ Parameter :
 * city * 
 * boss *
 
-### [POST] - updatePharmacyNameById
-Allows you to update the name of a pharmacy.
+### [POST] - updatePharmacy
+Allows you to update a pharmacy.
+You only have to send the data you want to change.
 Parameter :
 * pharmacy_id *
-* name *
-
-### [POST] - updatePharmacyPhoneById
-Allows you to update the phone number of a pharmacy.
-Parameter :
-* pharmacy_id *
-* phone *
-
-### [POST] - updatePharmacyShopById
-Allows you to update if a pharmacy has a shop or not.
-Parameter :
-* pharmacy_id *
-* has_shop *
-
-### [POST] - updatePharmacyBossById
-Allows you to update the name of the boss of a pharmacy.
-Parameter :
-* pharmacy_id *
-* boss *
+* name
+* has_shop
+* road_nb
+* road
+* phone
+* post_code
+* city
+* boss
 
 ### [POST] - deletePharmacyById
 Allows you to delete a pharmacy based on his ID.
@@ -230,46 +227,43 @@ Parameters :
 * capacity
 * image_url
 
+### [POST] - updateProduct
+Allows you to update a product. 
+You only have to send the data you want to change.
+Parameters :
+* product_id *
+* title 
+* price 
+* pharmacy_id 
+* description
+* capacity
+* image_url
+
 
 
 ## Container
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/container/fonction_name__
 
-### [GET] - getContainerById
+### [POST] - getContainerById
 Allows you to retrieve a container based on his ID.
 Parameter :
 * container_id *
 
-### [GET] - getAllContainers
+### [POST] - getAllContainers
 Allows you to retrieve all the containers
 Parameter :
     none
 
-### [GET] - getContainerByPharmacy
+### [POST] - getContainerByPharmacy
 Allows you to retrieve the containers based on the pharmacy ID
 Parameter :
 * pharmacy_id *
 
-### [GET] - getEmptyContainerByPharmacy
+### [POST] - getEmptyContainerByPharmacy
 Allows you to retrieve empty containers based on the pharmacy ID
 Parameter :
 * pharmacy_id * 
-
-### [GET] - getContainerStatusById
-Allows you to retrieve the status of a container based on his ID
-Parameter :
-* container_id *
-
-### [GET] - getContainerNumberById
-Allows you to retrieve the number of a container based on his ID
-Parameter :
-* number_id *
-
-### [GET] - getContainerPharmacyById
-Allows you to retrieve the ID of the pharmacy owning a container based on the container ID
-Parameter :
-* container_id *
 
 ### [POST] - addXContainerToPharmacy
 Allows you to add X containers to a pharmacy based on the pharmacy ID
@@ -277,7 +271,7 @@ Parameter :
 * pharmacy_id *
 * nb_of_containers *
 
-### [POST] - updateContainerStatusById
+### [POST] - updateContainer
 Allows you to update the status of a container based on his ID
 Parameter :
 * container_id *
@@ -289,7 +283,7 @@ Parameter :
 * container_id *
 
 ### [POST] - deleteAllContainersFromPharma
-Allows you to delete all the containers of a pharmacy based on the phamracy ID
+Allows you to delete all the containers of a pharmacy based on the pharmacy's ID
 Parameter :
 * pharmacy_id *
 
@@ -299,65 +293,30 @@ Parameter :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/order/fonction_name__
 
-### [GET] - getOrderById
+### [POST] - getOrderById
 Allows you to retrieve an order based on his ID
 Parameter :
 * order_id *
 
-### [GET] - getOrderByPharmacy
+### [POST] - getOrderByPharmacy
 Allows you to retrieve all the orders addressed to a pharmacy, based on the pharmacy ID 
 Parameter :
 * pharmacy_id *
 
-### [GET] - getOrderByClient
+### [POST] - getOrderByClient
 Allows you to retrieve all the orders of a client, based on the client ID
 Parameter :
 * client_id *
 
-### [GET] - getOrderStatusById
-Allows you to retrieve the status of an order based on his ID
-Parameter :
-* order_id * 
-
-### [GET] - getOrderDetailById
-Allows you to retrieve the detail of an order based on his ID
-Parameter :
-* order_id *
-
-### [GET] - getOrderByStatus
+### [POST] - getOrderByStatus
 Allows you to retrieve all the orders with the required status
 Parameter :
 * order_status *
 
-### [GET] - getOrderByPreparator
+### [POST] - getOrderByPreparator
 Allows you to retrieve all the orders prepared by a given preparator
 Parameter :
 * id_preparator *
-
-### [GET] - getOrderPreparatorById
-Allows you to retrieve the id of the preparator of an order thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderContainerById
-Allows you to retrieve the id of the container where the order is placed thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderQrCodeById
-Allows you to retrieve the id of the qrcode associated to an order thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderPharmacyById
-Allows you to retrieve the id of the pharmacy associated to an order thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderTotalPriceById
-Allows you to retrieve the total price of an order thanks to the id of the order
-Parameter :
-* order_id *
 
 ### [GET] - getAllOrders
 Allows you to retrieve all the orders
@@ -367,56 +326,47 @@ Parameter :
 ### [POST] - createOrder
 Allows you to create a new order
 Parameter :
-* detail *
 * id_client *
 * id_pharmacy *
-* total_price *
+* total_price (€) *
+* products * (JSON formatted array of products)
+* detail
+
+> JSON Code example :
+```
+    "products" : [
+                    {"id_product" : 3, "quantity" : 1 },
+                    {"id_product" : 2, "quantity" : 1 }    
+    ],
+```
 
 ### [POST] -  deleteOrderById
 Allows you to delete an order based on his ID
 Parameter :
 * order_id *
 
-### [POST] - updateOrderStatusById
-Allows you to update the status of an order based on his ID
+### [POST] - updateOrder
+Allows you to update the status of an order based on his ID.
+You only have to send the data you want to change.
 Parameter :
 * order_id *
-* status *
-
-### [POST] - updateOrderPreparatorById
-Allows you to update the preparator of an order based on his ID
-Parameter :
-* order_id *
-* preparator_id *
-
-### [POST] - updateOrderContainerById
-Allows you to update the container of an order based on his ID
-Parameter :
-* order_id *
-* container_id *
-
-### [POST] - updateOrderQrCodeById
-Allows you to update the QRCode of an order based on his ID
-Parameter :
-* order_id *
-* qrcode_id *
-
+* status
+* detail
+* id_client
+* id_preparator
+* id_qrcode
+* id_pharmacy
+* total_price
 
 
 ## Order_detail
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/order_detail/fonction_name__
 
-### [GET] - getOrderDetailById
+### [POST] - getOrderDetailById
 Allows you to retrieve an order detail based on his ID
 Parameter :
 * order_detail_id *
-
-### [POST] - createOrderDetail
-Allows you to create an order detail based on a JSON formatted array of products and the id of the order
-Parameter :
-* products *
-* order_id *
 
 ### [POST] - deleteOrderDetailById
 Allows you to delete an order detail based on his id 

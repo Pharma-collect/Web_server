@@ -4,15 +4,15 @@ const userProController = require('../controllers/user_pro');
 
 router.get('/getAllUserPro', userProController.getAllUserPro);
 
-router.get('/getUserProByPharmacy', userProController.getUserProByPharmacy);
+router.post('/getUserProByPharmacy', userProController.getUserProByPharmacy);
 
-router.get('/getUserProByUsername', userProController.getUserProByUsername);
+router.post('/getUserProById', userProController.getUserProById);
 
-router.post('/deleteUserProByUsername', userProController.deleteUserProByUsername);
+router.post('/deleteUserPro', userProController.deleteUserPro);
 
-router.post('/createUserPro', userProController.createUserPro);
+router.post('/registerPro', userProController.registerPro);
 
-router.post('/createUserProPostman', userProController.createUserProPostman);
+router.post('/registerProPostman', userProController.registerProPostman);
 
 router.post('/loginPro', userProController.loginPro);
 

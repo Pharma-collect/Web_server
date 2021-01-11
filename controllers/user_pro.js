@@ -14,7 +14,25 @@ exports.getAllUserPro = function(req, res, next) {
     }));
 }
 
-exports.getUserProByPharmacy = function(req, res, next) {
+async function getUserProByX(my_key, value){
+    let client;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        client =  await db.user_pro.findOne({
+            where: query,
+            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return client;
+}
+
+exports.getUserProByPharmacy = async function(req, res, next) {
     const {
         pharmacy_id
     } = req.body;
@@ -25,71 +43,65 @@ exports.getUserProByPharmacy = function(req, res, next) {
             error: "Merci de préciser un id de pharmacy"
         })
     } else {
-        db.user_pro.findAll({
-            where: {
-                pharmacy_id: pharmacy_id,
-            },
-            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette personne n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        await getUserProByX("pharmacy_id", pharmacy_id)
+            .then(function(pro){
+                if (!pro) {
+                    res.json({
+                        success: false,
+                        error: "Cette personne n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: pro,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.getUserProByUsername = function(req, res, next) {
+exports.getUserProById = async function(req, res, next) {
     const {
-        username
+        user_id
     } = req.body;
 
-    if (!username){
+    if (!user_id){
         res.json({
             success: false,
-            error: "Merci de préciser un username"
+            error: "Merci de préciser un identifiant"
         })
     } else {
-        db.user_pro.findAll({
-            where: {
-                username: username,
-            },
-            attributes: ['id','username', 'pharmacy_id', 'is_admin'],
-        }).then(function(result){
-            if (result.length === 0){
-                res.json({
-                    success: true,
-                    error: "Cette personne n'existe pas",
-                })
-            } else {
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            }
-        }).catch(error => res.json({
-            success: false,
-            error: error
-        }));
+        await getUserProByX("id", user_id)
+            .then(function(pro){
+                if (!pro) {
+                    res.json({
+                        success: false,
+                        error: "Cette personne n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: pro,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
     }
 }
 
-exports.deleteUserProByUsername = function(req, res, next) {
+exports.deleteUserPro = function(req, res, next) {
     const {
-        username
+        user_id
     } = req.body;
 
-    if (!username){
+    if (!user_id){
         res.json({
             success: false,
             error: "Merci de préciser un identifiant"
@@ -97,7 +109,7 @@ exports.deleteUserProByUsername = function(req, res, next) {
     } else {
         db.user_pro.destroy({
             where: {
-                username: username,
+                id: user_id,
             }
         }).then(function(result){
             res.json({
@@ -111,7 +123,30 @@ exports.deleteUserProByUsername = function(req, res, next) {
     }
 }
 
-exports.createUserPro = function (req, res, next) {
+async function createUserPro(username, password, pharmacy_id){
+    let result;
+
+    try {
+        result = await db.user_pro.create({
+            username: username,
+            password: password,
+            pharmacy_id: pharmacy_id,
+            is_admin: 0,
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return {
+        id: result.id,
+        username: result.username,
+        pharmacy_id: result.pharmacy_id,
+        is_admin: 0
+    }
+
+}
+
+exports.registerPro = function (req, res, next) {
     const {
         username,
         password,
@@ -124,36 +159,20 @@ exports.createUserPro = function (req, res, next) {
             error: "Informations manquantes"
         })
     } else {
-
         db.user_pro.findAll({
-        }).then(function(result){
+        }).then(async (result) => {
             if (result.find(user => user.username === username)){
                 res.json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
-                db.user_pro.create({
-                    username: username,
-                    password: password,
-                    pharmacy_id: pharmacy_id,
-                    is_admin: 0,
-                }).then(function(result){
-                    let result_without_password = {
-                        id: result.id,
-                        username: result.username,
-                        pharmacy_id: result.pharmacy_id,
-                        is_admin: 0
-                    };
+                let new_pro = await createUserPro(username, password, pharmacy_id);
 
-                    res.json({
-                        success: true,
-                        result: result_without_password,
-                    })
-                }).catch(error => res.json({
-                    success: false,
-                    error: error
-                }));
+                res.json({
+                    success: true,
+                    result: new_pro,
+                })
             }
         }).catch(error => res.json({
             success: false,
@@ -162,7 +181,7 @@ exports.createUserPro = function (req, res, next) {
     }
 }
 
-exports.createUserProPostman = function (req, res, next) {
+exports.registerProPostman = function (req, res, next) {
     const {
         username,
         password,
@@ -175,43 +194,25 @@ exports.createUserProPostman = function (req, res, next) {
             error: "Informations manquantes"
         })
     } else {
-
         db.user_pro.findAll({
-        }).then(function(result){
+        }).then(async (result)=> {
             if (result.find(user => user.username === username)){
+                return {success: false}
+            } else {
+                let hash = await utils.bcryptPassword(password);
+
+                return {success: true, hash: hash}
+            }
+        }).then(async (data) => {
+            if(!data.success){
+                res.json({success: false, error: "Identifiant indisponible, veuillez en renseigner un nouveau"})
+            } else {
+                let new_pro = await createUserPro(username, data.hash, pharmacy_id);
+
                 res.json({
                     success: true,
-                    error: "Identifiant indisponible, veuillez en renseigner un nouveau",
+                    result: new_pro,
                 })
-            } else {
-                bcrypt.hash(password, 10)
-                    .then(hash => {
-                        db.user_pro.create({
-                            username: username,
-                            password: hash,
-                            pharmacy_id: pharmacy_id,
-                            is_admin: 0,
-                        }).then(function(result){
-                            let result_without_password = {
-                                id: result.id,
-                                username: result.username,
-                                pharmacy_id: pharmacy_id,
-                                is_admin: 0
-                            };
-
-                            res.json({
-                                success: true,
-                                result: result_without_password,
-                            })
-                        }).catch(error => res.json({
-                            success: false,
-                            error: error
-                        }));
-                    })
-                    .catch(error => res.json({
-                        success: false,
-                        error: error
-                    }))
             }
         }).catch(error => res.json({
             success: false,
@@ -242,18 +243,21 @@ exports.loginPro = function (req, res, next) {
                 })
             } else {
                 bcrypt.compare(password, user.password)
-                    .then(isValid => {
+                    .then( async (isValid) => {
                         if (!isValid) {
                             res.json({
                                 success: false,
                                 error: "Mot de Passe incorrect",
                             })
                         } else {
+                            let pharma = await utils.getPharmacyByX("id", user.pharmacy_id);
+
                             let valid_user = {
                                 id: user.id,
                                 username: user.username,
-                                pharmacy_id: user.pharmacy_id,
-                                token: utils.createToken(user)
+                                is_admin: user.is_admin,
+                                token: utils.createToken(user),
+                                pharmacy: pharma
                             }
                             res.json({
                                 success: true,
