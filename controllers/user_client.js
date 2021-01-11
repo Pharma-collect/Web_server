@@ -3,7 +3,7 @@ const utils = require('./utils');
 const bcrypt = require('bcrypt');
 
 exports.getAllUserClient = function(req, res, next) {
-    db.user_client.findAll({
+    db.user_client.findOne({
         attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
     }).then(result => res.json({
         success: true,

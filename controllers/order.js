@@ -9,7 +9,7 @@ async function getOrderByX(my_key, value){
     query[my_key] = value;
 
     try {
-        order =  await db.order.findAll({
+        order =  await db.order.findOne({
             where: query
         })
     } catch (e) {

@@ -11,7 +11,7 @@ exports.getContainerById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        db.container.findAll({
+        db.container.findOne({
             where: {
                 id: container_id,
             }
@@ -45,7 +45,7 @@ exports.getContainerByPharmacy = function(req, res, next) {
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
-        db.container.findAll({
+        db.container.findOne({
             where: {
                 id_pharmacy: pharmacy_id,
             }

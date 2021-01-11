@@ -7,7 +7,7 @@ async function getPharmacyByX(my_key, value){
     query[my_key] = value;
 
     try {
-        pharmacy =  await db.pharmacy.findAll({
+        pharmacy =  await db.pharmacy.findOne({
             where: query,
         })
     } catch (e) {
@@ -36,6 +36,7 @@ exports.getPharmacyById = async function(req, res, next) {
                         error: "Cette pharmacie n'existe pas",
                     })
                 } else {
+                    console.log(typeof pharmacy);
                     res.json({
                         success: true,
                         result: pharmacy,

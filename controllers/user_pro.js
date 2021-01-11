@@ -21,7 +21,7 @@ async function getUserProByX(my_key, value){
     query[my_key] = value;
 
     try {
-        client =  await db.user_pro.findAll({
+        client =  await db.user_pro.findOne({
             where: query,
             attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         })
