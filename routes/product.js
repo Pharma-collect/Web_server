@@ -8,8 +8,7 @@ router.post('/getProductsByPharmacy', productController.getProductsByPharmacy);
 
 router.post('/createProduct', productController.createProduct);
 router.post('/updateProduct', productController.updateProduct);
-
-router.post('/deleteProduct', productController.deleteProductById);
+router.post('/deleteProduct', productController.deleteProduct);
 
 
 module.exports = router;
