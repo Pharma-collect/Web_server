@@ -5,7 +5,7 @@ const productController = require('../controllers/product');
 router.get('/getAllProducts', productController.getAllProducts);
 
 router.post('/getProductsByPharmacy', productController.getProductsByPharmacy);
-router.post('/getProductsById', productController.getProductsById());
+router.post('/getProductById', productController.getProductById);
 
 router.post('/createProduct', productController.createProduct);
 router.post('/updateProduct', productController.updateProduct);

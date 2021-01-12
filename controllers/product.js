@@ -45,7 +45,7 @@ exports.getProductsByPharmacy = function(req, res, next) {
     }
 }
 
-exports.getProductsById = function(req, res, next) {
+exports.getProductById = function(req, res, next) {
     const {
         product_id
     } = req.body;
