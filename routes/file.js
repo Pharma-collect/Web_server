@@ -3,7 +3,6 @@ const router = express.Router();
 const fileController = require("../controllers/file");
 
 var multer = require('multer');
-const bodyParser = require('body-parser');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
