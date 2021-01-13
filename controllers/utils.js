@@ -66,12 +66,9 @@ exports.getPharmaciesByX =  async function(my_key, value){
     return pharmacy;
 }
 
-exports.uploadMedia = async function(req) {
-    const {
-        filetype
-    } = req.body;
+exports.uploadMedia = async function(files, filetype) {
 
-    if (!req.files || Object.keys(req.files).length === 0) {
+    if (!files || Object.keys(files).length === 0) {
         return {
             errorCode: 500,
             success: false,
@@ -79,7 +76,7 @@ exports.uploadMedia = async function(req) {
         };
     }
 
-    let targetFile = req.files.file;
+    let targetFile = files.file;
     let extName = path.extname(targetFile.name);
     let baseName = path.basename(targetFile.name, extName);
 

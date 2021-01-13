@@ -1,10 +1,13 @@
 const utils = require('./utils');
 
 exports.upload = async function(req, res){
+  const {
+    filetype,
+  } = req.body;
   let my_upload;
 
   try {
-    my_upload = await utils.uploadMedia(req);
+    my_upload = await utils.uploadMedia(req.files, filetype);
   } catch (e) {
     console.log(e)
   }

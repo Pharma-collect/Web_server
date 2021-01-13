@@ -13,6 +13,7 @@ const order_routes = require("./routes/order");
 const product_routes = require("./routes/product");
 const order_detail_routes = require("./routes/order_detail");
 const upload_routes = require("./routes/upload");
+const prescription_routes = require("./routes/prescription");
 
 
 const app = express(); //create express application
@@ -21,7 +22,7 @@ const app = express(); //create express application
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     next();
 });
 app.use(bodyParser.json());
@@ -41,6 +42,8 @@ app.use('/api/product', product_routes);
 app.use('/api/order_detail', order_detail_routes);
 app.use('/api/upload', upload_routes)
 app.use('/api/get_file', express.static("uploads"));
+app.use('/api/prescription', prescription_routes);
+
 
 
 
