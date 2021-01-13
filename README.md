@@ -53,12 +53,12 @@ Here is the list of available web-services as well as the parameters necessary f
 Allows you to retrieve all the customers present in the database.
 No parameters required.
 
-### [GET] - getUserClientById
+### [POST] - getUserClientById
 Allows you to retrieve a customer based on his ID.
 Parameter :
 * user_id *
 
-### [GET] - getUserClientByUsername
+### [POST] - getUserClientByUsername
 Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
@@ -94,12 +94,12 @@ Parameters :
 Allows you to retrieve all the professionals  present in the database.
 No parameters required.
 
-### [GET] - getUserProByPharmacy
+### [POST] - getUserProByPharmacy
 Allows you to retrieve a pro based on his pharmacy.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getUserProByUsername
+### [POST] - getUserProByUsername
 Allows you to retrieve a pro based on his username.
 Parameter :
 * username *
@@ -126,37 +126,37 @@ Parameters :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/pharmacy/fonction_name__
 
-### [GET] - getPharmacyById
+### [POST] - getPharmacyById
 Allows you to retrieve a pharmacy based on his ID.
 Parameter :
 * pharmacy_id *
 
-### [GET] - getPharmacyByName
+### [POST] - getPharmacyByName
 Allows you to retrieve a pharmacy based on his name.
 Parameter :
 * name *
 
-### [GET] - getPharmacyByCity
+### [POST] - getPharmacyByCity
 Allows you to retrieve all the pharmacies in a given city.
 Parameter :
 * city *
 
-### [GET] - getPharmacyByPostCode
+### [POST] - getPharmacyByPostCode
 Allows you to retrieve all the pharmacies in a given post code.
 Parameter :
 * post_code *
 
-### [GET] - getPharmacyByBoss
+### [POST] - getPharmacyByBoss
 Allows you to retrieve all the pharmacies owned by a given boss
 Parameter :
 * boss *
 
-### [GET] - getPharmacyWithShop
+### [POST] - getPharmacyWithShop
 Allows you to retrieve all the pharmacies with a shop
 Parameter :
     none
 
-### [GET] - getPharmacyWithoutShop
+### [POST] - getPharmacyWithoutShop
 Allows you to retrieve all the pharmacies without a shop
 Parameter :
     none
@@ -241,7 +241,7 @@ Parameters :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/container/fonction_name__
 
-### [GET] - getContainerById
+### [POST] - getContainerById
 Allows you to retrieve a container based on his ID.
 Parameter :
 * container_id *
@@ -251,27 +251,27 @@ Allows you to retrieve all the containers
 Parameter :
     none
 
-### [GET] - getContainerByPharmacy
+### [POST] - getContainerByPharmacy
 Allows you to retrieve the containers based on the pharmacy ID
 Parameter :
 * pharmacy_id *
 
-### [GET] - getEmptyContainerByPharmacy
+### [POST] - getEmptyContainerByPharmacy
 Allows you to retrieve empty containers based on the pharmacy ID
 Parameter :
 * pharmacy_id * 
 
-### [GET] - getContainerStatusById
+### [POST] - getContainerStatusById
 Allows you to retrieve the status of a container based on his ID
 Parameter :
 * container_id *
 
-### [GET] - getContainerNumberById
+### [POST] - getContainerNumberById
 Allows you to retrieve the number of a container based on his ID
 Parameter :
 * number_id *
 
-### [GET] - getContainerPharmacyById
+### [POST] - getContainerPharmacyById
 Allows you to retrieve the ID of the pharmacy owning a container based on the container ID
 Parameter :
 * container_id *
@@ -304,65 +304,30 @@ Parameter :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/order/fonction_name__
 
-### [GET] - getOrderById
+### [POST] - getOrderById
 Allows you to retrieve an order based on his ID
 Parameter :
 * order_id *
 
-### [GET] - getOrderByPharmacy
+### [POST] - getOrderByPharmacy
 Allows you to retrieve all the orders addressed to a pharmacy, based on the pharmacy ID 
 Parameter :
 * pharmacy_id *
 
-### [GET] - getOrderByClient
+### [POST] - getOrderByClient
 Allows you to retrieve all the orders of a client, based on the client ID
 Parameter :
 * client_id *
 
-### [GET] - getOrderStatusById
-Allows you to retrieve the status of an order based on his ID
-Parameter :
-* order_id * 
-
-### [GET] - getOrderDetailById
-Allows you to retrieve the detail of an order based on his ID
-Parameter :
-* order_id *
-
-### [GET] - getOrderByStatus
+### [POST] - getOrderByStatus
 Allows you to retrieve all the orders with the required status
 Parameter :
 * order_status * must be a string : pending, ready, container or finish
 
-### [GET] - getOrderByPreparator
+### [POST] - getOrderByPreparator
 Allows you to retrieve all the orders prepared by a given preparator
 Parameter :
 * id_preparator *
-
-### [GET] - getOrderPreparatorById
-Allows you to retrieve the id of the preparator of an order thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderContainerById
-Allows you to retrieve the id of the container where the order is placed thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderQrCodeById
-Allows you to retrieve the id of the qrcode associated to an order thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderPharmacyById
-Allows you to retrieve the id of the pharmacy associated to an order thanks to the id of the order
-Parameter :
-* order_id *
-
-### [GET] - getOrderTotalPriceById
-Allows you to retrieve the total price of an order thanks to the id of the order
-Parameter :
-* order_id *
 
 ### [GET] - getAllOrders
 Allows you to retrieve all the orders
@@ -382,29 +347,13 @@ Allows you to delete an order based on his ID
 Parameter :
 * order_id *
 
-### [POST] - updateOrderStatusById
-Allows you to update the status of an order based on his ID
+### [POST] - updateOrder
+Allows you to update an order depending on the settings you send.
+Please send only what you want to change
 Parameter :
 * order_id *
 * status *
 
-### [POST] - updateOrderPreparatorById
-Allows you to update the preparator of an order based on his ID
-Parameter :
-* order_id *
-* preparator_id *
-
-### [POST] - updateOrderContainerById
-Allows you to update the container of an order based on his ID
-Parameter :
-* order_id *
-* container_id *
-
-### [POST] - updateOrderQrCodeById
-Allows you to update the QRCode of an order based on his ID
-Parameter :
-* order_id *
-* qrcode_id *
 
 
 
