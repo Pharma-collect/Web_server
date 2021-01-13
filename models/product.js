@@ -37,6 +37,11 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    creation_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.fn('current_timestamp')
+    }
   }, {
     sequelize,
     tableName: 'product',
