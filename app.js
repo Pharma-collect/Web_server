@@ -1,12 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+
 //routes declaration
 const user_client_routes = require("./routes/user_client");
+const user_pro_routes = require("./routes/user_pro");
 const pharmacy_routes = require("./routes/pharmacy");
 const container_routes = require("./routes/container");
 const order_routes = require("./routes/order");
-
+const product_routes = require("./routes/product");
+const order_detail_routes = require("./routes/order_detail");
+const file_routes = require("./routes/file");
 
 
 const app = express(); //create express application
@@ -23,8 +27,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes utilisation
 app.use('/api/user_client', user_client_routes);
+app.use('/api/user_pro', user_pro_routes);
 app.use('/api/pharmacy', pharmacy_routes);
 app.use('/api/container', container_routes);
 app.use('/api/order', order_routes);
+app.use('/api/product', product_routes);
+app.use('/api/order_detail', order_detail_routes);
+app.use('/api/uploadFile', file_routes)
+app.use('/api/getFile', express.static("uploads"));
+
+
+
 
 module.exports = app;
