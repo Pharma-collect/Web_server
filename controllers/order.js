@@ -327,6 +327,7 @@ exports.updateOrder = function(req, res, next) {
         detail,
         id_client,
         id_preparator,
+        id_container,
         id_qrcode,
         id_pharmacy,
         total_price
@@ -349,6 +350,7 @@ exports.updateOrder = function(req, res, next) {
                     detail: (detail ? detail : order.detail),
                     id_client: (id_client ? id_client : order.id_client),
                     id_preparator: (id_preparator ? id_preparator : order.id_preparator),
+                    id_container: (id_container ? id_container : order.id_container),
                     id_qrcode: (id_qrcode ? id_qrcode : order.id_qrcode),
                     id_pharmacy: (id_pharmacy ? id_pharmacy : order.id_pharmacy),
                     total_price: (total_price ? total_price : order.total_price),
