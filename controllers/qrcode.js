@@ -16,8 +16,6 @@ exports.createBase64 = async function(data){
 exports.createQrCode = async function(order_id, base64){
     let qrCode;
 
-    console.log(order_id);
-
     try {
         qrCode = await db.qrcode.create({id_order : order_id, data : base64});
     } catch (e) {

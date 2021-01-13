@@ -1,3 +1,4 @@
+
 /* jshint indent: 2 */
 
 const Sequelize = require('sequelize');
@@ -9,8 +10,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    id_order: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'order',
+        key: 'id'
+      }
+    },
     data: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       allowNull: true
     }
   }, {
@@ -24,6 +33,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "qr_order_id",
+        using: "BTREE",
+        fields: [
+          { name: "id_order" },
         ]
       },
     ]
