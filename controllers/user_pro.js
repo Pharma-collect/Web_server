@@ -242,13 +242,16 @@ exports.loginPro = function (req, res, next) {
                 })
             } else {
                 bcrypt.compare(password, user.password)
-                    .then(isValid => {
+                    .then(async (isValid) => {
+
                         if (!isValid) {
                             res.json({
                                 success: false,
                                 error: "Mot de Passe incorrect",
                             })
                         } else {
+                            let pharma = await utils.getPharmacyByX("id", user.pharmacy_id);
+
                             let valid_user = {
                                 id: user.id,
                                 username: user.username,
@@ -256,6 +259,7 @@ exports.loginPro = function (req, res, next) {
                                 token: utils.createToken(user),
                                 pharmacy: pharma
                             }
+
                             res.json({
                                 success: true,
                                 result: valid_user,
