@@ -316,7 +316,7 @@ Parameter :
 ### [POST] - getOrderByStatus
 Allows you to retrieve all the orders with the required status
 Parameter :
-* order_status *
+* order_status * must be a string : pending, ready, container or finish
 
 ### [POST] - getOrderByPreparator
 Allows you to retrieve all the orders prepared by a given preparator

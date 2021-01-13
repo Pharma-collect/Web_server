@@ -138,7 +138,9 @@ exports.getOrderByStatus = async function(req, res, next) {
         order_status
     } = req.body;
 
-    if (!order_status){
+    const label = ["pending", "ready", "container", "finish"];
+
+    if (!order_status || label.includes(order_status)){
         res.json({
             success: false,
             error: "Merci de préciser un statut"
