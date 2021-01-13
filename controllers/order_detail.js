@@ -21,7 +21,7 @@ exports.getOrderDetailById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        db.order_detail.findAll({
+        db.order_detail.findOne({
             where: {
                 id: order_detail_id,
             }

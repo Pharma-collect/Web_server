@@ -25,7 +25,7 @@ exports.getUserClientById = function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        db.user_client.findAll({
+        db.user_client.findOne({
             where: {
                 id: user_id,
             },
