@@ -220,7 +220,7 @@ exports.createOrder = async (req, res, next) => {
     } else {
         if(products_array.length > 0){
             db.order.create({
-                status : 0,
+                status : "pending",
                 detail : detail,
                 id_client : id_client,
                 id_pharmacy : id_pharmacy,

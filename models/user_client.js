@@ -9,6 +9,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    name: {
+      type: DataTypes.STRING(80),
+      allowNull: true
+    },
+    lastname: {
+      type: DataTypes.STRING(80),
+      allowNull: true
+    },
     username: {
       type: DataTypes.STRING(255),
       allowNull: true
@@ -31,14 +39,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     birth: {
       type: DataTypes.DATEONLY,
-      allowNull: true
-    },
-    name: {
-      type: DataTypes.STRING(80),
-      allowNull: true
-    },
-    lastname: {
-      type: DataTypes.STRING(80),
       allowNull: true
     }
   }, {
