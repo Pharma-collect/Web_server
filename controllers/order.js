@@ -250,12 +250,16 @@ exports.createOrder = async (req, res, next) => {
                 let data = "{order_id:"+new_order.id+"}";
                 let base = await Qrcode.createBase64(data);
 
+                console.log(new_order)
+
                 return {
                     order: new_order,
                     order_id: new_order.id,
                     base64: base
                 }
             }).then(async (all_data) =>{
+                console.log(all_data)
+
                 let qrCode = await Qrcode.createQrCode(all_data.order_id, all_data.base64);
 
                 return {
