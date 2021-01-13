@@ -216,9 +216,14 @@ Allows you to retrieve all the products present in the database.
 No parameters required.
 
 ### [POST] - getProductsByPharmacy
-Allows you to retrieve all the product based on a pharmacy ID.
+Allows you to retrieve all the products based on a pharmacy ID.
 Parameter :
 * pharmacy_id *
+
+### [POST] - getProductById
+Allows you to retrieve a product based on his ID.
+Parameter :
+* product_id *
 
 ### [POST] - createProduct
 Allows you to create a product.
