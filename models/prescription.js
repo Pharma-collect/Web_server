@@ -2,42 +2,18 @@
 
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('order', {
+  return sequelize.define('prescription', {
     id: {
       autoIncrement: true,
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true
-    },
-    status: {
-      type: DataTypes.ENUM('pending','ready','container','finish'),
-      allowNull: true
-    },
-    total_price: {
-      type: DataTypes.FLOAT,
-      allowNull: true
     },
     id_client: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'user_client',
-        key: 'id'
-      }
-    },
-    id_preparator: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'user_pro',
-        key: 'id'
-      }
-    },
-    id_container: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'container',
         key: 'id'
       }
     },
@@ -49,8 +25,28 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    id_preparator: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'user_pro',
+        key: 'id'
+      }
+    },
+    id_order: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'order',
+        key: 'id'
+      }
+    },
     detail: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    image_url: {
+      type: DataTypes.STRING(1256),
       allowNull: true
     },
     creation_date: {
@@ -60,7 +56,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'order',
+    tableName: 'prescription',
     timestamps: false,
     indexes: [
       {
@@ -72,31 +68,31 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "order_client_id",
+        name: "prescription_client_id",
         using: "BTREE",
         fields: [
           { name: "id_client" },
         ]
       },
       {
-        name: "order_container",
-        using: "BTREE",
-        fields: [
-          { name: "id_container" },
-        ]
-      },
-      {
-        name: "order_preparator",
-        using: "BTREE",
-        fields: [
-          { name: "id_preparator" },
-        ]
-      },
-      {
-        name: "order_pharmacie_id",
+        name: "prescription_pharmacy_id",
         using: "BTREE",
         fields: [
           { name: "id_pharmacy" },
+        ]
+      },
+      {
+        name: "prescription_order_id",
+        using: "BTREE",
+        fields: [
+          { name: "id_order" },
+        ]
+      },
+      {
+        name: "prescription_pro_id",
+        using: "BTREE",
+        fields: [
+          { name: "id_preparator" },
         ]
       },
     ]
