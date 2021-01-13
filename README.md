@@ -99,15 +99,15 @@ Allows you to retrieve a pro based on his pharmacy.
 Parameter :
 * pharmacy_id *
 
-### [POST] - getUserProByUsername
-Allows you to retrieve a pro based on his username.
+### [POST] - getUserProById
+Allows you to retrieve a pro based on his id.
 Parameter :
-* username *
+* user_id *
 
-### [POST] - deleteUserProByUsername
-Delete a pro according to his username.
+### [POST] - deleteUserProById
+Delete a pro according to his id.
 Parameter :
-* username *
+* user_id *
 
 ### [POST] - createUserPro
 Allows you to create a pro.
@@ -173,29 +173,19 @@ Parameter :
 * city * 
 * boss *
 
-### [POST] - updatePharmacyNameById
-Allows you to update the name of a pharmacy.
+### [POST] - updatePharmacy
+Allows you to update a pharmacy.
+Please send only what you want to change
 Parameter :
 * pharmacy_id *
-* name *
-
-### [POST] - updatePharmacyPhoneById
-Allows you to update the phone number of a pharmacy.
-Parameter :
-* pharmacy_id *
-* phone *
-
-### [POST] - updatePharmacyShopById
-Allows you to update if a pharmacy has a shop or not.
-Parameter :
-* pharmacy_id *
-* has_shop *
-
-### [POST] - updatePharmacyBossById
-Allows you to update the name of the boss of a pharmacy.
-Parameter :
-* pharmacy_id *
-* boss *
+* name 
+* has_shop 
+* road_nb 
+* road 
+* phone 
+* post_code 
+* city 
+* boss
 
 ### [POST] - deletePharmacyById
 Allows you to delete a pharmacy based on his ID.
@@ -235,6 +225,18 @@ Parameters :
 * capacity
 * image_url
 
+### [POST] - updateProduct
+Allows you to update a product.
+Please send only what you want to change.
+Parameters :
+* product_id *
+* title 
+* price 
+* pharmacy_id 
+* description
+* capacity
+* image_url
+
 
 
 ## Container
@@ -261,29 +263,14 @@ Allows you to retrieve empty containers based on the pharmacy ID
 Parameter :
 * pharmacy_id * 
 
-### [POST] - getContainerStatusById
-Allows you to retrieve the status of a container based on his ID
-Parameter :
-* container_id *
-
-### [POST] - getContainerNumberById
-Allows you to retrieve the number of a container based on his ID
-Parameter :
-* number_id *
-
-### [POST] - getContainerPharmacyById
-Allows you to retrieve the ID of the pharmacy owning a container based on the container ID
-Parameter :
-* container_id *
-
 ### [POST] - addXContainerToPharmacy
 Allows you to add X containers to a pharmacy based on the pharmacy ID
 Parameter :
 * pharmacy_id *
 * nb_of_containers *
 
-### [POST] - updateContainerStatusById
-Allows you to update the status of a container based on his ID
+### [POST] - updateContainer
+Allows you to update the a container based on his ID
 Parameter :
 * container_id *
 * status *
@@ -352,7 +339,11 @@ Allows you to update an order depending on the settings you send.
 Please send only what you want to change
 Parameter :
 * order_id *
-* status *
+* status
+* detail 
+* id_client 
+* id_pharmacy 
+* total_price 
 
 
 

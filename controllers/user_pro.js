@@ -49,20 +49,20 @@ exports.getUserProByPharmacy = function(req, res, next) {
     }
 }
 
-exports.getUserProByUsername = function(req, res, next) {
+exports.getUserProById = function(req, res, next) {
     const {
-        username
+        user_id
     } = req.body;
 
-    if (!username){
+    if (!user_id){
         res.json({
             success: false,
-            error: "Merci de préciser un username"
+            error: "Merci de préciser un id"
         })
     } else {
-        db.user_pro.findAll({
+        db.user_pro.findOne({
             where: {
-                username: username,
+                id: user_id,
             },
             attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
@@ -84,12 +84,12 @@ exports.getUserProByUsername = function(req, res, next) {
     }
 }
 
-exports.deleteUserProByUsername = function(req, res, next) {
+exports.deleteUserProById = function(req, res, next) {
     const {
-        username
+        user_id
     } = req.body;
 
-    if (!username){
+    if (!user_id){
         res.json({
             success: false,
             error: "Merci de préciser un identifiant"
@@ -97,7 +97,7 @@ exports.deleteUserProByUsername = function(req, res, next) {
     } else {
         db.user_pro.destroy({
             where: {
-                username: username,
+                id: user_id,
             }
         }).then(function(result){
             res.json({

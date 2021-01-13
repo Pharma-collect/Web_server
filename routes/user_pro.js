@@ -6,9 +6,9 @@ router.get('/getAllUserPro', userProController.getAllUserPro);
 
 router.post('/getUserProByPharmacy', userProController.getUserProByPharmacy);
 
-router.post('/getUserProByUsername', userProController.getUserProByUsername);
+router.post('/getUserProById', userProController.getUserProById);
 
-router.post('/deleteUserProByUsername', userProController.deleteUserProByUsername);
+router.post('/deleteUserProById', userProController.deleteUserProById);
 
 router.post('/createUserPro', userProController.createUserPro);
 
