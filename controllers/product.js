@@ -38,6 +38,41 @@ exports.getProductsByPharmacy = function(req, res, next) {
     }));
 }
 
+exports.getProductById = function(req, res, next) {
+    const {
+        product_id
+    } = req.body;
+
+    if(!product_id){
+        res.json({
+            success: false,
+            error: "Veuillez préciser un id de produit"
+        })
+    } else {
+        db.product.findOne({
+            where: {
+                id: product_id,
+            }
+        }).then(result => {
+            if(result){
+                res.json({
+                    success: true,
+                    result: result,
+                })
+            } else {
+                res.json({
+                    success: false,
+                    error: "Ce produit n'existe pas",
+                    result: result,
+                })
+            }
+        }).catch(error => res.status(500).json({
+            success: false,
+            error: error,
+        }));
+    }
+}
+
 exports.createProduct = function (req, res, next) {
     const {
         title,
@@ -111,7 +146,7 @@ exports.updateProduct = function (req, res) {
 
             } else {
                 res.json({
-                    success: true,
+                    success: false,
                     error: "Produit introuvable",
                     result: user,
                 })
@@ -143,7 +178,7 @@ exports.deleteProductById = function(req, res, next) {
         }).then(function(result){
             if (result.length === 0){
                 res.json({
-                    success: true,
+                    success: false,
                     error: "Ce produit n'existe pas.",
                 })
             } else {
