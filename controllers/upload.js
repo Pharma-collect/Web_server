@@ -68,7 +68,7 @@ exports.upload = function(req, res){
     }
 
     const pathFile = uploadDir.split('/')
-    const url='https://88-122-235-110.traefik.me/api/get_file/'
+    const url='https://88-122-235-110.traefik.me:61001/api/get_file/'
 
     targetFile.mv(uploadDir, (err) => {
       if (err){
