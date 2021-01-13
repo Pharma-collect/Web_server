@@ -15,34 +15,27 @@ exports.getProductsByPharmacy = function(req, res, next) {
         pharmacy_id,
     } = req.body;
 
-    if(!pharmacy_id){
-        res.json({
-            success: false,
-            error: "Veuillez préciser une pharmacie"
-        })
-    } else {
-        db.product.findAll({
-            where: {
-                id_pharmacy: pharmacy_id,
-            }
-        }).then(result => {
-            if(result.length > 0){
-                res.json({
-                    success: true,
-                    result: result,
-                })
-            } else {
-                res.json({
-                    success: true,
-                    error: "Aucun produit dans cette pharmacie",
-                    result: result,
-                })
-            }
-        }).catch(error => res.status(500).json({
-            success: false,
-            error: error,
-        }));
-    }
+    db.product.findAll({
+        where: {
+            id_pharmacy: pharmacy_id,
+        }
+    }).then(result => {
+        if(result.length > 0){
+            res.json({
+                success: true,
+                result: result,
+            })
+        } else {
+            res.json({
+                success: true,
+                error: "Aucun produit dans cette pharmacie",
+                result: result,
+            })
+        }
+    }).catch(error => res.status(500).json({
+        success: false,
+        error: error,
+    }));
 }
 
 exports.getProductById = function(req, res, next) {
@@ -128,7 +121,7 @@ exports.updateProduct = function (req, res) {
     if(!product_id){
         res.json({
             success: false,
-            error: "Veuillez précisez un produit à modifier"
+            error: "Informations manquantes"
         })
     } else {
         db.product.findOne({
@@ -180,6 +173,7 @@ exports.deleteProductById = function(req, res, next) {
         db.product.destroy({
             where: {
                 id: product_id,
+
             }
         }).then(function(result){
             if (result.length === 0){
