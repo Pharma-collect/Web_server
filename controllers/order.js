@@ -19,6 +19,23 @@ async function getOrderByX(my_key, value){
     return order;
 }
 
+async function getOrdersByX(my_key, value){
+    let order;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        order =  await db.order.findAll({
+            where: query
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return order;
+}
+
 exports.getOrderById = async function(req, res, next) {
     const {
         order_id
@@ -62,12 +79,12 @@ exports.getOrderByPharmacy = async function(req, res, next) {
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
-        await getOrderByX("id_pharmacy", pharmacy_id)
+        await getOrdersByX("id_pharmacy", pharmacy_id)
             .then(function(order){
                 if (!order) {
                     res.json({
                         success: false,
-                        error: "Cette commande n'existe pas",
+                        error: "Aucune commande trouvée",
                     })
                 } else {
                     res.json({
@@ -95,12 +112,12 @@ exports.getOrderByClient = async function(req, res, next) {
             error: "Merci de préciser un id de client"
         })
     } else {
-        await getOrderByX("id_client", client_id)
+        await getOrdersByX("id_client", client_id)
             .then(function(order){
                 if (!order) {
                     res.json({
                         success: false,
-                        error: "Cette commande n'existe pas",
+                        error: "Aucune commande trouvée"
                     })
                 } else {
                     res.json({
@@ -127,12 +144,12 @@ exports.getOrderByStatus = async function(req, res, next) {
             error: "Merci de préciser un statut"
         })
     } else {
-        await getOrderByX("status", order_status)
+        await getOrdersByX("status", order_status)
             .then(function(order){
                 if (!order) {
                     res.json({
                         success: false,
-                        error: "Cette commande n'existe pas",
+                        error: "Aucune commande",
                     })
                 } else {
                     res.json({
@@ -159,12 +176,12 @@ exports.getOrderByPreparator = async function(req, res, next) {
             error: "Merci de préciser un preparateur"
         })
     } else {
-        await getOrderByX("id_preparator", id_preparator)
+        await getOrdersByX("id_preparator", id_preparator)
             .then(function(order){
                 if (!order) {
                     res.json({
                         success: false,
-                        error: "Cette commande n'existe pas",
+                        error: "Aucune commande",
                     })
                 } else {
                     res.json({
