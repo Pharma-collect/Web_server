@@ -10,11 +10,11 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     status: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.ENUM('pending','ready','container','finish'),
       allowNull: true
     },
-    detail: {
-      type: DataTypes.INTEGER,
+    total_price: {
+      type: DataTypes.FLOAT,
       allowNull: true
     },
     id_client: {
@@ -41,14 +41,6 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    id_qrcode: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'qrcode',
-        key: 'id'
-      }
-    },
     id_pharmacy: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -57,9 +49,14 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    total_price: {
-      type: DataTypes.FLOAT,
+    detail: {
+      type: DataTypes.STRING(255),
       allowNull: true
+    },
+    creation_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -75,17 +72,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "order_qr_id",
-        using: "BTREE",
-        fields: [
-          { name: "id_qrcode" },
-        ]
-      },
-      {
         name: "order_client_id",
         using: "BTREE",
         fields: [
           { name: "id_client" },
+        ]
+      },
+      {
+        name: "order_container",
+        using: "BTREE",
+        fields: [
+          { name: "id_container" },
         ]
       },
       {
@@ -100,13 +97,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id_pharmacy" },
-        ]
-      },
-      {
-        name: "order_container",
-        using: "BTREE",
-        fields: [
-          { name: "id_container" },
         ]
       },
     ]
