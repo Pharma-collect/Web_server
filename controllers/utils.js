@@ -63,3 +63,4 @@ exports.getPharmaciesByX =  async function(my_key, value){
 
     return pharmacy;
 }
+

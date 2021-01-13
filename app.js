@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const path = require('path');
 
 
 //routes declaration
@@ -10,7 +12,7 @@ const container_routes = require("./routes/container");
 const order_routes = require("./routes/order");
 const product_routes = require("./routes/product");
 const order_detail_routes = require("./routes/order_detail");
-const file_routes = require("./routes/file");
+const upload_routes = require("./routes/upload");
 
 
 const app = express(); //create express application
@@ -24,6 +26,10 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : path.join(__dirname,'tmp'),
+}));
 
 //routes utilisation
 app.use('/api/user_client', user_client_routes);
@@ -33,8 +39,8 @@ app.use('/api/container', container_routes);
 app.use('/api/order', order_routes);
 app.use('/api/product', product_routes);
 app.use('/api/order_detail', order_detail_routes);
-app.use('/api/uploadFile', file_routes)
-app.use('/api/getFile', express.static("uploads"));
+app.use('/api/upload', upload_routes)
+app.use('/api/get_file', express.static("uploads"));
 
 
 
