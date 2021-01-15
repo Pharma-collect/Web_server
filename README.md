@@ -114,7 +114,7 @@ Delete a pro according to his Id.
 Parameter :
 * user_id *
 
-### [POST] - registerPro
+### [POST] - createUserPro
 Allows you to create a pro.
 Parameters :
 * username *
