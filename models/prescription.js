@@ -9,6 +9,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    status: {
+      type: DataTypes.ENUM('pending','ready','container','finish'),
+      allowNull: true
+    },
     id_client: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -33,26 +37,13 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    id_order: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'order',
-        key: 'id'
-      }
-    },
     detail: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     image_url: {
-      type: DataTypes.STRING(1256),
+      type: DataTypes.STRING(255),
       allowNull: true
-    },
-    creation_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -79,13 +70,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id_pharmacy" },
-        ]
-      },
-      {
-        name: "prescription_order_id",
-        using: "BTREE",
-        fields: [
-          { name: "id_order" },
         ]
       },
       {

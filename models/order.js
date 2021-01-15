@@ -2,7 +2,7 @@
 
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('order', {
+  return sequelize.define('order_global', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -49,6 +49,14 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    id_prescription: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'prescription',
+        key: 'id'
+      }
+    },
     detail: {
       type: DataTypes.STRING(255),
       allowNull: true
@@ -60,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'order',
+    tableName: 'order_global',
     timestamps: false,
     indexes: [
       {
@@ -97,6 +105,20 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id_pharmacy" },
+        ]
+      },
+      {
+        name: "order_pharmacie_id",
+        using: "BTREE",
+        fields: [
+          { name: "id_pharmacy" },
+        ]
+      },
+      {
+        name: "order_prescription",
+        using: "BTREE",
+        fields: [
+          { name: "id_prescription" },
         ]
       },
     ]

@@ -9,7 +9,7 @@ async function getOrderByX(my_key, value){
     query[my_key] = value;
 
     try {
-        order =  await db.order.findOne({
+        order =  await db.order_global.findOne({
             where: query
         })
     } catch (e) {
@@ -26,7 +26,7 @@ async function getOrdersByX(my_key, value){
     query[my_key] = value;
 
     try {
-        order =  await db.order.findAll({
+        order =  await db.order_global.findAll({
             where: query
         })
     } catch (e) {
@@ -200,7 +200,7 @@ exports.getOrderByPreparator = async function(req, res, next) {
 }
 
 exports.getAllOrders = function (req, res, next){
-    db.order.findAll().then(result => res.json({
+    db.order_global.findAll().then(result => res.json({
         success: true,
         result : result,
     })).catch(error => res.json({
@@ -216,6 +216,7 @@ exports.createOrder = async (req, res, next) => {
         total_price,
         detail,
         products,
+        id_prescription
     } = req.body;
 
     let regex = /{"id_product":\d*,"quantity":\d*}/gm;
@@ -238,12 +239,13 @@ exports.createOrder = async (req, res, next) => {
         })
     } else {
         if(products_array.length > 0){
-            db.order.create({
+            db.order_global.create({
                 status : "pending",
                 detail : detail,
                 id_client : id_client,
                 id_pharmacy : id_pharmacy,
-                total_price : total_price
+                total_price : total_price,
+                id_prescription: id_prescription
             }).then(new_order => {
                 return new_order;
             }).then(async (new_order) =>{
@@ -295,7 +297,7 @@ exports.deleteOrderById = function(req, res, next) {
             error: "Veuillez indiquer un id de commande"
         })
     } else {
-        db.order.destroy({
+        db.order_global.destroy({
             where: {
                 id: order_id,
             }
@@ -330,7 +332,8 @@ exports.updateOrder = function(req, res, next) {
         id_container,
         id_qrcode,
         id_pharmacy,
-        total_price
+        total_price,
+        id_prescription
     } = req.body;
 
     if (!order_id){
@@ -339,7 +342,7 @@ exports.updateOrder = function(req, res, next) {
             error: "Informations manquantes"
         })
     } else {
-        db.order.findOne({
+        db.order_global.findOne({
             where: {
                 id: order_id,
             }
@@ -353,19 +356,25 @@ exports.updateOrder = function(req, res, next) {
                     id_container: (id_container ? id_container : order.id_container),
                     id_qrcode: (id_qrcode ? id_qrcode : order.id_qrcode),
                     id_pharmacy: (id_pharmacy ? id_pharmacy : order.id_pharmacy),
+                    id_prescription: (id_prescription ? id_prescription : order.id_prescription),
                     total_price: (total_price ? total_price : order.total_price),
-                }).then(order_update =>res.json({
-                    success: true,
-                    result: order_update,
-                })).catch(error => res.status(500).json({
+                }).then(async (order_update) =>{
+                    if(status && order_update.id_prescription){
+                        await db.prescription.update({ status: status }, {where: {id: order_update.id_prescription}});
+                    }
+
+                    res.status(200).json({
+                        success: true,
+                        result: order_update,
+                    })
+                }).catch(error => res.status(500).json({
                     success: false,
                     error: error,
                 }))
             } else {
                 res.json({
-                    success: true,
+                    success: false,
                     error: "Commande introuvable",
-                    result: order,
                 })
             }
         }).catch(error => res.status(500).json({
