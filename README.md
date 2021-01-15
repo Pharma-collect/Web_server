@@ -31,9 +31,10 @@ NODE_ENV=production node server
 
 Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
 
-You also need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+You also need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 # Web Services
+
 
 Here is the list of available web-services as well as the parameters necessary for their proper functioning :
 
@@ -43,7 +44,7 @@ Here is the list of available web-services as well as the parameters necessary f
 
 > WARNING (3): Mandatory parameters will be noted with " * "
 
-> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "nodehttp.docker"
+> WARNING (4): You need to add a header with __Key__ : "Host" and __Value__ : "node"
 
 ## User_client
 > WARNING : Calls corresponding to this part will be made in the form of :
@@ -54,6 +55,10 @@ Allows you to retrieve all the customers present in the database.
 No parameters required.
 
 ### [POST] - getUserClientById
+> WARNING : Calls corresponding to this function are secured. 
+> To access a user's information you must be that user and you will have to send your identification toker in the __Header__ :
+> __Key__ : "Authorization" and __Value__ : "<your_token>"
+
 Allows you to retrieve a customer based on his ID.
 Parameter :
 * user_id *
@@ -63,7 +68,7 @@ Allows you to retrieve a customer based on his username.
 Parameter :
 * username *
 
-### [POST] - deleteUserClientById
+### [POST] - deleteUserClient
 Delete a customer according to his ID.
 Parameter :
 * user_id *
@@ -73,7 +78,7 @@ Allows you to create a customer.
 Parameters :
 * name *
 * lastname *
-* password *
+* password * (needs to be encrypted with bcrypt & salt of 10)
 * phone *
 * mail *
 * birth * (for the moment pass a string for example : JJ/MM/AAAA)
@@ -104,16 +109,16 @@ Allows you to retrieve a pro based on his id.
 Parameter :
 * user_id *
 
-### [POST] - deleteUserProById
-Delete a pro according to his id.
+### [POST] - deleteUserPro
+Delete a pro according to his Id.
 Parameter :
 * user_id *
 
-### [POST] - createUserPro
+### [POST] - registerPro
 Allows you to create a pro.
 Parameters :
 * username *
-* password *
+* password * (needs to be encrypted with bcrypt & salt of 10)
 * pharmacy_id *
 
 ### [POST] - loginPro
@@ -175,16 +180,16 @@ Parameter :
 
 ### [POST] - updatePharmacy
 Allows you to update a pharmacy.
-Please send only what you want to change
+You only have to send the data you want to change.
 Parameter :
 * pharmacy_id *
-* name 
-* has_shop 
-* road_nb 
-* road 
-* phone 
-* post_code 
-* city 
+* name
+* has_shop
+* road_nb
+* road
+* phone
+* post_code
+* city
 * boss
 
 ### [POST] - deletePharmacyById
@@ -206,11 +211,11 @@ Allows you to retrieve all the products present in the database.
 No parameters required.
 
 ### [POST] - getProductsByPharmacy
-Allows you to retrieve all the products based on a pharmacy ID.
+Allows you to retrieve all the product based on a pharmacy ID.
 Parameter :
 * pharmacy_id *
 
-### [POST] - getProductById
+### [POST] - getProductsById
 Allows you to retrieve a product based on his ID.
 Parameter :
 * product_id *
@@ -226,8 +231,8 @@ Parameters :
 * image_url
 
 ### [POST] - updateProduct
-Allows you to update a product.
-Please send only what you want to change.
+Allows you to update a product. 
+You only have to send the data you want to change.
 Parameters :
 * product_id *
 * title 
@@ -258,7 +263,7 @@ Allows you to retrieve the containers based on the pharmacy ID
 Parameter :
 * pharmacy_id *
 
-### [POST] - getEmptyContainerByPharmacy
+### [GET] - getEmptyContainerByPharmacy
 Allows you to retrieve empty containers based on the pharmacy ID
 Parameter :
 * pharmacy_id * 
@@ -270,7 +275,7 @@ Parameter :
 * nb_of_containers *
 
 ### [POST] - updateContainer
-Allows you to update the a container based on his ID
+Allows you to update the status of a container based on his ID
 Parameter :
 * container_id *
 * status *
@@ -281,7 +286,7 @@ Parameter :
 * container_id *
 
 ### [POST] - deleteAllContainersFromPharma
-Allows you to delete all the containers of a pharmacy based on the phamracy ID
+Allows you to delete all the containers of a pharmacy based on the pharmacy's ID
 Parameter :
 * pharmacy_id *
 
@@ -309,7 +314,7 @@ Parameter :
 ### [POST] - getOrderByStatus
 Allows you to retrieve all the orders with the required status
 Parameter :
-* order_status * must be a string : pending, ready, container or finish
+* order_status *
 
 ### [POST] - getOrderByPreparator
 Allows you to retrieve all the orders prepared by a given preparator
@@ -324,10 +329,20 @@ Parameter :
 ### [POST] - createOrder
 Allows you to create a new order
 Parameter :
-* detail *
 * id_client *
 * id_pharmacy *
-* total_price *
+* total_price (€) *
+* products * (JSON formatted array of products)
+* detail
+* id_prescription
+
+> JSON Code example :
+```
+    "products" : [
+                    {"id_product" : 3, "quantity" : 1 },
+                    {"id_product" : 2, "quantity" : 1 }    
+    ],
+```
 
 ### [POST] -  deleteOrderById
 Allows you to delete an order based on his ID
@@ -335,33 +350,28 @@ Parameter :
 * order_id *
 
 ### [POST] - updateOrder
-Allows you to update an order depending on the settings you send.
-Please send only what you want to change
+Allows you to update the status of an order based on his ID.
+You only have to send the data you want to change.
 Parameter :
 * order_id *
-* status
-* detail 
-* id_client 
-* id_pharmacy 
-* total_price 
-
-
+* status (if there is an prescription affiliated with the order then its status will be correlated)
+* detail
+* id_client
+* id_preparator
+* id_qrcode
+* id_pharmacy
+* total_price
+* id_prescription
 
 
 ## Order_detail
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/order_detail/fonction_name__
 
-### [GET] - getOrderDetailById
+### [POST] - getOrderDetailById
 Allows you to retrieve an order detail based on his ID
 Parameter :
 * order_detail_id *
-
-### [POST] - createOrderDetail
-Allows you to create an order detail based on a JSON formatted array of products and the id of the order
-Parameter :
-* products *
-* order_id *
 
 ### [POST] - deleteOrderDetailById
 Allows you to delete an order detail based on his id 
@@ -377,10 +387,45 @@ Allows you to upload files
 *need to be a **form-data format**
 Parameter :
 * file *
+* filetype * (avatar, prescription or product)
 
 ### [GET] - getFile/"filename"
 Allows you to get a static file by his filename
 
+## Prescription
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/prescription/fonction_name__
 
+### [POST] - createPrescription
+> WARNING : need to be a FORM_DATA format
 
+Allows you to create a prescription
+Parameter :
+* file *
+* id_client *
+* id_pharmacy*
+* detail
+
+### [POST] - updatePrescription
+Allows you to update the status of an order based on his ID.
+You only have to send the data you want to change.
+Parameter :
+* id_prescription *
+* detail
+* id_preparator
+* id_pharmacy
+* status
+
+### [POST] - deletePrescription
+Allows you to delete an prescription based on his id 
+Parameter :
+* id_prescription *
+
+## SWAGGER :warning:
+
+To get a better visualisation of the route :
+* Download swagger-viewer extension for chrome
+    * [Download extension Link](https://chrome.google.com/webstore/detail/swagger-viewer/nfmkaonpdmaglhjjlggfhlndofdldfag?hl=en)
+* Go to docs/swagger.yml
+* Put the extension on
 
