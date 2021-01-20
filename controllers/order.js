@@ -1,40 +1,8 @@
 const db = require('../models');
 const Qrcode = require('./qrcode');
 const OrderDetail = require('./order_detail');
+const utils = require('./utils');
 
-async function getOrderByX(my_key, value){
-    let order;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        order =  await db.order_global.findOne({
-            where: query
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return order;
-}
-
-async function getOrdersByX(my_key, value){
-    let order;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        order =  await db.order_global.findAll({
-            where: query
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return order;
-}
 
 exports.getOrderById = async function(req, res, next) {
     const {
@@ -47,7 +15,7 @@ exports.getOrderById = async function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        await getOrderByX("id", order_id)
+        await utils.getElementByX("order_global","id", order_id)
             .then(function(order){
                 if (!order) {
                     res.json({
@@ -79,12 +47,13 @@ exports.getOrderByPharmacy = async function(req, res, next) {
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
-        await getOrdersByX("id_pharmacy", pharmacy_id)
+        await utils.getElementsByX("order_global","id_pharmacy", pharmacy_id)
             .then(function(order){
-                if (!order) {
+                if (order.length === 0) {
                     res.json({
-                        success: false,
+                        success: true,
                         error: "Aucune commande trouvée",
+                        result: order
                     })
                 } else {
                     res.json({
@@ -112,12 +81,13 @@ exports.getOrderByClient = async function(req, res, next) {
             error: "Merci de préciser un id de client"
         })
     } else {
-        await getOrdersByX("id_client", client_id)
+        await utils.getElementsByX("order_global","id_client", client_id)
             .then(function(order){
-                if (!order) {
+                if (order.length === 0) {
                     res.json({
-                        success: false,
-                        error: "Aucune commande trouvée"
+                        success: true,
+                        error: "Aucune commande trouvée",
+                        result: order
                     })
                 } else {
                     res.json({
@@ -146,12 +116,13 @@ exports.getOrderByStatus = async function(req, res, next) {
             error: "Merci de préciser un statut correct"
         })
     } else {
-        await getOrdersByX("status", order_status)
+        await utils.getElementsByX("order_global","status", order_status)
             .then(function(order){
-                if (!order) {
+                if (order.length === 0) {
                     res.json({
-                        success: false,
-                        error: "Aucune commande",
+                        success: true,
+                        error: "Aucune commande trouvée",
+                        result: order
                     })
                 } else {
                     res.json({
@@ -178,12 +149,13 @@ exports.getOrderByPreparator = async function(req, res, next) {
             error: "Merci de préciser un preparateur"
         })
     } else {
-        await getOrdersByX("id_preparator", id_preparator)
+        await utils.getElementsByX("order_global","id_preparator", id_preparator)
             .then(function(order){
-                if (!order) {
+                if (order.length === 0) {
                     res.json({
-                        success: false,
-                        error: "Aucune commande",
+                        success: true,
+                        error: "Aucune commande trouvée",
+                        result: order
                     })
                 } else {
                     res.json({

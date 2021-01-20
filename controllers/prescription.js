@@ -1,40 +1,6 @@
 const db = require('../models');
 const utils = require('./utils');
 
-async function getPrescriptionByX(my_key, value){
-    let pres;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pres =  await db.prescription.findOne({
-            where: query
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pres;
-}
-
-async function getPrescriptionsByX(my_key, value){
-    let pres;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pres =  await db.prescription.findAll({
-            where: query
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pres;
-}
-
 exports.getPrescriptionById = async function(req, res, next) {
     const {
         prescription_id
@@ -46,11 +12,11 @@ exports.getPrescriptionById = async function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        await getPrescriptionByX("id", prescription_id)
+        await utils.getElementByX("prescription","id", prescription_id)
             .then(function(pres){
                 if (!pres) {
                     res.json({
-                        success: false,
+                        success: true,
                         error: "Cette ordonnance n'existe pas",
                     })
                 } else {
@@ -78,7 +44,7 @@ exports.getPrescriptionsByPharmacy = async function(req, res, next) {
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
-        await getPrescriptionsByX("id_pharmacy", pharmacy_id)
+        await utils.getElementsByX("prescription","id_pharmacy", pharmacy_id)
             .then(function(pres){
                 if (pres.length === 0) {
                     res.json({
@@ -112,7 +78,7 @@ exports.getPrescriptionsByClient = async function(req, res, next) {
             error: "Merci de préciser un id de client"
         })
     } else {
-        await getPrescriptionsByX("id_client", client_id)
+        await utils.getElementsByX("prescription","id_client", client_id)
             .then(function(pres){
                 if (pres.length === 0) {
                     res.json({
@@ -147,7 +113,7 @@ exports.getPrescriptionsByStatus = async function(req, res, next) {
             error: "Merci de préciser un statut correct"
         })
     } else {
-        await getPrescriptionsByX("status", status)
+        await utils.getElementsByX("prescription","status", status)
             .then(function(pres){
                 if (pres.length === 0) {
                     res.json({
@@ -237,7 +203,7 @@ exports.updatePrescription = function(req, res, next) {
             error: "Information manquante"
         })
     } else {
-        db.order.findOne({
+        db.prescription.findOne({
             where: {
                 id: id_prescription,
             }

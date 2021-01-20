@@ -441,6 +441,22 @@ Allows you to retrieve all the prescriptions with the required status
 Parameter :
 * status *
 
+## Extra
+> WARNING : Calls corresponding to this part will be made in the form of :
+>   __.../api/data/fonction_name__
+
+### [POST] - getFamousProducts
+
+Allows you to retrieve the most frequently purchased products from a pharmacy.
+Parameter :
+* pharmacy_id *
+
+### [POST] - getSalesRevenue
+
+Recovers the total amount of purchases.
+Parameter :
+* pharmacy_id *
+
 ## SWAGGER :warning:
 
 To get a better visualisation of the route :

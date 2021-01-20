@@ -251,7 +251,7 @@ exports.loginPro = function (req, res, next) {
                                 error: "Mot de Passe incorrect",
                             })
                         } else {
-                            let pharma = await pharma.getPharmacyByX("id", user.pharmacy_id);
+                            let pharma = await utils.getElementByX("pharmacy","id", user.pharmacy_id);
 
                             let valid_user = {
                                 id: user.id,

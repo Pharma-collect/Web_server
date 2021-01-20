@@ -14,6 +14,7 @@ const product_routes = require("./routes/product");
 const order_detail_routes = require("./routes/order_detail");
 const upload_routes = require("./routes/upload");
 const prescription_routes = require("./routes/prescription");
+const data_routes = require("./routes/data");
 
 
 const app = express(); //create express application
@@ -43,6 +44,7 @@ app.use('/api/order_detail', order_detail_routes);
 app.use('/api/upload', upload_routes)
 app.use('/api/get_file', express.static("uploads"));
 app.use('/api/prescription', prescription_routes);
+app.use('/api/data', data_routes);
 
 
 

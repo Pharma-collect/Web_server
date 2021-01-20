@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
-const db = require('../models');
 const fs = require('fs');
 const path = require('path');
+const db = require('../models');
+const { QueryTypes } = require('sequelize');
 
 exports.validateEmail = function(mail) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -126,4 +127,40 @@ exports.uploadMedia = async function(files, filetype) {
             error: "Filetype is invalid. Must be 'product/prescription/avatar'"
         };
     }
+}
+
+exports.getElementByX = async function(table, key, value) {
+    let element;
+
+    try {
+        element = await db.sequelize.query(
+            "SELECT * \n" +
+            "FROM "+table+" \n"+
+            "WHERE "+key+" = "+value+"\n", { type: QueryTypes.SELECT }
+        );
+    } catch (e) {
+        console.log(e)
+    }
+
+    if(element.length > 0){
+        return element[0]
+    } else {
+        return null
+    }
+}
+
+exports.getElementsByX = async function(table, key, value) {
+    let elements;
+
+    try {
+        elements = await db.sequelize.query(
+            "SELECT * \n" +
+            "FROM "+table+" \n"+
+            "WHERE "+key+" = "+value+"\n", { type: QueryTypes.SELECT }
+        );
+    } catch (e) {
+        console.log(e)
+    }
+
+    return elements
 }

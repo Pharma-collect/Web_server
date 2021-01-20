@@ -1,43 +1,6 @@
 const db = require('../models');
 const utils = require('./utils');
 
-async function getPharmacyByX(my_key, value){
-    let pharmacy;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pharmacy =  await db.pharmacy.findOne({
-            where: query,
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pharmacy;
-}
-
-async function getPharmaciesByX(my_key, value){
-    let pharmacy;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pharmacy =  await db.pharmacy.findAll({
-            where: query,
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pharmacy;
-}
-
-exports.getPharmacyByX = getPharmacyByX;
-exports.getPharmaciesByX = getPharmaciesByX;
-
 exports.getPharmacyById = async function(req, res, next) {
     const {
         pharmacy_id
@@ -49,11 +12,11 @@ exports.getPharmacyById = async function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        await getPharmacyByX("id", pharmacy_id)
+        await utils.getElementByX("pharmacy","id", pharmacy_id)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
-                        success: false,
+                        success: true,
                         error: "Cette pharmacie n'existe pas",
                     })
                 } else {
@@ -81,12 +44,13 @@ exports.getPharmacyByName = async function(req, res, next) {
             error: "Merci de préciser un nom"
         })
     } else {
-        await getPharmacyByX("name", name)
+        await utils.getElementByX("pharmacy","name", name)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
-                        success: false,
+                        success: true,
                         error: "Cette pharmacie n'existe pas",
+                        result: pharmacy,
                     })
                 } else {
                     res.json({
@@ -113,12 +77,13 @@ exports.getPharmacyByCity = async function(req, res, next) {
             error: "Merci de préciser une ville"
         })
     } else {
-        await getPharmaciesByX("city", city)
+        await utils.getElementsByX("pharmacy","city", city)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
-                        success: false,
+                        success: true,
                         error: "Aucune pharmacie n'existe dans cette ville",
+                        result: pharmacy
                     })
                 } else {
                     res.json({
@@ -145,12 +110,13 @@ exports.getPharmacyByPostCode = async function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        await getPharmaciesByX("post_code", post_code)
+        await utils.getElementsByX("pharmacy","post_code", post_code)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
                         success: false,
                         error: "Aucune pharmacie n'existe pour ce code postal",
+                        result: pharmacy
                     })
                 } else {
                     res.json({
@@ -177,11 +143,11 @@ exports.getPharmacyByBoss = async function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        await getPharmacyByX("boss", boss)
+        await utils.getElementByX("pharmacy","boss", boss)
             .then(function(pharmacy){
-                if (pharmacy.length === 0) {
+                if (!pharmacy) {
                     res.json({
-                        success: false,
+                        success: true,
                         error: "Aucune pharmacie n'existe pour ce patron",
                     })
                 } else {

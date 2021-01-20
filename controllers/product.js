@@ -61,7 +61,7 @@ exports.getProductById = function(req, res, next) {
                 })
             } else {
                 res.json({
-                    success: false,
+                    success: true,
                     error: "Ce produit n'existe pas",
                     result: result,
                 })
