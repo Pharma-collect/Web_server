@@ -1,6 +1,43 @@
 const db = require('../models');
 const utils = require('./utils');
 
+async function getPharmacyByX(my_key, value){
+    let pharmacy;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        pharmacy =  await db.pharmacy.findOne({
+            where: query,
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return pharmacy;
+}
+
+async function getPharmaciesByX(my_key, value){
+    let pharmacy;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        pharmacy =  await db.pharmacy.findAll({
+            where: query,
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return pharmacy;
+}
+
+exports.getPharmacyByX = getPharmacyByX;
+exports.getPharmaciesByX = getPharmaciesByX;
+
 exports.getPharmacyById = async function(req, res, next) {
     const {
         pharmacy_id
@@ -12,7 +49,7 @@ exports.getPharmacyById = async function(req, res, next) {
             error: "Merci de préciser un id"
         })
     } else {
-        await utils.getPharmacyByX("id", pharmacy_id)
+        await getPharmacyByX("id", pharmacy_id)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
@@ -44,7 +81,7 @@ exports.getPharmacyByName = async function(req, res, next) {
             error: "Merci de préciser un nom"
         })
     } else {
-        await utils.getPharmacyByX("name", name)
+        await getPharmacyByX("name", name)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
@@ -76,7 +113,7 @@ exports.getPharmacyByCity = async function(req, res, next) {
             error: "Merci de préciser une ville"
         })
     } else {
-        await utils.getPharmaciesByX("city", city)
+        await getPharmaciesByX("city", city)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
@@ -108,7 +145,7 @@ exports.getPharmacyByPostCode = async function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        await utils.getPharmaciesByX("post_code", post_code)
+        await getPharmaciesByX("post_code", post_code)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({
@@ -140,7 +177,7 @@ exports.getPharmacyByBoss = async function(req, res, next) {
             error: "Merci de préciser une code postal"
         })
     } else {
-        await utils.getPharmacyByX("boss", boss)
+        await getPharmacyByX("boss", boss)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
                     res.json({

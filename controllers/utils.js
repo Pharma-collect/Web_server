@@ -32,40 +32,6 @@ exports.createToken = function (user) {
     )
 }
 
-exports.getPharmacyByX =  async function(my_key, value){
-    let pharmacy;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pharmacy =  await db.pharmacy.findOne({
-            where: query,
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pharmacy;
-}
-
-exports.getPharmaciesByX =  async function(my_key, value){
-    let pharmacy;
-    let query = {}
-
-    query[my_key] = value;
-
-    try {
-        pharmacy =  await db.pharmacy.findAll({
-            where: query,
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    return pharmacy;
-}
-
 exports.uploadMedia = async function(files, filetype) {
 
     if (!files || Object.keys(files).length === 0) {

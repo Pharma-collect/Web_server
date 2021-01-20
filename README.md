@@ -397,7 +397,7 @@ Allows you to get a static file by his filename
 >   __.../api/prescription/fonction_name__
 
 ### [POST] - createPrescription
-> WARNING : need to be a FORM_DATA format
+> WARNING : need to be a FORM_DATA format 
 
 Allows you to create a prescription
 Parameter :
@@ -420,6 +420,26 @@ Parameter :
 Allows you to delete an prescription based on his id 
 Parameter :
 * id_prescription *
+
+### [POST] - getPrescriptionById
+Allows you to retrieve an prescription based on his ID.
+Parameter :
+* prescription_id *
+
+### [POST] - getPrescriptionsByPharmacy
+Allows you to retrieve all the prescriptions addressed to a pharmacy, based on the pharmacy ID. 
+Parameter :
+* pharmacy_id *
+
+### [POST] - getPrescriptionsByClient
+Allows you to retrieve all the prescriptions of a client, based on the client ID.
+Parameter :
+* client_id *
+
+### [POST] - getPrescriptionsByStatus
+Allows you to retrieve all the prescriptions with the required status
+Parameter :
+* status *
 
 ## SWAGGER :warning:
 

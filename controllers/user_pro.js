@@ -1,5 +1,6 @@
 const db = require('../models');
 const utils = require('./utils');
+const pharma = require('./pharmacy');
 const bcrypt = require('bcrypt');
 
 exports.getAllUserPro = function(req, res, next) {
@@ -250,7 +251,7 @@ exports.loginPro = function (req, res, next) {
                                 error: "Mot de Passe incorrect",
                             })
                         } else {
-                            let pharma = await utils.getPharmacyByX("id", user.pharmacy_id);
+                            let pharma = await pharma.getPharmacyByX("id", user.pharmacy_id);
 
                             let valid_user = {
                                 id: user.id,

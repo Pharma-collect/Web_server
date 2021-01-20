@@ -1,6 +1,174 @@
 const db = require('../models');
 const utils = require('./utils');
 
+async function getPrescriptionByX(my_key, value){
+    let pres;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        pres =  await db.prescription.findOne({
+            where: query
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return pres;
+}
+
+async function getPrescriptionsByX(my_key, value){
+    let pres;
+    let query = {}
+
+    query[my_key] = value;
+
+    try {
+        pres =  await db.prescription.findAll({
+            where: query
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    return pres;
+}
+
+exports.getPrescriptionById = async function(req, res, next) {
+    const {
+        prescription_id
+    } = req.body;
+
+    if (!prescription_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id"
+        })
+    } else {
+        await getPrescriptionByX("id", prescription_id)
+            .then(function(pres){
+                if (!pres) {
+                    res.json({
+                        success: false,
+                        error: "Cette ordonnance n'existe pas",
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: pres,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
+    }
+}
+
+exports.getPrescriptionsByPharmacy = async function(req, res, next) {
+    const {
+        pharmacy_id
+    } = req.body;
+
+    if (!pharmacy_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de pharmacie"
+        })
+    } else {
+        await getPrescriptionsByX("id_pharmacy", pharmacy_id)
+            .then(function(pres){
+                if (pres.length === 0) {
+                    res.json({
+                        success: true,
+                        error: "Aucune ordonnance correspond à cette pharmacie",
+                        result: pres,
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: pres,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
+    }
+}
+
+
+exports.getPrescriptionsByClient = async function(req, res, next) {
+    const {
+        client_id
+    } = req.body;
+
+    if (!client_id){
+        res.json({
+            success: false,
+            error: "Merci de préciser un id de client"
+        })
+    } else {
+        await getPrescriptionsByX("id_client", client_id)
+            .then(function(pres){
+                if (pres.length === 0) {
+                    res.json({
+                        success: true,
+                        error: "Aucune ordonnance correspond à ce client",
+                        result: pres,
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: pres,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
+    }
+}
+
+exports.getPrescriptionsByStatus = async function(req, res, next) {
+    const {
+        status
+    } = req.body;
+
+    const label = ["pending", "ready", "container", "finish"];
+
+    if (!status || !label.includes(status)){
+        res.json({
+            success: false,
+            error: "Merci de préciser un statut correct"
+        })
+    } else {
+        await getPrescriptionsByX("status", status)
+            .then(function(pres){
+                if (pres.length === 0) {
+                    res.json({
+                        success: true,
+                        error: "Aucune ordonnance correspond à ce statut",
+                        result: pres,
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        result: pres,
+                    })
+                }
+            })
+            .catch(error => res.json({
+                success: false,
+                error: error
+            }));
+    }
+}
+
 exports.createPrescription = async function(req, res, next) {
     const {
         id_client,
