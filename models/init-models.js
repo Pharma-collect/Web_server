@@ -1,6 +1,6 @@
 var DataTypes = require("sequelize").DataTypes;
 var _container = require("./container");
-var _order = require("./order");
+var _order = require("./order_global");
 var _order_detail = require("./order_detail");
 var _pharmacy = require("./pharmacy");
 var _prescription = require("./prescription");
