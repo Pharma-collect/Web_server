@@ -44,6 +44,11 @@ module.exports = function(sequelize, DataTypes) {
     image_url: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    creation_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
