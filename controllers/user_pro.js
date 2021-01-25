@@ -238,7 +238,7 @@ exports.loginPro = function (req, res, next) {
         .then(user => {
             if(!user){
                 res.json({
-                    success: false,
+                    success: true,
                     error: "Identifiant incorrect",
                 })
             } else {
@@ -247,7 +247,7 @@ exports.loginPro = function (req, res, next) {
 
                         if (!isValid) {
                             res.json({
-                                success: false,
+                                success: true,
                                 error: "Mot de Passe incorrect",
                             })
                         } else {
@@ -269,14 +269,16 @@ exports.loginPro = function (req, res, next) {
                     })
                     .catch(error => res.json({
                             success: false,
-                            error: error
+                            error: error,
+                            info: "compare bcrypt"
                         })
                     );
             }
         })
         .catch(error => res.json({
                 success: false,
-                error: error
+                error: error,
+                info: "check id"
             })
         );
 }
