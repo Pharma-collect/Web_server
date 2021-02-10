@@ -373,6 +373,7 @@ Parameter :
 * id_pharmacy
 * total_price
 * id_prescription
+* id_container (if there is an affiliated container and the status of the order is "container" then the status of the container will also be modified.)
 
 
 ## Order_detail

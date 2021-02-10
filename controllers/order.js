@@ -334,6 +334,8 @@ exports.updateOrder = function(req, res) {
                 }).then(async (order_update) =>{
                     if(status && order_update.id_prescription){
                         await db.prescription.update({ status: status }, {where: {id: order_update.id_prescription}});
+                    } else if (status && status === "container" &&  order_update.id_container){
+                        await db.container.update({ status: 1 }, {where: {id: order_update.id_container}});
                     }
 
                     res.status(200).json({
