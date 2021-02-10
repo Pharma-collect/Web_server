@@ -2,6 +2,7 @@ const db = require('../models');
 const Qrcode = require('./qrcode');
 const OrderDetail = require('./order_detail');
 const utils = require('./utils');
+const shajs = require('sha.js')
 
 
 exports.getOrderById = async function(req, res) {
@@ -16,6 +17,39 @@ exports.getOrderById = async function(req, res) {
         })
     } else {
         await utils.getElementByX("order_global","id", order_id)
+            .then(function(order){
+                if (!order) {
+                    res.status(204).json({
+                        success: true,
+                        error: "Cette commande n'existe pas",
+                        result: order
+                    })
+                } else {
+                    res.status(200).json({
+                        success: true,
+                        result: order,
+                    })
+                }
+            })
+            .catch(error => res.status(500).json({
+                success: false,
+                error: error
+            }));
+    }
+}
+
+exports.getOrderByHash = async function(req, res) {
+    const {
+        order_hash
+    } = req.body;
+
+    if (!order_hash){
+        res.status(422).json({
+            success: true,
+            error: "Merci de préciser un hash"
+        })
+    } else {
+        await utils.getElementByX("order_global","oder_hash", order_hash)
             .then(function(order){
                 if (!order) {
                     res.status(204).json({
@@ -218,11 +252,12 @@ exports.createOrder = async (req, res) => {
                 id_client : id_client,
                 id_pharmacy : id_pharmacy,
                 total_price : total_price,
-                id_prescription: id_prescription
+                id_prescription: id_prescription,
+                order_hash: shajs('sha256').update(Date.now()+total_price).digest('hex')
             }).then(new_order => {
                 return new_order;
             }).then(async (new_order) =>{
-                let data = "{order_id:"+new_order.id+"}";
+                let data = "{order_hash:"+new_order.order_hash+"}";
                 let base = await Qrcode.createBase64(data);
 
                 return {

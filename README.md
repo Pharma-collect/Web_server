@@ -312,6 +312,11 @@ Allows you to retrieve an order based on his ID
 Parameter :
 * order_id *
 
+### [POST] - getOrderByHash
+Allows you to retrieve an order based on his hash
+Parameter :
+* order_hash *
+
 ### [POST] - getOrderByPharmacy
 Allows you to retrieve all the orders addressed to a pharmacy, based on the pharmacy ID 
 Parameter :

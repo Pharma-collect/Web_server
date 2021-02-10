@@ -61,6 +61,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
+    order_hash: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     creation_date: {
       type: DataTypes.DATE,
       allowNull: false,

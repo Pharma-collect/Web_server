@@ -6,6 +6,8 @@ const containerController = require("../controllers/order");
 
 router.post('/getOrderById', containerController.getOrderById);
 
+router.post('/getOrderByHash', containerController.getOrderByHash);
+
 router.post('/getOrderByPharmacy', containerController.getOrderByPharmacy);
 
 router.post('/getOrderByClient', containerController.getOrderByClient);
