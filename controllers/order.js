@@ -49,7 +49,7 @@ exports.getOrderByHash = async function(req, res) {
             error: "Merci de préciser un hash"
         })
     } else {
-        await utils.getElementByX("order_global","oder_hash", order_hash)
+        await utils.getElementByX("order_global","order_hash", order_hash)
             .then(function(order){
                 if (!order) {
                     res.status(204).json({
