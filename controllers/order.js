@@ -49,25 +49,27 @@ exports.getOrderByHash = async function(req, res) {
             error: "Merci de préciser un hash"
         })
     } else {
-        await utils.getElementByX("order_global","order_hash", order_hash)
-            .then(function(order){
-                if (!order) {
-                    res.status(204).json({
-                        success: true,
-                        error: "Cette commande n'existe pas",
-                        result: order
-                    })
-                } else {
-                    res.status(200).json({
-                        success: true,
-                        result: order,
-                    })
-                }
-            })
-            .catch(error => res.status(500).json({
-                success: false,
-                error: error
-            }));
+        db.order_global.findOne({
+            where: {
+                order_hash: order_hash,
+            }
+        }).then(function(result){
+            if (!result){
+                res.status(204).json({
+                    success: true,
+                    error: "Cette commande n'existe pas",
+                    result: result
+                })
+            } else {
+                res.status(200).json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.status(500).json({
+            success: false,
+            error: error
+        }));
     }
 }
 
