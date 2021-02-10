@@ -2,26 +2,26 @@ const db = require('../models');
 const utils = require('./utils');
 const bcrypt = require('bcrypt');
 
-exports.getAllUserClient = function(req, res, next) {
+exports.getAllUserClient = function(req, res) {
     db.user_client.findAll({
         attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
-    }).then(result => res.json({
+    }).then(result => res.status(200).json({
         success: true,
         result: result,
-    })).catch(error => res.json({
+    })).catch(error => res.status(500).json({
         success: false,
         error: error
     }));
 }
 
-exports.getUserClientById = function(req, res, next) {
+exports.getUserClientById = function(req, res) {
     const {
         user_id
     } = req.body;
 
     if (!user_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id"
         })
     } else {
@@ -32,31 +32,31 @@ exports.getUserClientById = function(req, res, next) {
             attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette personne n'existe pas",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.getUserClientByUsername = function(req, res, next) {
+exports.getUserClientByUsername = function(req, res) {
     const {
         username
     } = req.body;
 
     if (!username){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un username"
         })
     } else {
@@ -67,31 +67,31 @@ exports.getUserClientByUsername = function(req, res, next) {
             attributes: ['id','username','name','lastname','mail','phone','birth','image_url'],
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette personne n'existe pas",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.deleteUserClientById = function(req, res, next) {
+exports.deleteUserClientById = function(req, res) {
     const {
         user_id
     } = req.body;
 
     if (!user_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id"
         })
     } else {
@@ -100,18 +100,18 @@ exports.deleteUserClientById = function(req, res, next) {
                 id: user_id,
             }
         }).then(function(result){
-            res.json({
+            res.status(200).json({
                 success: true,
                 result: result,
             })
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.registerClient = function (req, res, next) {
+exports.registerClient = function (req, res) {
     const {
         username,
         password,
@@ -124,18 +124,18 @@ exports.registerClient = function (req, res, next) {
     } = req.body;
 
     if(!name || !lastname || !birth || !password || !phone || !mail){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else if(!utils.validateEmail(mail)){
-        res.json({
-            success: false,
+        res.status(1001).json({
+            success: true,
             error: "Mail invalide"
         })
     } else if(!utils.validatePhoneNumber(phone)){
-        res.json({
-            success: false,
+        res.status(1002).json({
+            success: true,
             error: "Numéro de téléphone invalide"
         })
     } else {
@@ -144,12 +144,12 @@ exports.registerClient = function (req, res, next) {
         db.user_client.findAll({
         }).then(function(result){
             if(result.find(user => user.mail === mail)){
-                res.json({
+                res.status(1003).json({
                     success: true,
                     error: "Adresse mail déjà utilisée",
                 })
             } else if (result.find(user => user.username === new_username)){
-                res.json({
+                res.status(1004).json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
@@ -174,23 +174,25 @@ exports.registerClient = function (req, res, next) {
                         lastname: result.lastname,
                     };
 
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: result_without_password,
                     })
-                }).catch(error => res.json({
+                }).catch(error => res.status(500).json({
                     success: false,
-                    error: error
+                    error: error,
+                    info: "create"
                 }));
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
-            error: error
+            error: error,
+            info: "find"
         }));
     }
 }
 
-exports.registerClientPostman = function (req, res, next) {
+exports.registerClientPostman = function (req, res) {
     const {
         username,
         password,
@@ -203,18 +205,18 @@ exports.registerClientPostman = function (req, res, next) {
     } = req.body;
 
     if(!name || !lastname || !birth || !password || !phone || !mail){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else if(!utils.validateEmail(mail)){
-        res.json({
-            success: false,
+        res.status(1001).json({
+            success: true,
             error: "Mail invalide"
         })
     } else if(!utils.validatePhoneNumber(phone)){
-        res.json({
-            success: false,
+        res.status(1002).json({
+            success: true,
             error: "Numéro de téléphone invalide"
         })
     } else {
@@ -223,12 +225,12 @@ exports.registerClientPostman = function (req, res, next) {
         db.user_client.findAll({
         }).then(function(result){
             if(result.find(user => user.mail === mail)){
-                res.json({
+                res.status(1003).json({
                     success: true,
                     error: "Adresse mail déjà utilisée",
                 })
             } else if (result.find(user => user.username === new_username)){
-                res.json({
+                res.status(1004).json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
@@ -255,36 +257,38 @@ exports.registerClientPostman = function (req, res, next) {
                                 lastname: result.lastname,
                             };
 
-                            res.json({
+                            res.status(200).json({
                                 success: true,
                                 result: result_without_password,
                             })
-                        }).catch(error => res.json({
+                        }).catch(error => res.status(500).json({
                             success: false,
-                            error: error
+                            error: error,
+                            info: "create"
                         }));
                     })
-                    .catch(error => res.json({
+                    .catch(error => res.status(500).json({
                         success: false,
-                        error: error
+                        error: error,
+                        info: "hash"
                     }))
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.loginClient = function (req, res, next) {
+exports.loginClient = function (req, res) {
     const {
         username,
         password,
     } = req.body;
 
     if(!username || !password){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez remplir tout les champs",
         })
     }
@@ -292,16 +296,16 @@ exports.loginClient = function (req, res, next) {
     db.user_client.findOne({where: { username: username,}})
         .then(user => {
             if(!user){
-                res.json({
-                    success: false,
+                res.status(401).json({
+                    success: true,
                     error: "Identifiant incorrect",
                 })
             } else {
                 bcrypt.compare(password, user.password)
                     .then(isValid => {
                         if (!isValid) {
-                            res.json({
-                                success: false,
+                            res.status(401).json({
+                                success: true,
                                 error: "Mot de Passe incorrect",
                             })
                         } else {
@@ -316,22 +320,24 @@ exports.loginClient = function (req, res, next) {
                                 image_url: user.image_url,
                                 token: utils.createToken(user)
                             }
-                            res.json({
+                            res.status(200).json({
                                 success: true,
                                 result: valid_user,
                             })
                         }
                     })
-                    .catch(error => res.json({
+                    .catch(error => res.status(500).json({
                         success: false,
-                        error: error
+                        error: error,
+                        info: "compare"
                         })
                     );
             }
         })
-        .catch(error => res.json({
+        .catch(error => res.status(500).json({
                 success: false,
-                error: error
+                error: error,
+                info: "find"
             })
         );
 }

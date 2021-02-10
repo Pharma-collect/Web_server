@@ -4,65 +4,66 @@ const OrderDetail = require('./order_detail');
 const utils = require('./utils');
 
 
-exports.getOrderById = async function(req, res, next) {
+exports.getOrderById = async function(req, res) {
     const {
         order_id
     } = req.body;
 
     if (!order_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id"
         })
     } else {
         await utils.getElementByX("order_global","id", order_id)
             .then(function(order){
                 if (!order) {
-                    res.json({
-                        success: false,
+                    res.status(204).json({
+                        success: true,
                         error: "Cette commande n'existe pas",
+                        result: order
                     })
                 } else {
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: order,
                     })
                 }
             })
-            .catch(error => res.json({
+            .catch(error => res.status(500).json({
                 success: false,
                 error: error
             }));
     }
 }
 
-exports.getOrderByPharmacy = async function(req, res, next) {
+exports.getOrderByPharmacy = async function(req, res) {
     const {
         pharmacy_id
     } = req.body;
 
     if (!pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
         await utils.getElementsByX("order_global","id_pharmacy", pharmacy_id)
             .then(function(order){
                 if (order.length === 0) {
-                    res.json({
+                    res.status(204).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
                     })
                 } else {
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: order,
                     })
                 }
             })
-            .catch(error => res.json({
+            .catch(error => res.status(500).json({
                 success: false,
                 error: error
             }));
@@ -70,40 +71,40 @@ exports.getOrderByPharmacy = async function(req, res, next) {
 }
 
 
-exports.getOrderByClient = async function(req, res, next) {
+exports.getOrderByClient = async function(req, res) {
     const {
         client_id
     } = req.body;
 
     if (!client_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id de client"
         })
     } else {
         await utils.getElementsByX("order_global","id_client", client_id)
             .then(function(order){
                 if (order.length === 0) {
-                    res.json({
+                    res.status(204).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
                     })
                 } else {
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: order,
                     })
                 }
             })
-            .catch(error => res.json({
+            .catch(error => res.status(500).json({
                 success: false,
                 error: error
             }));
     }
 }
 
-exports.getOrderByStatus = async function(req, res, next) {
+exports.getOrderByStatus = async function(req, res) {
     const {
         order_status
     } = req.body;
@@ -111,77 +112,77 @@ exports.getOrderByStatus = async function(req, res, next) {
     const label = ["pending", "ready", "container", "finish"];
 
     if (!order_status || !label.includes(order_status)){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un statut correct"
         })
     } else {
         await utils.getElementsByX("order_global","status", order_status)
             .then(function(order){
                 if (order.length === 0) {
-                    res.json({
+                    res.status(204).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
                     })
                 } else {
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: order,
                     })
                 }
             })
-            .catch(error => res.json({
+            .catch(error => res.status(500).json({
                 success: false,
                 error: error
             }));
     }
 }
 
-exports.getOrderByPreparator = async function(req, res, next) {
+exports.getOrderByPreparator = async function(req, res) {
     const {
         id_preparator
     } = req.body;
 
     if (!id_preparator){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un preparateur"
         })
     } else {
         await utils.getElementsByX("order_global","id_preparator", id_preparator)
             .then(function(order){
                 if (order.length === 0) {
-                    res.json({
+                    res.status(204).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
                     })
                 } else {
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: order,
                     })
                 }
             })
-            .catch(error => res.json({
+            .catch(error => res.status(500).json({
                 success: false,
                 error: error
             }));
     }
 }
 
-exports.getAllOrders = function (req, res, next){
-    db.order_global.findAll().then(result => res.json({
+exports.getAllOrders = function (req, res){
+    db.order_global.findAll().then(result => res.status(200).json({
         success: true,
         result : result,
-    })).catch(error => res.json({
+    })).catch(error => res.status(500).json({
         success : false,
         error : error
     }));
 }
 
-exports.createOrder = async (req, res, next) => {
+exports.createOrder = async (req, res) => {
     const {
         id_client,
         id_pharmacy,
@@ -205,8 +206,8 @@ exports.createOrder = async (req, res, next) => {
     }
 
     if(!id_client || !id_pharmacy || !total_price || !products ){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -239,18 +240,18 @@ exports.createOrder = async (req, res, next) => {
             }).then(async (all_data) => {
                 let products_final = await OrderDetail.createOrderDetail(products_array, all_data.order_id)
 
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: all_data.order,
                     products: products_final
                 })
-            }).catch(error => res.json({
+            }).catch(error => res.status(500).json({
                 success: false,
                 error: "Informations erronées",
                 info: error
             }));
         } else{
-            res.json({
+            res.status(204).json({
                 success: false,
                 error: "Aucun produit dans votre commande"
             })
@@ -258,14 +259,14 @@ exports.createOrder = async (req, res, next) => {
     }
 }
 
-exports.deleteOrderById = function(req, res, next) {
+exports.deleteOrderById = function(req, res) {
     const {
         order_id
     } = req.body;
 
     if (!order_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez indiquer un id de commande"
         })
     } else {
@@ -275,17 +276,17 @@ exports.deleteOrderById = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette commande n'existe pas.",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result : result
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
@@ -294,7 +295,7 @@ exports.deleteOrderById = function(req, res, next) {
 
 
 
-exports.updateOrder = function(req, res, next) {
+exports.updateOrder = function(req, res) {
     const {
         order_id,
         status,
@@ -309,8 +310,8 @@ exports.updateOrder = function(req, res, next) {
     } = req.body;
 
     if (!order_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -342,16 +343,18 @@ exports.updateOrder = function(req, res, next) {
                 }).catch(error => res.status(500).json({
                     success: false,
                     error: error,
+                    info: "update"
                 }))
             } else {
-                res.json({
-                    success: false,
+                res.status(204).json({
+                    success: true,
                     error: "Commande introuvable",
                 })
             }
         }).catch(error => res.status(500).json({
             success: false,
             error: error,
+            info: "find"
         }));
     }
 }

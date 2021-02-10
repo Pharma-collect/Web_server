@@ -1,13 +1,13 @@
 const db = require('../models');
 
-exports.getContainerById = function(req, res, next) {
+exports.getContainerById = function(req, res) {
     const {
         container_id
     } = req.body;
 
     if (!container_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id"
         })
     } else {
@@ -17,32 +17,32 @@ exports.getContainerById = function(req, res, next) {
             }
         }).then(function(result){
             if (!result){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Ce container n'existe pas",
                     result: result
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.getContainerByPharmacy = function(req, res, next) {
+exports.getContainerByPharmacy = function(req, res) {
     const {
         pharmacy_id
     } = req.body;
 
     if (!pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
@@ -52,32 +52,32 @@ exports.getContainerByPharmacy = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette pharmacie n'existe pas ou n'a pas de containers.",
                     result: result
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.getEmptyContainerByPharmacy = function(req, res, next) {
+exports.getEmptyContainerByPharmacy = function(req, res) {
     const {
         pharmacy_id
     } = req.body;
 
     if (!pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
@@ -88,54 +88,54 @@ exports.getEmptyContainerByPharmacy = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette pharmacie n'existe pas ou n'a pas de containers vides.",
                     result: result
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.getAllContainers = function(req, res, next) {
+exports.getAllContainers = function(req, res) {
     db.container.findAll({
     }).then(function(result){
         if (result.length === 0){
-            res.json({
-                success: false,
+            res.status(204).json({
+                success: true,
                 error: "Il n'existe pas de containers",
                 result: result
             })
         } else {
-            res.json({
+            res.status(200).json({
                 success: true,
                 result: result,
             })
         }
-    }).catch(error => res.json({
+    }).catch(error => res.status(500).json({
         success: false,
         error: error
     }));
 }
 
-exports.addXContainerToPharmacy = (req, res, next) => {
+exports.addXContainerToPharmacy = (req, res) => {
     const {
         nb_of_containers,
         pharmacy_id,
     } = req.body;
 
     if(!pharmacy_id || !nb_of_containers){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -146,12 +146,12 @@ exports.addXContainerToPharmacy = (req, res, next) => {
         }).then(async function(result){
             await createContainer(pharmacy_id, result, nb_of_containers)
                 .then(function(containers_tab){
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: containers_tab,
                     })
                 })
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
@@ -173,15 +173,15 @@ async function createContainer(pharmacy_id, containers_already_here, number){
     return tab
 }
 
-exports.updateContainer = function(req, res, next) {
+exports.updateContainer = function(req, res) {
     const {
         container_id,
         status
     } = req.body;
 
     if (!container_id || !status){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -191,31 +191,31 @@ exports.updateContainer = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Ce container n'existe pas.",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result : result
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.deleteContainerById = function(req, res, next) {
+exports.deleteContainerById = function(req, res) {
     const {
         container_id
     } = req.body;
 
     if (!container_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez indiquer un id de container"
         })
     } else {
@@ -225,31 +225,31 @@ exports.deleteContainerById = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Ce container n'existe pas.",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result : result
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.deleteAllContainersFromPharma = function(req, res, next) {
+exports.deleteAllContainersFromPharma = function(req, res) {
     const {
         pharmacy_id
     } = req.body;
 
     if (!pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez indiquer un id de pharmacie"
         })
     } else {
@@ -259,17 +259,17 @@ exports.deleteAllContainersFromPharma = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette pharmacie n'a pas de containers.",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result : result
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));

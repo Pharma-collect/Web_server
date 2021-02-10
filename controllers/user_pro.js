@@ -1,28 +1,27 @@
 const db = require('../models');
 const utils = require('./utils');
-const pharma = require('./pharmacy');
 const bcrypt = require('bcrypt');
 
-exports.getAllUserPro = function(req, res, next) {
+exports.getAllUserPro = function(req, res) {
     db.user_pro.findAll({
         attributes: ['id','username', 'pharmacy_id', 'is_admin'],
-    }).then(result => res.json({
+    }).then(result => res.status(200).json({
         success: true,
         result: result,
-    })).catch(error => res.json({
+    })).catch(error => res.status(500).json({
         success: false,
         error: error
     }));
 }
 
-exports.getUserProByPharmacy = function(req, res, next) {
+exports.getUserProByPharmacy = function(req, res) {
     const {
         pharmacy_id
     } = req.body;
 
     if (!pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id de pharmacy"
         })
     } else {
@@ -33,31 +32,31 @@ exports.getUserProByPharmacy = function(req, res, next) {
             attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette personne n'existe pas",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.getUserProById = function(req, res, next) {
+exports.getUserProById = function(req, res) {
     const {
         user_id
     } = req.body;
 
     if (!user_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un id"
         })
     } else {
@@ -68,31 +67,31 @@ exports.getUserProById = function(req, res, next) {
             attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
             if (result.length === 0){
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Cette personne n'existe pas",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.deleteUserProById = function(req, res, next) {
+exports.deleteUserProById = function(req, res) {
     const {
         user_id
     } = req.body;
 
     if (!user_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Merci de préciser un identifiant"
         })
     } else {
@@ -101,18 +100,18 @@ exports.deleteUserProById = function(req, res, next) {
                 id: user_id,
             }
         }).then(function(result){
-            res.json({
+            res.status(200).json({
                 success: true,
                 result: result,
             })
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
     }
 }
 
-exports.createUserPro = function (req, res, next) {
+exports.createUserPro = function (req, res) {
     const {
         username,
         password,
@@ -120,8 +119,8 @@ exports.createUserPro = function (req, res, next) {
     } = req.body;
 
     if( !username || !password){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -129,7 +128,7 @@ exports.createUserPro = function (req, res, next) {
         db.user_pro.findAll({
         }).then(function(result){
             if (result.find(user => user.username === username)){
-                res.json({
+                res.status(1004).json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
@@ -147,23 +146,25 @@ exports.createUserPro = function (req, res, next) {
                         is_admin: 0
                     };
 
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         result: result_without_password,
                     })
-                }).catch(error => res.json({
+                }).catch(error => res.status(500).json({
                     success: false,
-                    error: error
+                    error: error,
+                    info: "create"
                 }));
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
-            error: error
+            error: error,
+            info: "find"
         }));
     }
 }
 
-exports.createUserProPostman = function (req, res, next) {
+exports.createUserProPostman = function (req, res) {
     const {
         username,
         password,
@@ -171,8 +172,8 @@ exports.createUserProPostman = function (req, res, next) {
     } = req.body;
 
     if( !username || !password || !pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -180,7 +181,7 @@ exports.createUserProPostman = function (req, res, next) {
         db.user_pro.findAll({
         }).then(function(result){
             if (result.find(user => user.username === username)){
-                res.json({
+                res.status(1004).json({
                     success: true,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
@@ -200,36 +201,39 @@ exports.createUserProPostman = function (req, res, next) {
                                 is_admin: 0
                             };
 
-                            res.json({
+                            res.status(200).json({
                                 success: true,
                                 result: result_without_password,
                             })
-                        }).catch(error => res.json({
+                        }).catch(error => res.status(500).json({
                             success: false,
-                            error: error
+                            error: error,
+                            info: "create"
                         }));
                     })
-                    .catch(error => res.json({
+                    .catch(error => res.status(500).json({
                         success: false,
-                        error: error
+                        error: error,
+                        info: "hash"
                     }))
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(200).json({
             success: false,
-            error: error
+            error: error,
+            info: "find"
         }));
     }
 }
 
-exports.loginPro = function (req, res, next) {
+exports.loginPro = function (req, res) {
     const {
         username,
         password,
     } = req.body;
 
     if(!username || !password){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez remplir tout les champs",
         })
     }
@@ -237,7 +241,7 @@ exports.loginPro = function (req, res, next) {
     db.user_pro.findOne({where: { username: username,}})
         .then(user => {
             if(!user){
-                res.json({
+                res.status(401).json({
                     success: true,
                     error: "Identifiant incorrect",
                 })
@@ -246,7 +250,7 @@ exports.loginPro = function (req, res, next) {
                     .then(async (isValid) => {
 
                         if (!isValid) {
-                            res.json({
+                            res.status(401).json({
                                 success: true,
                                 error: "Mot de Passe incorrect",
                             })
@@ -261,13 +265,13 @@ exports.loginPro = function (req, res, next) {
                                 pharmacy: pharma
                             }
 
-                            res.json({
+                            res.status(200).json({
                                 success: true,
                                 result: valid_user,
                             })
                         }
                     })
-                    .catch(error => res.json({
+                    .catch(error => res.status(500).json({
                             success: false,
                             error: error,
                             info: "compare bcrypt"
@@ -275,7 +279,7 @@ exports.loginPro = function (req, res, next) {
                     );
             }
         })
-        .catch(error => res.json({
+        .catch(error => res.status(500).json({
                 success: false,
                 error: error,
                 info: "check id"

@@ -4,6 +4,7 @@ const containerController = require("../controllers/order_detail");
 
 
 router.post('/getOrderDetailById', containerController.getOrderDetailById);
+router.post('/getOrderDetailsByOrder', containerController.getOrderDetailsByOrder);
 router.post('/deleteOrderDetailById', containerController.deleteOrderDetailById);
 
 

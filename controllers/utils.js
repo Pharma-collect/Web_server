@@ -150,7 +150,7 @@ exports.getElementByX = async function(table, key, value) {
 }
 
 exports.getElementsByX = async function(table, key, value) {
-    let elements;
+    let elements = [];
 
     try {
         elements = await db.sequelize.query(

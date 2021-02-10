@@ -33,6 +33,17 @@ Send data in __x-www-form-urlencoded__ or __raw__ with JSON settings
 
 You also need to add a header with __Key__ : "Host" and __Value__ : "node"
 
+
+## STATUS RETURNED
+> WARNING : In case of an error or not, the server can return different status
+
+* missing parameter : __422__
+* success : __200__
+* success get but empty result : __204__
+* login fail : __401__
+* custom : __> 1000__
+
+
 # Web Services
 
 
@@ -372,6 +383,11 @@ Parameter :
 Allows you to retrieve an order detail based on his ID
 Parameter :
 * order_detail_id *
+
+### [POST] - getOrderDetailsByOrder
+Allows you to retrieve details of order
+Parameter :
+* order_id *
 
 ### [POST] - deleteOrderDetailById
 Allows you to delete an order detail based on his id 

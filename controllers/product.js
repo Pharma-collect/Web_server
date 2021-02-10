@@ -1,51 +1,58 @@
 const db = require('../models');
 
-exports.getAllProducts = function(req, res, next) {
-    db.product.findAll().then(result => res.json({
+exports.getAllProducts = function(req, res) {
+    db.product.findAll().then(result => res.status(200).json({
         success: true,
         result: result,
-    })).catch(error => res.json({
+    })).catch(error => res.status(500).json({
         success: false,
         error: error
     }));
 }
 
-exports.getProductsByPharmacy = function(req, res, next) {
+exports.getProductsByPharmacy = function(req, res) {
     const {
         pharmacy_id,
     } = req.body;
 
-    db.product.findAll({
-        where: {
-            id_pharmacy: pharmacy_id,
-        }
-    }).then(result => {
-        if(result.length > 0){
-            res.json({
-                success: true,
-                result: result,
-            })
-        } else {
-            res.json({
-                success: true,
-                error: "Aucun produit dans cette pharmacie",
-                result: result,
-            })
-        }
-    }).catch(error => res.status(500).json({
-        success: false,
-        error: error,
-    }));
+    if(!pharmacy_id){
+        res.status(422).json({
+            success: true,
+            error: "Merci de préciser un id"
+        })
+    } else {
+        db.product.findAll({
+            where: {
+                id_pharmacy: pharmacy_id,
+            }
+        }).then(result => {
+            if(result.length > 0){
+                res.status(200).json({
+                    success: true,
+                    result: result,
+                })
+            } else {
+                res.status(204).json({
+                    success: true,
+                    error: "Aucun produit dans cette pharmacie",
+                    result: result,
+                })
+            }
+        }).catch(error => res.status(500).json({
+            success: false,
+            error: error,
+        }));
+    }
 }
 
-exports.getProductById = function(req, res, next) {
+exports.getProductById = function(req, res) {
     const {
         product_id
     } = req.body;
 
     if(!product_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez préciser un id de produit"
         })
     } else {
@@ -55,12 +62,12 @@ exports.getProductById = function(req, res, next) {
             }
         }).then(result => {
             if(result){
-                res.json({
+                res.status(200).json({
                     success: true,
                     result: result,
                 })
             } else {
-                res.json({
+                res.status(204).json({
                     success: true,
                     error: "Ce produit n'existe pas",
                     result: result,
@@ -73,7 +80,7 @@ exports.getProductById = function(req, res, next) {
     }
 }
 
-exports.createProduct = function (req, res, next) {
+exports.createProduct = function (req, res) {
     const {
         title,
         price,
@@ -84,8 +91,8 @@ exports.createProduct = function (req, res, next) {
     } = req.body;
 
     if(!title || !price || !pharmacy_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -97,11 +104,11 @@ exports.createProduct = function (req, res, next) {
             capacity: capacity,
             id_pharmacy: pharmacy_id,
         }).then(function(result){
-            res.json({
+            res.status(200).json({
                 success: true,
                 result: result,
             })
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
@@ -119,8 +126,8 @@ exports.updateProduct = function (req, res) {
     } = req.body;
 
     if(!product_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Informations manquantes"
         })
     } else {
@@ -136,16 +143,17 @@ exports.updateProduct = function (req, res) {
                     image_url: (image_url ? image_url : user.image_url),
                     description: (description ? description : user.description),
                     capacity: (capacity ? capacity : user.capacity),
-                }).then(user_update =>res.json({
+                }).then(user_update =>res.status(200).json({
                     success: true,
                     result: user_update,
                 })).catch(error => res.status(500).json({
                     success: false,
                     error: error,
+                    info: "update"
                 }))
 
             } else {
-                res.json({
+                res.status(204).json({
                     success: false,
                     error: "Produit introuvable",
                     result: user,
@@ -154,19 +162,20 @@ exports.updateProduct = function (req, res) {
         }).catch(error => res.status(500).json({
             success: false,
             error: error,
+            info: "find"
         }));
     }
 }
 
 
-exports.deleteProductById = function(req, res, next) {
+exports.deleteProductById = function(req, res) {
     const {
         product_id
     } = req.body;
 
     if (!product_id){
-        res.json({
-            success: false,
+        res.status(422).json({
+            success: true,
             error: "Veuillez indiquer un id de produit"
         })
     } else {
@@ -177,17 +186,17 @@ exports.deleteProductById = function(req, res, next) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.json({
-                    success: false,
+                res.status(204).json({
+                    success: true,
                     error: "Ce produit n'existe pas.",
                 })
             } else {
-                res.json({
+                res.status(200).json({
                     success: true,
                     result : result
                 })
             }
-        }).catch(error => res.json({
+        }).catch(error => res.status(500).json({
             success: false,
             error: error
         }));
