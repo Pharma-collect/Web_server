@@ -278,9 +278,15 @@ exports.createOrder = async (req, res) => {
 
                 return {
                     order: all_data.order,
-                    order_id: qrCode.id_order
+                    order_id: qrCode.id_order,
+                    qrCode: qrCode.data
                 }
             }).then(async (all_data) => {
+                let pharma = await db.pharmacy.findOne({where: {id: id_pharmacy}})
+                let client = await db.user_client.findOne({where: {id: id_client}})
+
+                await utils.mailSender(client.mail, client.name, pharma.name, all_data.order_id, false)
+
                 let products_final = await OrderDetail.createOrderDetail(products_array, all_data.order_id)
 
                 res.status(200).json({
@@ -383,6 +389,11 @@ exports.updateOrder = function(req, res) {
                         await db.container.update({ status: 1 }, {where: {id: order_update.id_container}});
                     } else if (status && status === "finish" &&  order_update.id_container){
                         await db.container.update({ status: 0}, {where: {id: order_update.id_container}});
+                    } else if(status && status === "finish"){
+                        let pharma = await db.pharmacy.findOne({where: {id: order_update.id_pharmacy}})
+                        let client = await db.user_client.findOne({where: {id: order_update.id_client}})
+
+                        await utils.mailSender(client.mail, client.name, pharma.name, order_update.id, true)
                     }
 
                     res.status(200).json({
