@@ -351,6 +351,7 @@ Parameter :
 * products * (JSON formatted array of products)
 * detail
 * id_prescription
+* id_preparator
 
 > JSON Code example :
 ```

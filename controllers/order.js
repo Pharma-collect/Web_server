@@ -225,7 +225,8 @@ exports.createOrder = async (req, res) => {
         total_price,
         detail,
         products,
-        id_prescription
+        id_prescription,
+        id_preparator
     } = req.body;
 
     let regex = /{"id_product":\d*,"quantity":\d*}/gm;
@@ -255,8 +256,13 @@ exports.createOrder = async (req, res) => {
                 id_pharmacy : id_pharmacy,
                 total_price : total_price,
                 id_prescription: id_prescription,
+                id_preparator: id_preparator,
                 order_hash: shajs('sha256').update(Date.now()+total_price).digest('hex')
-            }).then(new_order => {
+            }).then(async (new_order) => {
+                if(id_preparator && id_prescription){
+                    await db.prescription.update({ id_preparator: id_preparator }, {where: {id: id_prescription}});
+                }
+
                 return new_order;
             }).then(async (new_order) =>{
                 let data = "{order_hash:"+new_order.order_hash+"}";
@@ -371,6 +377,8 @@ exports.updateOrder = function(req, res) {
                 }).then(async (order_update) =>{
                     if(status && order_update.id_prescription){
                         await db.prescription.update({ status: status }, {where: {id: order_update.id_prescription}});
+                    } else if(id_preparator && order_update.id_prescription){
+                        await db.prescription.update({ id_preparator: id_preparator }, {where: {id: order_update.id_prescription}});
                     } else if (status && status === "container" &&  order_update.id_container){
                         await db.container.update({ status: 1 }, {where: {id: order_update.id_container}});
                     } else if (status && status === "finish" &&  order_update.id_container){
