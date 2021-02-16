@@ -80,6 +80,41 @@ exports.getProductById = function(req, res) {
     }
 }
 
+exports.getProductsForShop = function(req, res) {
+    const {
+        pharmacy_id,
+    } = req.body;
+
+    if(!pharmacy_id){
+        res.status(422).json({
+            success: true,
+            error: "Veuillez préciser un id de pharmacie"
+        })
+    } else {
+        db.product.findAll({
+            where: {
+                id_pharmacy: pharmacy_id,
+                prescription_only: 0
+            }
+        }).then(function(result){
+            if (result.length === 0){
+                res.status(422).json({
+                    success: true,
+                    error: "Aucun produit disponible dans cette pharmacie",
+                })
+            } else {
+                res.status(200).json({
+                    success: true,
+                    result: result,
+                })
+            }
+        }).catch(error => res.status(500).json({
+            success: false,
+            error: error
+        }));
+    }
+}
+
 exports.createProduct = function (req, res) {
     const {
         title,
@@ -87,7 +122,8 @@ exports.createProduct = function (req, res) {
         image_url,
         description,
         capacity,
-        pharmacy_id
+        pharmacy_id,
+        prescription_only
     } = req.body;
 
     if(!title || !price || !pharmacy_id){
@@ -103,6 +139,7 @@ exports.createProduct = function (req, res) {
             image_url: image_url,
             capacity: capacity,
             id_pharmacy: pharmacy_id,
+            prescription_only: (prescription_only ? prescription_only : 0),
         }).then(function(result){
             res.status(200).json({
                 success: true,
@@ -123,6 +160,7 @@ exports.updateProduct = function (req, res) {
         image_url,
         description,
         capacity,
+        prescription_only
     } = req.body;
 
     if(!product_id){
@@ -135,14 +173,15 @@ exports.updateProduct = function (req, res) {
             where: {
                 id: product_id,
             }
-        }).then(user => {
-            if(user){
-                user.update({
-                    title: (title ? title : user.title),
-                    price: (price ? price : user.price),
-                    image_url: (image_url ? image_url : user.image_url),
-                    description: (description ? description : user.description),
-                    capacity: (capacity ? capacity : user.capacity),
+        }).then(current_product => {
+            if(current_product){
+                current_product.update({
+                    title: (title ? title : current_product.title),
+                    price: (price ? price : current_product.price),
+                    image_url: (image_url ? image_url : current_product.image_url),
+                    description: (description ? description : current_product.description),
+                    capacity: (capacity ? capacity : current_product.capacity),
+                    prescription_only: (prescription_only ? prescription_only : current_product.prescription_only),
                 }).then(user_update =>res.status(200).json({
                     success: true,
                     result: user_update,
@@ -156,7 +195,7 @@ exports.updateProduct = function (req, res) {
                 res.status(204).json({
                     success: false,
                     error: "Produit introuvable",
-                    result: user,
+                    result: current_product,
                 })
             }
         }).catch(error => res.status(500).json({

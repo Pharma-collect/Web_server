@@ -37,6 +37,10 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    prescription_only: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     creation_date: {
       type: DataTypes.DATE,
       allowNull: false,

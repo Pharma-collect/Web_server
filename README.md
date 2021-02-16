@@ -226,6 +226,11 @@ Allows you to retrieve all the product based on a pharmacy ID.
 Parameter :
 * pharmacy_id *
 
+### [POST] - getProductsForShop
+Allows you to retrieve all the product based on a pharmacy ID and available without prescription.
+Parameter :
+* pharmacy_id *
+
 ### [POST] - getProductsById
 Allows you to retrieve a product based on his ID.
 Parameter :
@@ -240,6 +245,7 @@ Parameters :
 * description
 * capacity
 * image_url
+*  prescription_only (1 if the product is available by prescription only)
 
 ### [POST] - updateProduct
 Allows you to update a product. 
@@ -252,6 +258,7 @@ Parameters :
 * description
 * capacity
 * image_url
+* prescription_only
 
 
 
