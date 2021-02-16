@@ -217,7 +217,7 @@ Parameter :
 > WARNING : Calls corresponding to this part will be made in the form of :
 >   __.../api/product/fonction_name__
 
-### [GET] - getAllProducts
+### [GET] - getAllProducts 
 Allows you to retrieve all the products present in the database.
 No parameters required.
 
