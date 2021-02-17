@@ -383,13 +383,20 @@ exports.updateOrder = function(req, res) {
                 }).then(async (order_update) =>{
                     if(status && order_update.id_prescription){
                         await db.prescription.update({ status: status }, {where: {id: order_update.id_prescription}});
-                    } else if(id_preparator && order_update.id_prescription){
+                    }
+
+                    if(id_preparator && order_update.id_prescription){
                         await db.prescription.update({ id_preparator: id_preparator }, {where: {id: order_update.id_prescription}});
-                    } else if (status && status === "container" &&  order_update.id_container){
+                    }
+
+                    if ((order_update.status === "container") &&  order_update.id_container){
                         await db.container.update({ status: 1 }, {where: {id: order_update.id_container}});
-                    } else if (status && status === "finish" &&  order_update.id_container){
+                    }
+                    if ((order_update.status === "finish") &&  order_update.id_container){
                         await db.container.update({ status: 0}, {where: {id: order_update.id_container}});
-                    } else if(status && status === "finish"){
+                    }
+
+                    if(status && status === "finish"){
                         let pharma = await db.pharmacy.findOne({where: {id: order_update.id_pharmacy}})
                         let client = await db.user_client.findOne({where: {id: order_update.id_client}})
 
