@@ -232,7 +232,7 @@ exports.createOrder = async (req, res) => {
     if(!id_client || !id_pharmacy || !total_price || !products ){
         res.status(422).json({
             success: true,
-            error: "Informations manquantes"
+            error: "Informations manquantes (id_client, id_pharmacy, total_price, products)"
         })
     } else {
         let regex = /{"id_product":\d*,"quantity":\d*}/gm;
