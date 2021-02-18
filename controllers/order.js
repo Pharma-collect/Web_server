@@ -229,25 +229,25 @@ exports.createOrder = async (req, res) => {
         id_preparator
     } = req.body;
 
-    let regex = /{"id_product":\d*,"quantity":\d*}/gm;
-    let products_array = [];
-
-    if(typeof products === "string"){
-        products.match(regex).forEach(product =>{
-            products_array.push(JSON.parse(product));
-        })
-    } else{
-        products.forEach(product => {
-            products_array.push(product);
-        })
-    }
-
     if(!id_client || !id_pharmacy || !total_price || !products ){
         res.status(422).json({
             success: true,
             error: "Informations manquantes"
         })
     } else {
+        let regex = /{"id_product":\d*,"quantity":\d*}/gm;
+        let products_array = [];
+
+        if(typeof products === "string"){
+            products.match(regex).forEach(product =>{
+                products_array.push(JSON.parse(product));
+            })
+        } else{
+            products.forEach(product => {
+                products_array.push(product);
+            })
+        }
+
         if(products_array.length > 0){
             db.order_global.create({
                 status : "pending",
