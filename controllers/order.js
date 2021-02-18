@@ -282,12 +282,12 @@ exports.createOrder = async (req, res) => {
                     qrCode: qrCode.data
                 }
             }).then(async (all_data) => {
+                let products_final = await OrderDetail.createOrderDetail(products_array, all_data.order_id)
+
                 let pharma = await db.pharmacy.findOne({where: {id: id_pharmacy}})
                 let client = await db.user_client.findOne({where: {id: id_client}})
 
                 await utils.mailSender(client.mail, client.name, pharma.name, all_data.order_id, false)
-
-                let products_final = await OrderDetail.createOrderDetail(products_array, all_data.order_id)
 
                 res.status(200).json({
                     success: true,
