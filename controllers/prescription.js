@@ -15,7 +15,7 @@ exports.getPrescriptionById = async function(req, res) {
         await utils.getElementByX("prescription","id", prescription_id)
             .then(function(pres){
                 if (!pres) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Cette ordonnance n'existe pas",
                         result: pres
@@ -48,7 +48,7 @@ exports.getPrescriptionsByPharmacy = async function(req, res) {
         await utils.getElementsByX("prescription","id_pharmacy", pharmacy_id)
             .then(function(pres){
                 if (pres.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune ordonnance correspond à cette pharmacie",
                         result: pres,
@@ -82,7 +82,7 @@ exports.getPrescriptionsByClient = async function(req, res) {
         await utils.getElementsByX("prescription","id_client", client_id)
             .then(function(pres){
                 if (pres.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune ordonnance correspond à ce client",
                         result: pres,
@@ -117,7 +117,7 @@ exports.getPrescriptionsByStatus = async function(req, res) {
         await utils.getElementsByX("prescription","status", status)
             .then(function(pres){
                 if (pres.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune ordonnance correspond à ce statut",
                         result: pres,
@@ -225,7 +225,7 @@ exports.updatePrescription = function(req, res) {
                     info: "update"
                 }))
             } else {
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Commande introuvable",
                 })
@@ -255,7 +255,7 @@ exports.deletePrescription = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette ordonnance n'existe pas.",
                 })

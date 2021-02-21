@@ -17,7 +17,7 @@ exports.getContainerById = function(req, res) {
             }
         }).then(function(result){
             if (!result){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Ce container n'existe pas",
                     result: result
@@ -52,7 +52,7 @@ exports.getContainerByPharmacy = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette pharmacie n'existe pas ou n'a pas de containers.",
                     result: result
@@ -88,7 +88,7 @@ exports.getEmptyContainerByPharmacy = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette pharmacie n'existe pas ou n'a pas de containers vides.",
                     result: result
@@ -110,7 +110,7 @@ exports.getAllContainers = function(req, res) {
     db.container.findAll({
     }).then(function(result){
         if (result.length === 0){
-            res.status(204).json({
+            res.status(200).json({
                 success: true,
                 error: "Il n'existe pas de containers",
                 result: result
@@ -191,7 +191,7 @@ exports.updateContainer = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Ce container n'existe pas.",
                 })
@@ -225,7 +225,7 @@ exports.deleteContainerById = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Ce container n'existe pas.",
                 })
@@ -259,7 +259,7 @@ exports.deleteAllContainersFromPharma = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette pharmacie n'a pas de containers.",
                 })

@@ -32,7 +32,7 @@ exports.getProductsByPharmacy = function(req, res) {
                     result: result,
                 })
             } else {
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Aucun produit dans cette pharmacie",
                     result: result,
@@ -67,7 +67,7 @@ exports.getProductById = function(req, res) {
                     result: result,
                 })
             } else {
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Ce produit n'existe pas",
                     result: result,
@@ -192,7 +192,7 @@ exports.updateProduct = function (req, res) {
                 }))
 
             } else {
-                res.status(204).json({
+                res.status(200).json({
                     success: false,
                     error: "Produit introuvable",
                     result: current_product,
@@ -225,7 +225,7 @@ exports.deleteProductById = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Ce produit n'existe pas.",
                 })

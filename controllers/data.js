@@ -38,7 +38,7 @@ exports.getFamousProducts = async function(req, res) {
                 result: products,
             })
         } else {
-            res.status(204).json({
+            res.status(200).json({
                 success: true,
                 error: "Aucun produit n'a été acheté",
                 result: products,
@@ -84,7 +84,7 @@ exports.getSalesRevenue = async function(req, res) {
                 result: {sales_revenue: final},
             })
         } else {
-            res.status(204).json({
+            res.status(200).json({
                 success: true,
                 error: "Aucun produit n'a été acheté",
                 result: {sales_revenue: revenue[0].sales_revenue},

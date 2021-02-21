@@ -15,7 +15,7 @@ exports.getPharmacyById = async function(req, res) {
         await utils.getElementByX("pharmacy","id", pharmacy_id)
             .then(function(pharmacy){
                 if (!pharmacy) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Cette pharmacie n'existe pas",
                     })
@@ -47,7 +47,7 @@ exports.getPharmacyByName = async function(req, res) {
         await utils.getElementByX("pharmacy","name", name)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Cette pharmacie n'existe pas",
                         result: pharmacy,
@@ -72,7 +72,7 @@ exports.getPharmacyByCity = async function(req, res) {
     } = req.body;
 
     if (!city){
-        res.status(204).json({
+        res.status(200).json({
             success: false,
             error: "Merci de préciser une ville"
         })
@@ -80,7 +80,7 @@ exports.getPharmacyByCity = async function(req, res) {
         await utils.getElementsByX("pharmacy","city", city)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune pharmacie n'existe dans cette ville",
                         result: pharmacy
@@ -113,7 +113,7 @@ exports.getPharmacyByPostCode = async function(req, res) {
         await utils.getElementsByX("pharmacy","post_code", post_code)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune pharmacie n'existe pour ce code postal",
                         result: pharmacy
@@ -146,7 +146,7 @@ exports.getPharmacyByBoss = async function(req, res) {
         await utils.getElementByX("pharmacy","boss", boss)
             .then(function(pharmacy){
                 if (!pharmacy) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune pharmacie n'existe pour ce patron",
                     })
@@ -194,7 +194,7 @@ exports.getPharmacyWithoutShop = function(req, res) {
         }
     }).then(function(result){
         if (result.length === 0){
-            res.status(204).json({
+            res.status(200).json({
                 success: true,
                 error: "Aucune pharmacie sans shop n'existe",
             })
@@ -294,7 +294,7 @@ exports.updatePharmacy = function(req, res) {
                     info: error
                 }));
             } else {
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Pharmacie introuvable",
                     result: pharmacy,
@@ -339,7 +339,7 @@ exports.deletePharmacyById = async function(req, res) {
         await deletePharmacyByX("id", pharmacy_id)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Cette pharmacie n'existe pas.",
                         result: pharmacy
@@ -372,7 +372,7 @@ exports.deletePharmacyByBoss = async function(req, res) {
         await deletePharmacyByX("boss", boss)
             .then(function(pharmacy){
                 if (pharmacy.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Cette pharmacie n'existe pas.",
                         result: pharmacy

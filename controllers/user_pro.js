@@ -32,7 +32,7 @@ exports.getUserProByPharmacy = function(req, res) {
             attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette personne n'existe pas",
                 })
@@ -67,7 +67,7 @@ exports.getUserProById = function(req, res) {
             attributes: ['id','username', 'pharmacy_id', 'is_admin'],
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette personne n'existe pas",
                 })

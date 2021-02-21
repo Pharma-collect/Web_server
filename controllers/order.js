@@ -19,7 +19,7 @@ exports.getOrderById = async function(req, res) {
         await utils.getElementByX("order_global","id", order_id)
             .then(function(order){
                 if (!order) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Cette commande n'existe pas",
                         result: order
@@ -55,7 +55,7 @@ exports.getOrderByHash = async function(req, res) {
             }
         }).then(function(result){
             if (!result){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette commande n'existe pas",
                     result: result
@@ -87,7 +87,7 @@ exports.getOrderByPharmacy = async function(req, res) {
         await utils.getElementsByX("order_global","id_pharmacy", pharmacy_id)
             .then(function(order){
                 if (order.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
@@ -121,7 +121,7 @@ exports.getOrderByClient = async function(req, res) {
         await utils.getElementsByX("order_global","id_client", client_id)
             .then(function(order){
                 if (order.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
@@ -156,7 +156,7 @@ exports.getOrderByStatus = async function(req, res) {
         await utils.getElementsByX("order_global","status", order_status)
             .then(function(order){
                 if (order.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
@@ -189,7 +189,7 @@ exports.getOrderByPreparator = async function(req, res) {
         await utils.getElementsByX("order_global","id_preparator", id_preparator)
             .then(function(order){
                 if (order.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucune commande trouvée",
                         result: order
@@ -300,7 +300,7 @@ exports.createOrder = async (req, res) => {
                 info: error
             }));
         } else{
-            res.status(204).json({
+            res.status(200).json({
                 success: false,
                 error: "Aucun produit dans votre commande"
             })
@@ -325,7 +325,7 @@ exports.deleteOrderById = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: false,
                     error: "Cette commande n'existe pas.",
                 })
@@ -413,7 +413,7 @@ exports.updateOrder = function(req, res) {
                     info: "update"
                 }))
             } else {
-                res.status(204).json({
+                res.status(200).json({
                     success: false,
                     error: "Commande introuvable",
                 })

@@ -28,7 +28,7 @@ exports.getOrderDetailById = function(req, res) {
             }
         }).then(function(result){
             if (!result){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Cette commande n'existe pas",
                     result: result
@@ -60,7 +60,7 @@ exports.getOrderDetailsByOrder = async function(req, res) {
         await utils.getElementsByX("order_detail","id_order", order_id)
             .then(async function(details){
                 if (details.length === 0) {
-                    res.status(204).json({
+                    res.status(200).json({
                         success: true,
                         error: "Aucun details pour cette commande",
                         result: details
@@ -111,7 +111,7 @@ exports.deleteOrderDetailById = function(req, res) {
             }
         }).then(function(result){
             if (result.length === 0){
-                res.status(204).json({
+                res.status(200).json({
                     success: true,
                     error: "Ce detail n'existe pas.",
                 })
