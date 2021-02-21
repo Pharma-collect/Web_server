@@ -146,40 +146,37 @@ exports.createPrescription = async function(req, res) {
     if (!req.files || !id_client || !id_pharmacy){
         res.status(422).json({
             success: true,
-            error: "Informations manquantes"
+            error: "Informations manquantes (id_client, id_pharmacy, file)"
         })
     } else {
         await utils.uploadMedia(req.files, "prescription")
-            .then(function(uploadResult){
+            .then( async function(uploadResult){
                 if(uploadResult.success){
-                    return uploadResult.url;
+                    try {
+                        let pres = await db.prescription.create({
+                            id_client : id_client,
+                            id_pharmacy : id_pharmacy,
+                            detail: detail,
+                            image_url: uploadResult.url,
+                            status: "pending",
+                        })
+
+                        res.status(200).json({
+                            success: true,
+                            result: pres,
+                        })
+                    } catch (e) {
+                        res.status(500).json({
+                            success: false,
+                            error: "erreur creation db",
+                            info: e
+                        })
+                    }
                 }else{
                     res.status(uploadResult.errorCode).json({
                         success: false,
                         error: uploadResult.error,
                         info: "error upload 1"
-                    })
-                }
-            })
-            .then(async (url) => {
-                try {
-                    let pres = await db.prescription.create({
-                        id_client : id_client,
-                        id_pharmacy : id_pharmacy,
-                        detail: detail,
-                        image_url: url,
-                        status: "pending",
-                    })
-
-                    res.status(200).json({
-                        success: true,
-                        result: pres,
-                    })
-                } catch (e) {
-                    res.status(500).json({
-                        success: false,
-                        error: "erreur creation db",
-                        info: e
                     })
                 }
             })
