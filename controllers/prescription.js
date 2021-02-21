@@ -166,7 +166,6 @@ exports.createPrescription = async function(req, res) {
                             result: pres,
                         })
                     } catch (e) {
-                        console.log("creation db : ", e )
                         res.status(500).json({
                             success: false,
                             error: "erreur creation db",
@@ -174,7 +173,6 @@ exports.createPrescription = async function(req, res) {
                         })
                     }
                 }else{
-                    console.log("error upload 1 : ", uploadResult.error)
                     res.status(uploadResult.errorCode).json({
                         success: false,
                         error: uploadResult.error,
@@ -183,8 +181,6 @@ exports.createPrescription = async function(req, res) {
                 }
             })
             .catch(error => {
-                console.log("error upload 2 : ", error)
-
                 res.status(500).json({
                     success: false,
                     info: error,
