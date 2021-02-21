@@ -232,7 +232,7 @@ exports.loginPro = function (req, res) {
     } = req.body;
 
     if(!username || !password){
-        res.status(200).json({
+        res.status(422).json({
             success: false,
             error: "Veuillez remplir tout les champs",
         })
