@@ -60,7 +60,7 @@ exports.uploadMedia = async function(files, filetype) {
         };
     }
 
-    if(targetFile.size > 1048576){
+    /*if(targetFile.size > 1048576){
         fs.unlinkSync(targetFile.tempFilePath);
 
         return {
@@ -68,7 +68,7 @@ exports.uploadMedia = async function(files, filetype) {
             success: false,
             error: "File too large"
         };
-    }
+    }*/
 
     let num = 1;
     let pathUpload= ''
