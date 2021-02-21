@@ -157,7 +157,7 @@ exports.createPrescription = async function(req, res) {
                     res.status(uploadResult.errorCode).json({
                         success: false,
                         error: uploadResult.error,
-                        info: "error upload"
+                        info: "error upload 1"
                     })
                 }
             })
@@ -185,7 +185,8 @@ exports.createPrescription = async function(req, res) {
             })
             .catch(error => res.status(500).json({
                 success: false,
-                error: error
+                info: error,
+                error: "error upload 2"
             }));
     }
 }

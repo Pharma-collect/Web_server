@@ -116,7 +116,8 @@ exports.uploadMedia = async function(files, filetype) {
             return {
                 errorCode: 500,
                 success: false,
-                error: err
+                info: err,
+                error: "error mv"
             };
         }
     }
@@ -124,7 +125,7 @@ exports.uploadMedia = async function(files, filetype) {
         return {
             errorCode: 500,
             success: false,
-            error: "Filetype is invalid. Must be 'product/prescription/avatar'"
+            error: "Filetype is invalid. Must be 'product/prescription/avatar/qrcode'"
         };
     }
 }

@@ -226,7 +226,7 @@ exports.createOrder = async (req, res) => {
         detail,
         products,
         id_prescription,
-        id_preparator
+        id_preparator,
     } = req.body;
 
     if(!id_client || !id_pharmacy || !total_price || !products ){
