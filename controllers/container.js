@@ -7,7 +7,7 @@ exports.getContainerById = function(req, res) {
 
     if (!container_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -42,7 +42,7 @@ exports.getContainerByPharmacy = function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
@@ -77,7 +77,7 @@ exports.getEmptyContainerByPharmacy = function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
@@ -135,7 +135,7 @@ exports.addXContainerToPharmacy = (req, res) => {
 
     if(!pharmacy_id || !nb_of_containers){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else {
@@ -181,7 +181,7 @@ exports.updateContainer = function(req, res) {
 
     if (!container_id || !status){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else {
@@ -215,7 +215,7 @@ exports.deleteContainerById = function(req, res) {
 
     if (!container_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id de container"
         })
     } else {
@@ -249,7 +249,7 @@ exports.deleteAllContainersFromPharma = function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id de pharmacie"
         })
     } else {

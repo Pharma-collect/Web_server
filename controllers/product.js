@@ -17,7 +17,7 @@ exports.getProductsByPharmacy = function(req, res) {
 
     if(!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -52,7 +52,7 @@ exports.getProductById = function(req, res) {
 
     if(!product_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez préciser un id de produit"
         })
     } else {
@@ -87,7 +87,7 @@ exports.getProductsForShop = function(req, res) {
 
     if(!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez préciser un id de pharmacie"
         })
     } else {
@@ -128,7 +128,7 @@ exports.createProduct = function (req, res) {
 
     if(!title || !price || !pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else {
@@ -165,8 +165,8 @@ exports.updateProduct = function (req, res) {
 
     if(!product_id){
         res.status(422).json({
-            success: true,
-            error: "Informations manquantes"
+            success: false,
+            error: "Informations manquantes (au moins product_id)"
         })
     } else {
         db.product.findOne({
@@ -214,7 +214,7 @@ exports.deleteProductById = function(req, res) {
 
     if (!product_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id de produit"
         })
     } else {

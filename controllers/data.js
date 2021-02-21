@@ -8,8 +8,8 @@ exports.getFamousProducts = async function(req, res) {
 
     if(!pharmacy_id){
         res.status(422).json({
-            success: true,
-            error: "Informations manquantes"
+            success: false,
+            error: "Information manquante (pharmacy_id)"
         })
     } else {
         let products;
@@ -54,8 +54,8 @@ exports.getSalesRevenue = async function(req, res) {
 
     if(!pharmacy_id){
         res.status(422).json({
-            success: true,
-            error: "Informations manquantes"
+            success: false,
+            error: "Information manquante"
         })
     } else {
         let revenue;

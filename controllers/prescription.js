@@ -8,7 +8,7 @@ exports.getPrescriptionById = async function(req, res) {
 
     if (!prescription_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -41,7 +41,7 @@ exports.getPrescriptionsByPharmacy = async function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
@@ -75,7 +75,7 @@ exports.getPrescriptionsByClient = async function(req, res) {
 
     if (!client_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de client"
         })
     } else {
@@ -110,7 +110,7 @@ exports.getPrescriptionsByStatus = async function(req, res) {
 
     if (!status || !label.includes(status)){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un statut correct"
         })
     } else {
@@ -145,7 +145,7 @@ exports.createPrescription = async function(req, res) {
 
     if (!req.files || !id_client || !id_pharmacy){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes (id_client, id_pharmacy, file)"
         })
     } else {
@@ -199,7 +199,7 @@ exports.updatePrescription = function(req, res) {
 
     if (!id_prescription){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Information manquante"
         })
     } else {
@@ -243,7 +243,7 @@ exports.deletePrescription = function(req, res) {
 
     if (!id_prescription){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id d'ordonnance"
         })
     } else {

@@ -12,7 +12,7 @@ exports.getOrderById = async function(req, res) {
 
     if (!order_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -45,7 +45,7 @@ exports.getOrderByHash = async function(req, res) {
 
     if (!order_hash){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un hash"
         })
     } else {
@@ -80,7 +80,7 @@ exports.getOrderByPharmacy = async function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de pharmacie"
         })
     } else {
@@ -114,7 +114,7 @@ exports.getOrderByClient = async function(req, res) {
 
     if (!client_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de client"
         })
     } else {
@@ -149,7 +149,7 @@ exports.getOrderByStatus = async function(req, res) {
 
     if (!order_status || !label.includes(order_status)){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un statut correct"
         })
     } else {
@@ -182,7 +182,7 @@ exports.getOrderByPreparator = async function(req, res) {
 
     if (!id_preparator){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un preparateur"
         })
     } else {
@@ -231,7 +231,7 @@ exports.createOrder = async (req, res) => {
 
     if(!id_client || !id_pharmacy || !total_price || !products ){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes (id_client, id_pharmacy, total_price, products)"
         })
     } else {
@@ -315,7 +315,7 @@ exports.deleteOrderById = function(req, res) {
 
     if (!order_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id de commande"
         })
     } else {
@@ -326,7 +326,7 @@ exports.deleteOrderById = function(req, res) {
         }).then(function(result){
             if (result.length === 0){
                 res.status(204).json({
-                    success: true,
+                    success: false,
                     error: "Cette commande n'existe pas.",
                 })
             } else {
@@ -360,8 +360,8 @@ exports.updateOrder = function(req, res) {
 
     if (!order_id){
         res.status(422).json({
-            success: true,
-            error: "Informations manquantes"
+            success: false,
+            error: "Informations manquantes (au moins order_id)"
         })
     } else {
         db.order_global.findOne({
@@ -414,7 +414,7 @@ exports.updateOrder = function(req, res) {
                 }))
             } else {
                 res.status(204).json({
-                    success: true,
+                    success: false,
                     error: "Commande introuvable",
                 })
             }

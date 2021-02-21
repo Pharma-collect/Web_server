@@ -18,7 +18,7 @@ exports.getOrderDetailById = function(req, res) {
 
     if (!order_detail_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -53,7 +53,7 @@ exports.getOrderDetailsByOrder = async function(req, res) {
 
     if (!order_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de commande"
         })
     } else {
@@ -101,7 +101,7 @@ exports.deleteOrderDetailById = function(req, res) {
 
     if (!order_detail_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id de commande"
         })
     } else {

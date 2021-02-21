@@ -21,7 +21,7 @@ exports.getUserProByPharmacy = function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id de pharmacy"
         })
     } else {
@@ -56,7 +56,7 @@ exports.getUserProById = function(req, res) {
 
     if (!user_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -91,7 +91,7 @@ exports.deleteUserProById = function(req, res) {
 
     if (!user_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un identifiant"
         })
     } else {
@@ -120,7 +120,7 @@ exports.createUserPro = function (req, res) {
 
     if( !username || !password){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else {
@@ -129,7 +129,7 @@ exports.createUserPro = function (req, res) {
         }).then(function(result){
             if (result.find(user => user.username === username)){
                 res.status(1004).json({
-                    success: true,
+                    success: false,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
@@ -173,7 +173,7 @@ exports.createUserProPostman = function (req, res) {
 
     if( !username || !password || !pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else {
@@ -182,7 +182,7 @@ exports.createUserProPostman = function (req, res) {
         }).then(function(result){
             if (result.find(user => user.username === username)){
                 res.status(1004).json({
-                    success: true,
+                    success: false,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
@@ -233,7 +233,7 @@ exports.loginPro = function (req, res) {
 
     if(!username || !password){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez remplir tout les champs",
         })
     }
@@ -242,7 +242,7 @@ exports.loginPro = function (req, res) {
         .then(user => {
             if(!user){
                 res.status(401).json({
-                    success: true,
+                    success: false,
                     error: "Identifiant incorrect",
                 })
             } else {
@@ -251,7 +251,7 @@ exports.loginPro = function (req, res) {
 
                         if (!isValid) {
                             res.status(401).json({
-                                success: true,
+                                success: false,
                                 error: "Mot de Passe incorrect",
                             })
                         } else {

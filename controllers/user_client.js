@@ -21,7 +21,7 @@ exports.getUserClientById = function(req, res) {
 
     if (!user_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -56,7 +56,7 @@ exports.getUserClientByUsername = function(req, res) {
 
     if (!username){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un username"
         })
     } else {
@@ -91,7 +91,7 @@ exports.deleteUserClientById = function(req, res) {
 
     if (!user_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -125,17 +125,17 @@ exports.registerClient = function (req, res) {
 
     if(!name || !lastname || !birth || !password || !phone || !mail){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else if(!utils.validateEmail(mail)){
         res.status(1001).json({
-            success: true,
+            success: false,
             error: "Mail invalide"
         })
     } else if(!utils.validatePhoneNumber(phone)){
         res.status(1002).json({
-            success: true,
+            success: false,
             error: "Numéro de téléphone invalide"
         })
     } else {
@@ -145,12 +145,12 @@ exports.registerClient = function (req, res) {
         }).then(function(result){
             if(result.find(user => user.mail === mail)){
                 res.status(1003).json({
-                    success: true,
+                    success: false,
                     error: "Adresse mail déjà utilisée",
                 })
             } else if (result.find(user => user.username === new_username)){
                 res.status(1004).json({
-                    success: true,
+                    success: false,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
@@ -206,17 +206,17 @@ exports.registerClientPostman = function (req, res) {
 
     if(!name || !lastname || !birth || !password || !phone || !mail){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Informations manquantes"
         })
     } else if(!utils.validateEmail(mail)){
         res.status(1001).json({
-            success: true,
+            success: false,
             error: "Mail invalide"
         })
     } else if(!utils.validatePhoneNumber(phone)){
         res.status(1002).json({
-            success: true,
+            success: false,
             error: "Numéro de téléphone invalide"
         })
     } else {
@@ -226,12 +226,12 @@ exports.registerClientPostman = function (req, res) {
         }).then(function(result){
             if(result.find(user => user.mail === mail)){
                 res.status(1003).json({
-                    success: true,
+                    success: false,
                     error: "Adresse mail déjà utilisée",
                 })
             } else if (result.find(user => user.username === new_username)){
                 res.status(1004).json({
-                    success: true,
+                    success: false,
                     error: "Identifiant indisponible, veuillez en renseigner un nouveau",
                 })
             } else {
@@ -288,7 +288,7 @@ exports.loginClient = function (req, res) {
 
     if(!username || !password){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez remplir tout les champs",
         })
     }
@@ -297,7 +297,7 @@ exports.loginClient = function (req, res) {
         .then(user => {
             if(!user){
                 res.status(401).json({
-                    success: true,
+                    success: false,
                     error: "Identifiant incorrect",
                 })
             } else {
@@ -305,7 +305,7 @@ exports.loginClient = function (req, res) {
                     .then(isValid => {
                         if (!isValid) {
                             res.status(401).json({
-                                success: true,
+                                success: false,
                                 error: "Mot de Passe incorrect",
                             })
                         } else {

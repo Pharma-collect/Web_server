@@ -8,7 +8,7 @@ exports.getPharmacyById = async function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un id"
         })
     } else {
@@ -40,7 +40,7 @@ exports.getPharmacyByName = async function(req, res) {
 
     if (!name){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser un nom"
         })
     } else {
@@ -73,7 +73,7 @@ exports.getPharmacyByCity = async function(req, res) {
 
     if (!city){
         res.status(204).json({
-            success: true,
+            success: false,
             error: "Merci de préciser une ville"
         })
     } else {
@@ -106,7 +106,7 @@ exports.getPharmacyByPostCode = async function(req, res) {
 
     if (!post_code){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser une code postal"
         })
     } else {
@@ -139,7 +139,7 @@ exports.getPharmacyByBoss = async function(req, res) {
 
     if (!boss){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Merci de préciser une code postal"
         })
     } else {
@@ -225,7 +225,7 @@ exports.createPharmacy = function(req, res) {
 
     if (!name || !has_shop || !road_nb || !road || !phone || !post_code || !city || !boss){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Données manquantes"
         })
     } else {
@@ -332,7 +332,7 @@ exports.deletePharmacyById = async function(req, res) {
 
     if (!pharmacy_id){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un id de pharmacie"
         })
     } else {
@@ -365,7 +365,7 @@ exports.deletePharmacyByBoss = async function(req, res) {
 
     if (!boss){
         res.status(422).json({
-            success: true,
+            success: false,
             error: "Veuillez indiquer un patron"
         })
     } else {
